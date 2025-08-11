@@ -64,7 +64,7 @@ escribir = scanner.nextInt();
                       scanner.nextLine(); // esto es para limpioar el buffer despues de ller un numero 
                                       
                       // Ingreso de las 5 habilidades
-                   String [] habilidades = new String [5];
+                   String [] habilidades = new String [5];// esta linea me trajo problemas y muchos 
                    for (int i = 0; i <5; i ++){                      
                         System.out.print("Habilidad #" + (i+1) + ": ");
                        habilidades[i] = scanner.nextLine();
@@ -102,7 +102,7 @@ escribir = scanner.nextInt();
                        for (int i = 0; i <cantidadPersonajes; i++){
                            System.out.println("Personaje No."+ ( i+ 1 ) );
                            System.out.println("Nombre" + personajes[i][0]);
-                           System.out.println("El arma equipadad es:" + personaje[i][1]);
+                           System.out.println("El arma equipadad es:" + personajes[i][1]);
                            System.out.println("Su nivel de poder es:" + personajes[i][2]);
                            System.out.println("Sus habilidades son:");
                            for (int j = 3; j < 8; j++){
