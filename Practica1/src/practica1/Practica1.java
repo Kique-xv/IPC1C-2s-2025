@@ -1,20 +1,20 @@
 //Autor Kique Marroquin y williams marroquin (mi viejo)
 package practica1;
 
-import java.util.ArrayList;
 import java.util.Scanner;
-
     public class Practica1 { 
         
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int escribir;
-        ArrayList<Personaje> personajes = new ArrayList<>();
-       String continuar;
-    
-        do{  
-           // Deplegar el  Menu principal 
-           
+        
+        // Declaracion de variables
+        int escribir;       
+     String  [][] personajes = new String [25][8]; // Matriz de personajes
+     int cantidadPersonajes = 0; //contador de personajes registrados 
+     String continuar;   
+     
+     do{             
+           // Deplegar el  Menu principal           
            System.out.println("Menu principal");
             System.out.println("1. Agregar Personaje");
             System.out.println("2. Modificar Personaje ");
@@ -32,36 +32,52 @@ escribir = scanner.nextInt();
  switch (escribir) {
                 case 1:
                     do{
-                       System.out.println("Registro de un nuevo personaje");
-                        scanner.nextLine();
                         
-                       System.out.println("Ingresa el nombre");
-                       String nombre = scanner.nextLine();
-                    
-                    // ver si el personaje esta repetido
-                    boolean Nomrepetido = false;
-                    for (Personaje Pexiste : personajes);
-                    
+                        if (cantidadPersonajes >=25){
+                            System.out.println("Ya llegaste al maximo numero de personajes registrados");
+                            break;
+                        }            
+                        scanner.nextLine();
+                       System.out.println("Registro de un nuevo personaje");
                        
+                       //verificar si el nombre esta repetido
+                       String nombre; 
+                       boolean Nrepetido = false;
+                       do{
+                           
+                          System.out.println("Ingrese el nombre del personje");
+                          nombre =scanner.nextLine();
+                          for(int i = 0; i<cantidadPersonajes; i++){
+                              if(personajes [i][0] != null && personajes[i][0].equalsIgnoreCase(nombre)){
+                                  Nrepetido = true;
+                                  System.out.println("Ese nombre ya fue regitrasdo, elige otro nombre");
+                                   break;       
+                              }
+                          }                          
+                       } while (Nrepetido);
+                           
                        System.out.println("Ingresa el arma de tu preferencia");
                        String arma = scanner.nextLine();
                       
                       System.out.println("Ingresa el nivel de poder (de 0 a 100)");
                       int nivel_pod=scanner.nextInt();
                       scanner.nextLine(); // esto es para limpioar el buffer despues de ller un numero 
-                    
+                                      
                       // Ingreso de las 5 habilidades
-                     String [] habilidades = new String[5];
-            System.out.println("Ingresa 5 habilidades del personaje:");
-            for (int i = 0; i < 5; i++) {
-                System.out.print("  Habilidad #" + (i + 1) + ": ");
-                habilidades[i]= scanner.nextLine();
-                
-                    }
-                                  // Crear y agregar el personaje
-            Personaje nuevo = new Personaje (nombre , arma, nivel_pod, habilidades);
-            personajes.add(nuevo);
-
+                   String [] habilidades = new String [5];
+                   for (int i = 0; i <5; i ++){                      
+                        System.out.print("Habilidad #" + (i+1) + ": ");
+                       habilidades[i] = scanner.nextLine();
+                             }
+            //Guardando los personajes en la matriz 
+            personajes[cantidadPersonajes][0] =nombre;
+            personajes [cantidadPersonajes][1] = arma;
+            personajes[cantidadPersonajes][2] =String.valueOf(nivel_pod);
+            for (int i =0; i<5; i++){
+                personajes [cantidadPersonajes][3+i] = habilidades[i];
+            }
+           cantidadPersonajes++;                       
+           
             // Preguntar si quiere continuar
             System.out.print("\n¿Deseas ingresar otro personaje? (s/n): ");
             continuar = scanner.nextLine().toLowerCase();
@@ -78,21 +94,22 @@ escribir = scanner.nextInt();
                 case 4:
                     System.out.println("Ver atributos del personaje :");
                     break;
-                case 5:
+               case 5:
                     System.out.println("Listado de de personajes");
-                    System.out.println("PERSONAJES REGISTRADOS ");
-        for (int i = 0; i < personajes.size(); i++) {
-            Personaje p = personajes.get(i);
-            System.out.println("\nPersonaje #" + (i + 1));
-            System.out.println("Nombre: " + p.nombre);
-            System.out.println("Arma: " + p.arma);
-            System.out.println("Nivel de Poder: " + p.nivel_pod);
-            System.out.println("Habilidades:");
-            for (String habilidades : p.habilidades) {
-                System.out.println("  - " + habilidades);
-                scanner.close();
-            }
-        }
+                   if(cantidadPersonajes == 0){
+                      System.out.println("No hay ningun personaje registrado... de momento");
+                   } else{
+                       for (int i = 0; i <cantidadPersonajes; i++){
+                           System.out.println("Personaje No."+ ( i+ 1 ) );
+                           System.out.println("Nombre" + personajes[i][0]);
+                           System.out.println("El arma equipadad es:" + personaje[i][1]);
+                           System.out.println("Su nivel de poder es:" + personajes[i][2]);
+                           System.out.println("Sus habilidades son:");
+                           for (int j = 3; j < 8; j++){
+                               System.out.println("-----" + personajes[i][j]);
+                           }
+                       }
+                   }
                     break;
                 case 6:
                     System.out.println("RRealizar combate");
