@@ -1,5 +1,6 @@
 
 package practica1;
+//ayuda quiero llorar
 
 public class Personaje {
    // Declaracion de variables 
