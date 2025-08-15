@@ -39,8 +39,7 @@ public class Practica1 {
      String continuar;   
      
      Random random = new Random();
-     
-     
+      
      do{             
            // Deplegar el  Menu principal           
            System.out.println("Menu principal");
@@ -62,7 +61,7 @@ escribir = scanner.nextInt();
                     do{
                         
                         if (cantidadPer >=25){
-                            System.out.println("Ya llegaste al maximo numero de personajes registrados");
+                            System.out.println("Ya llegaste al maximo numero de personajes registrados, elimina alguno de ellos");
                             break;
                         }            
                         scanner.nextLine();
@@ -79,7 +78,7 @@ escribir = scanner.nextInt();
                               //el equals es para "ignorar" maysuculas y minusculas del nombre en cuestion
                               if(personajes [i][0] != null && personajes[i][0].equalsIgnoreCase(nombre)){
                                   Nrepetido = true;
-                                  System.out.println("Ese nombre ya fue regitrasdo, elige otro nombre");
+                                  System.out.println("Ese personaje ya existe, inventa otro nombre");
                                    break;       
                               }
                           }                          
@@ -88,13 +87,10 @@ escribir = scanner.nextInt();
                        System.out.println("Ingresa el arma de tu preferencia");
                        String arma = scanner.nextLine();
                       
-                       int nivel_pod=0;
-                      
-                       do{                        
+                       int nivel_pod=0;                   
                       System.out.println("Ingresa el nivel de poder (de 0 a 100)");                   
                       scanner.nextLine(); // esto es para "comerse" el enter despues de leer un numero 
-                    }    while (nivel_pod < 0 || nivel_pod > 100); //esto es para solo registrar los numeros de 0 a 100
-                                       
+                               
                       // Ingreso de las 5 habilidades
                    String [] habilidades = new String [5];// esta linea me trajo problemas y muchos 
                    for (int i = 0; i <5; i ++){                      
@@ -124,7 +120,7 @@ escribir = scanner.nextInt();
                     int Mod = buscarPer(personajes, cantidadPer, nombreMod);//llamado del modulo de buscar personajes
                    
                     if (Mod ==-1){// eso es porque si al buscar el personaje, el modulo retornara un -1 y eso en una matriz no existe
-                        System.out.println("Ese personaje no existe, ingresa otro nombre");
+                        System.out.println("Ese personaje no existe, pon otro nombre");
 break;                        
                     }
                     else { // se mostraran los datos iniciales, igual como en la opcion 4 y 5 
@@ -137,14 +133,11 @@ break;
                         System.out.println("Elige un arma nueva");
                         personajes[Mod][1] = scanner.nextLine();
                         
-                       int nuevoNiv;
-                       do {
+                       int nuevoNiv;                     
                            System.out.println("Ingresa un nuevo nivel de poder");
                            nuevoNiv = scanner.nextInt();
                            scanner.nextLine();
-                       } while (nuevoNiv<0 || nuevoNiv > 100 );
-                       personajes [Mod][2] = String.valueOf(nuevoNiv);
-                       
+                      
                        for (int i = 0; i <5; i++ ){
                            System.out.println("Nueva habilidad #"+ (i+1) +":");
                            personajes[Mod][3+i]= scanner.nextLine();
@@ -157,7 +150,7 @@ break;
           String nombreEli = scanner.nextLine();
           int Eli = buscarPer(personajes,  cantidadPer, nombreEli);       
           if (Eli == -1 ){ //esto es por si en la matriz no sale el nombre se vaya a la posicion -1
-          System.out.println("No se ha encontrado al personaje, ingresa otro nombre");
+          System.out.println("Ese personaje no existe, pon otro nombre");
            }
            personajes [cantidadPer -1] = new String[8]; // se borra de la memoria la columna del personaje
            cantidadPer--;
@@ -173,7 +166,7 @@ break;
                     
                     int Buscar = buscarPer(personajes, cantidadPer, nombreBus); 
                     if (Buscar ==-1){
-                    System.out.println("No se ha encontrado a ese personaje, ingresa otro nombre");
+                    System.out.println("No se encontro al personaje, deberias intentar con otro nombre");
                 } else {
                         mostrarPer(personajes, Buscar);
                         } 
@@ -213,8 +206,7 @@ break;
                         resultado = personajes [ID1][0] + "pierdes contra" + personajes[ID2][0];                      
                     } else{
                         resultado = personajes [ID2][0] + "pierdes contra" + personajes[ID1][0];
-                    }
-                   
+                    }                
                     String fecha_hora = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
                     String Registrar = fecha_hora +"---"+ resultado;
                     
@@ -228,7 +220,7 @@ break;
                 case 7:
                     System.out.println("Ver historial de combates");
                     if(cantPeleas ==0){
-                        System.out.println("No hay peleas registradas.. aun");
+                        System.out.println("No hay peleas registradas... aun");
                     }else {
                         for(int i=0; i<cantPeleas; i++){
                             System.out.println(historialCo[i]);
@@ -244,7 +236,7 @@ break;
                     System.out.println("BYE BYEEEEE");
                     break;
                 default:
-                    System.out.println("!Esa opcion no existe!, ingresa otra opción.");
+                    System.out.println("!Esa opcion no existe!, ingresa otra opción valida.");
             }
       } while (escribir != 9); // Todo esto se repite indefinidamente hasta que pongan 9 
         scanner.close();              
