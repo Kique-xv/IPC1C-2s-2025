@@ -8,7 +8,13 @@ public class Proyecto1 {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int opcion;
+        int opcion = 0;
+        //Declaracion de la matriz del oinventario y continuar
+        final int MAXPROD = 100;
+        final int ATRI = 5;
+        String[][] Inventario = new String[MAXPROD][ATRI];
+        int CantInventario = 0;
+        String continuar;
 
         do {
             System.out.println("Bienvenido al menu principal");
@@ -23,18 +29,64 @@ public class Proyecto1 {
             System.out.println("Elije una opción:");
 
             try {
-opcion = Validar.VerificarNum(sc);           
-        // Consumir el salto de linea restante
+                opcion = Validar.VerificarNum(sc);
+                // Consumir el salto de linea restante
             } catch (InputMismatchException e) {
                 System.out.println(e.getMessage());
                 System.out.println("Error: Debes ingresar un valor numérico. Inténtalo de nuevo.");
-               break;
+                break;
             }
 
             switch (opcion) {
                 case 1:
-                    System.out.println("Agregar Productos");
+                    do {
+                        if (CantInventario >= MAXPROD) {
+                            System.out.println("Haz llegado al limite de productos ingresados");
+                            break;
+                        }
+                        sc.nextLine();
+                        System.out.println("Bienvenido al apartado de agregar productos");
+
+                        String codigo;
+                        boolean CodRep = false;  //Validamos que el codigo sea unico
+                        do {
+
+                            System.out.println("Ingrese el codigo del producto:");
+                            codigo = sc.nextLine();
+                            for (int i = 0; i < CantInventario; i++) {
+                                if (Inventario[i][0] != null && Inventario[i][0].equalsIgnoreCase(codigo)) {
+                                    CodRep = true;
+                                    System.out.println("Ese codigo ya fue ingresado, favor de ingresar otro");
+                                    break;
+                                }
+                            }
+                        } while (CodRep);
+
+                        System.out.print("Nombre del Producto:");
+                        String nombre = sc.nextLine();
+
+                        String categoria;
+                        System.out.print("Categoria a la que pertenezca el producto: (Camisa, patalón, accesorio)");
+                        categoria = sc.nextLine();
+
+                        System.out.println("Precio del producto:");
+                        int precio = Validar.verNumPos(sc);
+
+                        System.out.println("Cantidad en Stock:");
+                        int stock = Validar.verNumPos(sc);
+
+                        Inventario[CantInventario][0] = codigo;
+                        Inventario[CantInventario][1] = nombre;
+                        Inventario[CantInventario][2] = categoria;
+                        Inventario[CantInventario][3] = String.valueOf(precio);
+                        Inventario[CantInventario][4] = String.valueOf(stock);
+                        CantInventario++;
+
+                        System.out.print("¿Desea ingresar otro producto? (s/n):  ");
+                        continuar = sc.nextLine().toLowerCase();
+                    } while (continuar.equals("s"));
                     break;
+
                 case 2:
                     System.out.println("Buscar Productos");
                     break;
@@ -48,10 +100,8 @@ opcion = Validar.VerificarNum(sc);
                     System.out.println("Generar Reportes");
                     break;
                 case 6:
-                    System.out.println("Ver Datos del Estudiante");
-                    System.out.println("este programa fue realizado por Guillermo Enrique Marroquin Morán");
-                    System.out.println("Carnet: 202103527");
-                    System.out.println("Este programa si tiene Derechos de autor");
+                    System.out.println("Ver Datos del Estudiante"); // esto de los saltos de linea me sirve para ahorrar espacio
+                    System.out.println("Este programa fue realizado por Guillermo Enrique Marroquin Morán. \nCarnet: 202103527. \nEste programa si tiene Derechos de autor");
                     break;
                 case 7:
                     System.out.println("Bitacora de acciones");
