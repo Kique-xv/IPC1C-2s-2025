@@ -3,6 +3,7 @@ package proyecto1;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import static proyecto1.Productos.buscarProducto;//Lo importe porque... si ponia el codigo esto se haria muy largo :(
 
 public class Proyecto1 {
 
@@ -15,7 +16,6 @@ public class Proyecto1 {
         String[][] Inventario = new String[MAXPROD][ATRI];
         int CantInventario = 0;
         String continuar;
-
         do {
             System.out.println("Bienvenido al menu principal");
             System.out.println("1. Agregar Producto");
@@ -33,7 +33,7 @@ public class Proyecto1 {
                 // Consumir el salto de linea restante
             } catch (InputMismatchException e) {
                 System.out.println(e.getMessage());
-                System.out.println("Error: Debes ingresar un valor numérico. Inténtalo de nuevo.");
+                System.out.println("Error 001: Debes ingresar un valor numérico. Inténtalo de nuevo.");
                 break;
             }
 
@@ -46,11 +46,15 @@ public class Proyecto1 {
                         }
                         sc.nextLine();
                         System.out.println("Bienvenido al apartado de agregar productos");
+                        System.out.println();
+
+                        System.out.println("Ingrese el nombre del vendedor:");
+                        String vendedor = sc.nextLine();
 
                         String codigo;
-                        boolean CodRep = false;  //Validamos que el codigo sea unico
+                        boolean CodRep;
                         do {
-
+                            CodRep = false;  //Validamos que el codigo sea unico
                             System.out.println("Ingrese el codigo del producto:");
                             codigo = sc.nextLine();
                             for (int i = 0; i < CantInventario; i++) {
@@ -65,9 +69,8 @@ public class Proyecto1 {
                         System.out.print("Nombre del Producto:");
                         String nombre = sc.nextLine();
 
-                        String categoria;
-                        System.out.print("Categoria a la que pertenezca el producto: (Camisa, patalón, accesorio)");
-                        categoria = sc.nextLine();
+                        //yay hice un llamado a un metodo wuuuuu
+                        String categoria = Validar.validarCategoria(sc);
 
                         System.out.println("Precio del producto:");
                         int precio = Validar.verNumPos(sc);
@@ -86,9 +89,10 @@ public class Proyecto1 {
                         continuar = sc.nextLine().toLowerCase();
                     } while (continuar.equals("s"));
                     break;
-
                 case 2:
-                    System.out.println("Buscar Productos");
+                    System.out.println("Buscar Productos:");
+                    System.out.println();
+                     buscarProducto(Inventario, CantInventario, sc);
                     break;
                 case 3:
                     System.out.println("Eliminar Productos");
