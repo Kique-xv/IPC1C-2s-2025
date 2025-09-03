@@ -27,7 +27,6 @@ public class Proyecto1 {
             System.out.println("7. Bitacora de acciones");
             System.out.println("8. Salir");
             System.out.println("Elije una opción:");
-
             try {
                 opcion = Validar.VerificarNum(sc);
                 // Consumir el salto de linea restante
@@ -36,7 +35,6 @@ public class Proyecto1 {
                 System.out.println("Error 001: Debes ingresar un valor numérico. Inténtalo de nuevo.");
                 break;
             }
-
             switch (opcion) {
                 case 1:
                     do {
@@ -91,8 +89,14 @@ public class Proyecto1 {
                     break;
                 case 2:
                     System.out.println("Buscar Productos:");
+                    if (CantInventario <= 0) {
+                        System.out.println("No hay productos registrados");
+                        System.out.println();
+                        break;
+                    }
                     System.out.println();
-                     buscarProducto(Inventario, CantInventario, sc);
+                    //Wuu hice una importacion de una clase que hice yey...
+                    buscarProducto(Inventario, CantInventario, sc);
                     break;
                 case 3:
                     System.out.println("Eliminar Productos");
@@ -106,6 +110,7 @@ public class Proyecto1 {
                 case 6:
                     System.out.println("Ver Datos del Estudiante"); // esto de los saltos de linea me sirve para ahorrar espacio
                     System.out.println("Este programa fue realizado por Guillermo Enrique Marroquin Morán. \nCarnet: 202103527. \nEste programa si tiene Derechos de autor");
+                    System.out.println();
                     break;
                 case 7:
                     System.out.println("Bitacora de acciones");
@@ -115,6 +120,7 @@ public class Proyecto1 {
                     break;
                 default:
                     System.out.println("Opción no válida, ingresa otra opción");
+                    System.out.println();
             }
         } while (opcion != 8);
         sc.close();

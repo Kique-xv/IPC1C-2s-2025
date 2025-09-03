@@ -42,6 +42,7 @@ public class Productos {
                 System.out.println("Ingrese el nombre a buscar:");
                 valBuscar = sc.nextLine();
                 for (int i = 0; i < CantInventario; i++) {
+                    //esto va a ingnorar las mayusculas y minusculas, solo toma las palabras
                     if (Inventario[i][1] != null && Inventario[i][1].toLowerCase().contains(valBuscar.toLowerCase())) {
                         mostrarProd(Inventario, i);
                         encontrar = true;
@@ -52,6 +53,7 @@ public class Productos {
                 System.out.println("Ingrese la categoria a buscar:");
                 valBuscar = sc.nextLine();
                 for (int  i = 0; i < CantInventario; i++ ) {
+                    //Igual aca, solo que.. bueno hace una equivalencia entre los productos ingresado y los que encuentre, solo que ignora las mayusculas
         if (Inventario[i][2] != null && Inventario[i][2].toLowerCase().equals(valBuscar.toLowerCase())) {
                         mostrarProd(Inventario, i);
                         encontrar = true;
