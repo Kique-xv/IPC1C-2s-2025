@@ -3,6 +3,7 @@ package proyecto1;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import static proyecto1.Productos.EliminarProd;
 import static proyecto1.Productos.buscarProducto;//Lo importe porque... si ponia el codigo esto se haria muy largo :(
 
 public class Proyecto1 {
@@ -16,6 +17,7 @@ public class Proyecto1 {
         String[][] Inventario = new String[MAXPROD][ATRI];
         int CantInventario = 0;
         String continuar;
+        String vendedor = "Guillermo Marroquin";
         do {
             System.out.println("Bienvenido al menu principal");
             System.out.println("1. Agregar Producto");
@@ -46,9 +48,6 @@ public class Proyecto1 {
                         System.out.println("Bienvenido al apartado de agregar productos");
                         System.out.println();
 
-                        System.out.println("Ingrese el nombre del vendedor:");
-                        String vendedor = sc.nextLine();
-
                         String codigo;
                         boolean CodRep;
                         do {
@@ -70,7 +69,7 @@ public class Proyecto1 {
                         //yay hice un llamado a un metodo wuuuuu
                         String categoria = Validar.validarCategoria(sc);
 
-                        System.out.println("Precio del producto:");
+                        System.out.println("Precio del producto(Q):");
                         int precio = Validar.verNumPos(sc);
 
                         System.out.println("Cantidad en Stock:");
@@ -85,6 +84,7 @@ public class Proyecto1 {
 
                         System.out.print("¿Desea ingresar otro producto? (s/n):  ");
                         continuar = sc.nextLine().toLowerCase();
+                        System.out.println();
                     } while (continuar.equals("s"));
                     break;
                 case 2:
@@ -100,6 +100,19 @@ public class Proyecto1 {
                     break;
                 case 3:
                     System.out.println("Eliminar Productos");
+                    System.out.println();
+
+                    do {
+                        if (CantInventario > 0) {
+                            CantInventario = EliminarProd(Inventario, CantInventario, sc);
+                        } else {
+                            System.out.println("No hay productos para eliminar");
+                            System.out.println();
+
+                        }
+                        System.out.print("¿Desea eliminar otro producto? (s/n):  ");
+                        continuar = sc.nextLine().toLowerCase();
+                    } while (continuar.equals("s"));
                     break;
                 case 4:
                     System.out.println("Registrar Ventas");

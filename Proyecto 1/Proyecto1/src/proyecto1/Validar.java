@@ -21,6 +21,8 @@ public class Validar {
                 if (num < 0) {
                     System.out.println("Error 003: por favor ingrese un valor positivo");
                     System.out.println("Por favor elija un numero postivo");
+                    System.out.println();
+
                 } else {
                     sc.nextLine();
                     return num;
