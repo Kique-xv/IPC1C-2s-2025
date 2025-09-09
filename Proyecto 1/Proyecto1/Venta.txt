@@ -1,0 +1,14 @@
+--------------------
+Ventas Efectuadas: 
+Hora y Fecha de la transacción: 251-09-2025 19-:06:49
+Producto vendido: Camisa
+Cantidad vendida del producto es : 8
+el total a pagar es de: 720.0Qeutzales
+----------------------
+--------------------
+Ventas Efectuadas: 
+Hora y Fecha de la transaccion: 251-09-2025 19-:09:14
+Producto vendido: PAntalon negro
+Cantidad vendida del producto es : 2
+el total a pagar es de: 180.0Qeutzales
+----------------------

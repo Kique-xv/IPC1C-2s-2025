@@ -1,5 +1,4 @@
 package proyecto1;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -22,7 +21,6 @@ public class Validar {
                     System.out.println("Error 003: por favor ingrese un valor positivo");
                     System.out.println("Por favor elija un numero postivo");
                     System.out.println();
-
                 } else {
                     sc.nextLine();
                     return num;

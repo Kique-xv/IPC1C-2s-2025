@@ -4,6 +4,7 @@ package proyecto1;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import static proyecto1.Productos.EliminarProd;
+import static proyecto1.Productos.RegisVenta; // aca vienen tambien las liberias de formatos y la de la excepcion
 import static proyecto1.Productos.buscarProducto;//Lo importe porque... si ponia el codigo esto se haria muy largo :(
 
 public class Proyecto1 {
@@ -31,6 +32,7 @@ public class Proyecto1 {
             System.out.println("Elije una opción:");
             try {
                 opcion = Validar.VerificarNum(sc);
+                sc.nextLine();
                 // Consumir el salto de linea restante
             } catch (InputMismatchException e) {
                 System.out.println(e.getMessage());
@@ -116,6 +118,11 @@ public class Proyecto1 {
                     break;
                 case 4:
                     System.out.println("Registrar Ventas");
+                    if (CantInventario > 0) {
+                        RegisVenta(Inventario, CantInventario, sc);
+                    } else {
+                        System.out.println("No hay productos en inventario");
+                    }
                     break;
                 case 5:
                     System.out.println("Generar Reportes");
