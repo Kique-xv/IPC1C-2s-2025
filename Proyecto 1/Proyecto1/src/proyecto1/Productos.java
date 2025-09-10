@@ -11,7 +11,6 @@ import java.util.Scanner;// debe de haber una forma para que no tenga que import
 
 public class Productos {
 //una funcion o metodo para buscar productos, yyy sip me base muuucho en la de la practica xd
-
     public static void buscarProducto(String[][] Inventario, int CantInventario, Scanner sc) {
         int optBuscar;
         String valBuscar;
@@ -184,5 +183,5 @@ public class Productos {
         } else {
             System.out.println("Error 008: el producto con el codigo : " + CodVenta + " No fue encontrado");
         }
-    }
+    }  
 }

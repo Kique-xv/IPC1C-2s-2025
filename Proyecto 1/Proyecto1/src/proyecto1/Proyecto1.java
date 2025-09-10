@@ -6,6 +6,7 @@ import java.util.Scanner;
 import static proyecto1.Productos.EliminarProd;
 import static proyecto1.Productos.RegisVenta; // aca vienen tambien las liberias de formatos y la de la excepcion
 import static proyecto1.Productos.buscarProducto;//Lo importe porque... si ponia el codigo esto se haria muy largo :(
+import static proyecto1.Reportes.generarPDF;//ahoa si xddd
 
 public class Proyecto1 {
 
@@ -126,6 +127,12 @@ public class Proyecto1 {
                     break;
                 case 5:
                     System.out.println("Generar Reportes");
+                    sc.nextLine();
+                    if (CantInventario <= 0){
+             System.out.println("No hay productos en inventario para generar un reporte");                   
+                    } else{
+                        generarPDF(Inventario, CantInventario, sc);
+                    }
                     break;
                 case 6:
                     System.out.println("Ver Datos del Estudiante"); // esto de los saltos de linea me sirve para ahorrar espacio

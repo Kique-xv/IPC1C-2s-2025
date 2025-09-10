@@ -12,3 +12,59 @@ Producto vendido: PAntalon negro
 Cantidad vendida del producto es : 2
 el total a pagar es de: 180.0Qeutzales
 ----------------------
+--------------------
+Ventas Efectuadas: 
+Hora y Fecha de la transacción: 251-09-2025 19-:24:59
+Producto vendido: Gafas de sol mujer
+Cantidad vendida del producto es : 3
+el total a pagar es de: 45.0 Qeutzales
+----------------------
+--------------------
+Ventas Efectuadas: 
+Hora y Fecha de la transacción: 252-09-2025 21-:30:35
+Producto vendido: Aretes de plata de corazon
+Cantidad vendida del producto es : 2
+el total a pagar es de: 200.0 Qeutzales
+----------------------
+--------------------
+Ventas Efectuadas: 
+Hora y Fecha de la transacción: 252-09-2025 21-:31:00
+Producto vendido: Gafas de sol para hombre
+Cantidad vendida del producto es : 4
+el total a pagar es de: 40.0 Qeutzales
+----------------------
+--------------------
+Ventas Efectuadas: 
+Hora y Fecha de la transacción: 252-09-2025 21-:39:01
+Producto vendido: Short de hombre
+Cantidad vendida del producto es : 5
+el total a pagar es de: 250.0 Qeutzales
+----------------------
+--------------------
+Ventas Efectuadas: 
+Hora y Fecha de la transacción: 252-09-2025 21-:39:16
+Producto vendido: Aretes de plata
+Cantidad vendida del producto es : 4
+el total a pagar es de: 4000.0 Qeutzales
+----------------------
+--------------------
+Ventas Efectuadas: 
+Hora y Fecha de la transacción: 252-09-2025 21-:43:28
+Producto vendido: Short de hombre
+Cantidad vendida del producto es : 10
+el total a pagar es de: 500.0 Qeutzales
+----------------------
+--------------------
+Ventas Efectuadas: 
+Hora y Fecha de la transacción: 252-09-2025 21-:45:10
+Producto vendido: Gorro de lana de mujer+
+Cantidad vendida del producto es : 25
+el total a pagar es de: 250.0 Qeutzales
+----------------------
+--------------------
+Ventas Efectuadas: 
+Hora y Fecha de la transacción: 252-09-2025 21-:48:05
+Producto vendido: Pantl
+Cantidad vendida del producto es : 10
+el total a pagar es de: 1500.0 Qeutzales
+----------------------
