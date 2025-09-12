@@ -1,0 +1,14 @@
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 10_13_2025 19:13:17
+Usuario: Guillermo Marroquin
+Accion :Limpiar historial de de acciones y ventas
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 10_13_2025 19:13:21
+Usuario: Guillermo Marroquin
+Accion :Salir del programa
+Estado :Correcta
+----------------------------------------------

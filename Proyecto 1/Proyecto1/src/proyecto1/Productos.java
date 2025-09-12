@@ -8,10 +8,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException; // tambien esta libreria...
 import java.util.Scanner;// debe de haber una forma para que no tenga que importar siempre esta libreria...
+import static proyecto1.ValidarAccion.VerAccion;
 
 public class Productos {
 //una funcion o metodo para buscar productos, yyy sip me base muuucho en la de la practica xd
-    public static void buscarProducto(String[][] Inventario, int CantInventario, Scanner sc) {
+
+    public static void buscarProducto(String[][] Inventario, int CantInventario, Scanner sc, String vendedor) {
         int optBuscar;
         String valBuscar;
         boolean encontrar = false;
@@ -28,6 +30,7 @@ public class Productos {
         } catch (InputMismatchException e) {
             System.out.println("Error  006: Debe de ingresar un numero valido, intente de nuevo");
             sc.nextLine();
+            VerAccion(vendedor, "Busqueda de productos, opcion invalida ", "fallida");
             return;
         }
         switch (optBuscar) {
@@ -66,11 +69,14 @@ public class Productos {
                 break;
             default:
                 System.out.println("Opcion no valida, intente otra vez");
+                VerAccion(vendedor, "busqueeda de producto, opcion invalida ", "fallida");
                 return;
         }
         if (!encontrar) {
             System.out.println("No se encontraron productos que coincidan con la busqueda");
-
+            VerAccion(vendedor, "Busqueda de producto, no se encontró el producto ", "fallida");
+        } else {
+            VerAccion(vendedor, "Busqueda de producto", "Correcta");
         }
     }
 
@@ -85,10 +91,9 @@ public class Productos {
     }
 //Sip un Metodo que sea para buscar productos exclusivamante para eliminarlos, me base mucho en la de la practica yeeey
 
-    public static int EliminarProd(String[][] Inventario, int CantInventario, Scanner sc) {
+    public static int EliminarProd(String[][] Inventario, int CantInventario, Scanner sc, String vendedor) {
         System.out.println("Ingrese el Codigo del producto que se quiera eliminar:  ");
         String codEli = sc.nextLine();
-
         int Eliminar = -1;
         //Usamos un bucle for para buscar en la matriz inventario para encontrar el producto
         for (int i = 0; i < CantInventario; i++) {
@@ -114,22 +119,25 @@ public class Productos {
 //Este bloquecito de codigo bonito es para "limpiar" la ultima fila para que no haya duplicaciones
                 Inventario[CantInventario - 1] = new String[5];
                 System.out.println("El producto fue eliminado ");
+                VerAccion(vendedor, "Eliminacion del producto con el codigo:  " + Eliminar, "Correcta");
                 CantInventario--;//baja el "contenido" del inventario una unidad UWU
             } else {
                 System.out.println("El producto no fue eliminado ");
+                VerAccion(vendedor, "Eliminacion del producto con el codigo:  " + Eliminar, "fallida");
             }
         } else {
             System.out.println("El producto: " + codEli + "no fue encontrado");
+            VerAccion(vendedor, "Eliminacion del producto, producto no encontrado ", "fallida");
         }
         return CantInventario;//devolvemos el valor de la nueva matriz de inventario
     }
 //Una funcion para registrar una venta, usando como base la parte de la parctica de buscar por nombre
 
-    public static void RegisVenta(String[][] Inventario, int CantInventario, Scanner sc) {
+    public static void RegisVenta(String[][] Inventario, int CantInventario, Scanner sc, String vendedor) {
         int Prod = -1;
         System.out.println("Ingrese el codigo del producto a vender: ");
         String CodVenta = sc.nextLine();
-        for (int i = 0; i<CantInventario; i++) { // Buscmos en el inventario por el codigo con un ciclo for
+        for (int i = 0; i < CantInventario; i++) { // Buscmos en el inventario por el codigo con un ciclo for
             if (Inventario[i][0] != null && Inventario[i][0].equalsIgnoreCase(CodVenta)) {
                 Prod = i;
                 break;
@@ -145,6 +153,7 @@ public class Productos {
             //Validadmos que la venta sea exitosa
             if (cantidad > Stock2) {
                 System.out.println("Error 006: La cantidad a vender es superior al stock");
+                VerAccion(vendedor, "Venta, Stock INSUFICIENTE ", "fallida");
                 return;
             }
             // Actualizamos el nuevo stock con la cantidad vendida
@@ -180,8 +189,10 @@ public class Productos {
             System.out.println("Fueron vendidas: " + cantidad + " unidades de :" + Inventario[Prod][1]);
             System.out.println("La cantidad actual del producto es: " + Stock3);
             System.out.println("La cantidad a pagar es :" + Total + "Quetzales");
+            VerAccion(vendedor, "venta de:  " + cantidad + "unidades " + Inventario[Prod][1], "corecta");
         } else {
             System.out.println("Error 008: el producto con el codigo : " + CodVenta + " No fue encontrado");
+            VerAccion(vendedor, "Venta del producto, producto no encontrado ", "fallida");
         }
-    }  
+    }
 }
