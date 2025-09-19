@@ -12,3 +12,38 @@ Usuario: Guillermo Marroquin
 Accion :Salir del programa
 Estado :Correcta
 ----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 16_55_2025 21:55:31
+Usuario: Guillermo Marroquin
+Accion :Salir del programa
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 16_57_2025 21:57:43
+Usuario: Guillermo Marroquin
+Accion :Registrar  Venta
+Estado :fallida
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 16_57_2025 21:57:43
+Usuario: Guillermo Marroquin
+Accion :Registrar venta  
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 16_57_2025 21:57:50
+Usuario: Guillermo Marroquin
+Accion :Ver bitacora de acciones
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 16_57_2025 21:57:58
+Usuario: Guillermo Marroquin
+Accion :Salir del programa
+Estado :Correcta
+----------------------------------------------
