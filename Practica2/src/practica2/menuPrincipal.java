@@ -1,8 +1,11 @@
 package practica2;
 //una clase para el menu... 
+//bueno. para que coexistan las dos ventanas esta sera la "Clase principal xd"
 
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,7 +35,24 @@ public class menuPrincipal extends JFrame {
 
         //creamos TODOS LOS BOTONES PARA CADA OPCION
         JButton btAgregar = new JButton("1. Agregar Personaje");
+        //accion del boton agregar personaje
+         btAgregar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            Personajes agregarVentana = new Personajes();
+            agregarVentana.setVisible(true);
+            }            
+        } );      
         JButton btModificar = new JButton("2. Modificar Personaje");
+        //accion del boton de modificar personajes
+        btModificar.addActionListener(new ActionListener (){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            modificarPersonaje modificarVentana = new modificarPersonaje();
+            modificarVentana.setVisible(true);
+            }        
+        });
+         
         JButton btEliminar = new JButton("3. Eliminar Personaje");
         JButton btVer = new JButton("4. Ver Personajes Registrados");
         JButton btSimular = new JButton("5. Simulacion de Combates");
@@ -40,7 +60,8 @@ public class menuPrincipal extends JFrame {
         JButton btBuscar = new JButton("7. Buscar Personaje");
         JButton btGuardar = new JButton("8. Guardar y Cargar Estado del Sistema ");
         JButton btYO = new JButton("9. Ver Datos del Estudiante ");
-
+//en mac el menu se ve bonito la verdad, VIVA MAC y sus precios no
+//
         panel.add(btAgregar);
         panel.add(btModificar);
         panel.add(btEliminar);
@@ -51,8 +72,8 @@ public class menuPrincipal extends JFrame {
         panel.add(btGuardar);
         panel.add(btYO);
 
-        add(panel);
-
+        add(panel);      
+       
     }
 
 }
