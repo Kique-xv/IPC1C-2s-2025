@@ -219,7 +219,6 @@ public class modificarPersonaje extends JFrame {
             JOptionPane.showMessageDialog(this, "Los apartados que son numericos deben ser llenados con eso... pos numeros", " Error 019", JOptionPane.ERROR_MESSAGE);
         }
     }
-
     //esto es bueno para limpiar las entradas
     private void Limpiar() {
         txtBuscar.setText("");

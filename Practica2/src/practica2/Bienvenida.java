@@ -2,7 +2,7 @@
 //una ventana de bienbenidda
 package practica2;
 //Todas esatas liberias son porque si okey?
-
+//Esto sera muy divertido de explicarlo en la documentacion
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -12,6 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+//siip toda estas madres son para UNA CANCION BOBA DEL DELTARUN
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -19,11 +20,12 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+//Botones, los paneles, las eltras que iran el la bienvenida xddd
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.SwingConstants;// y esta madre que en yutu dijo que es importante y le creo alv
 
 /**
  *
@@ -46,7 +48,7 @@ public class Bienvenida extends JFrame {
 
         //El mensaje que saldra en la ventana osea adentro pue
         JLabel SaludoMesj = new JLabel("Bienvenido a POKEMON STADIUM TEXT VERSION", SwingConstants.CENTER);
-        SaludoMesj.setFont(new Font("Comic Sans MS 14", Font.BOLD, 19));
+        SaludoMesj.setFont(new Font("Papyrus", Font.BOLD, 19));
 
         //crearemos el boton de salir y se va a ordernar con el mensaje HOY SI
         JPanel bP = new JPanel();

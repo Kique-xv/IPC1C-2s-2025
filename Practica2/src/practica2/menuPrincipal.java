@@ -54,6 +54,15 @@ public class menuPrincipal extends JFrame {
         });
          
         JButton btEliminar = new JButton("3. Eliminar Personaje");
+        //Accion del boton 3
+        btEliminar.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eliminarPersonaje eliminarVentana =  new eliminarPersonaje();
+                eliminarVentana.setVisible(true);        
+            }       
+        } );
+     
         JButton btVer = new JButton("4. Ver Personajes Registrados");
         JButton btSimular = new JButton("5. Simulacion de Combates");
         JButton btHistorial = new JButton("6. Ver Historial de Batallas");
