@@ -19,12 +19,12 @@ import javax.swing.SwingConstants;
 public class Personajes extends JFrame {
 
     //una matriz de 50*9 para guardar a los personajes
-    public static String[][] personaje = new String[50][9];
+    public static String[][] personaje = new String[100][9];
 
     //Un contador estatico para que generar el ID sea unico y poderlos rastrear
     public static int CantPersonajes = 0;
     public static int UltID = 0;
-
+    public static int contadorID = 1;
     // contantes para la matriz 
     public static final int ID = 0;
     public static final int NOMBRE = 1;
@@ -44,6 +44,24 @@ public class Personajes extends JFrame {
     private JTextField txtVelocidad;
     private JTextField txtAgilidad;
     private JTextField txtDefensa;
+
+    //una clase publica para hacer llamados en todas partes mejor, ya me irritede hacer lo mismo ashudddaaaa
+    public static int buscarPer(String busqueda) {
+        if (busqueda == null || busqueda.trim().isEmpty()) {
+            return -1;
+        }
+        String buscar = busqueda.trim().toLowerCase();
+
+        for (int i = 0; i < CantPersonajes; i++) {
+            String id = personaje[i][ID];
+            String nombre = personaje[i][NOMBRE].toLowerCase();
+
+            if (id.equals(buscar) || nombre.equals(buscar)) {
+                return i; //devolveremos el indice del personaje que ecnotramos
+            }
+        }
+        return -1;
+    }
 
     //ahora si la clase para guardar el personaje 
     public Personajes() {
@@ -104,7 +122,8 @@ public class Personajes extends JFrame {
     }
 
     private void guardarPersonaje() {
-        if (CantPersonajes >= 50) {
+        if (CantPersonajes > 100) {
+
             JOptionPane.showMessageDialog(this, "El limte de personajes se alcanzo,borra alguno", "Error 001", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -148,18 +167,18 @@ public class Personajes extends JFrame {
             return;
         }
 
-        UltID++;
-        personaje[CantPersonajes][ID] = String.valueOf(ID);
+        personaje[CantPersonajes][ID] = String.valueOf(Personajes.contadorID);
         personaje[CantPersonajes][NOMBRE] = txtNombre.getText();
         personaje[CantPersonajes][ARMA] = txtArma.getText();
-        personaje[CantPersonajes][ATAQUE] = txtHp.getText();
-        personaje[CantPersonajes][VELOCIDAD] = txtAtaque.getText();
+        personaje[CantPersonajes][HP] = txtHp.getText();
+        personaje[CantPersonajes][ATAQUE] = txtAtaque.getText();
+        personaje[CantPersonajes][VELOCIDAD] = txtVelocidad.getText();
         personaje[CantPersonajes][AGILIDAD] = txtAgilidad.getText();
         personaje[CantPersonajes][DEFENSA] = txtDefensa.getText();
         personaje[CantPersonajes][VICDERR] = "0-0"; //Inciamos esto con nada
 
         CantPersonajes++; //se suma un personaje mas al plantel xdddd
-
+        contadorID++; //otro chups wuuuuu
         JOptionPane.showMessageDialog(this, txtNombre.getText() + " se ha agregado al roster de personajes ");
         txtNombre.setText("");
         txtArma.setText("");

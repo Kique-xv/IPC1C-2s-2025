@@ -31,7 +31,7 @@ public class eliminarPersonaje extends JFrame {
 
     public eliminarPersonaje() {
         setTitle("Eliminar Personaje");
-        setSize(400, 300);
+        setSize(700, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -41,15 +41,15 @@ public class eliminarPersonaje extends JFrame {
         tirulo.setFont(new Font("Arial", Font.BOLD, 18));
         panel.add(tirulo);
 
-        panel.add(new JLabel("Escribe ACA el ID o el nombre del personaje que deseas MATAR"));
+        panel.add(new JLabel("Escribe ACA el ID o el nombre del personaje que deseas eliminar"));
         txtBuscar = new JTextField();
         panel.add(txtBuscar);
-        
+
         JPanel pBoton = new JPanel(new FlowLayout());
         btBuscar = new JButton("Buscar");
         pBoton.add(btBuscar);
         panel.add(pBoton);
-        
+
         LbPencontrado = new JLabel("Tamus buscando", SwingConstants.CENTER);
         LbPencontrado.setVisible(false);
         panel.add(LbPencontrado);
@@ -74,8 +74,9 @@ public class eliminarPersonaje extends JFrame {
             }
         });
     }
-        //justo como prometi xd
-private void PersonajeEli() {
+    //justo como prometi xd
+
+    public void PersonajeEli() {
         String Buscar = txtBuscar.getText().trim();
         Pecontrado = -1;
         LbPencontrado.setVisible(false);
@@ -85,21 +86,19 @@ private void PersonajeEli() {
             JOptionPane.showMessageDialog(this, "INGRESA EL NOMBRE O EL ID CTM", "Error 020", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        for (int i = 0; i < Personajes.CantPersonajes; i++) {
-            String id = Personajes.personaje[i][Personajes.ID];
-            String nombre = Personajes.personaje[i][Personajes.NOMBRE];
+        Pecontrado = Personajes.buscarPer(Buscar);
 
-            if (id.equals(Buscar) || nombre.equalsIgnoreCase(Buscar)) {
-                Pecontrado = i;
-                String Necontrado = Personajes.personaje[i][Personajes.NOMBRE];
-                LbPencontrado.setText("El personaje a eliminar es: " + Necontrado);
-                LbPencontrado.setVisible(true);
-                btEliminar.setVisible(true);
-                return;
-            }
+        if (Pecontrado != -1) {
+            String Necontrado = Personajes.personaje[Pecontrado][Personajes.NOMBRE];
+            LbPencontrado.setText("El personaje a eliminar es: " + Necontrado);
+            LbPencontrado.setVisible(true);
+            btEliminar.setVisible(true);
+            return;
         }
+
         JOptionPane.showMessageDialog(this, "No se ha encontrado al personaje, f por ti", "Error 021", JOptionPane.ERROR_MESSAGE);
     }
+
     private void confimarEliminar() {
         if (Pecontrado != -1) {
             String nEliminar = Personajes.personaje[Pecontrado][Personajes.NOMBRE];
@@ -108,13 +107,14 @@ private void PersonajeEli() {
                     "¿Estas seguro de eliminar a: " + nEliminar + "?",
                     "Confirmar Eliminarcion",
                     JOptionPane.YES_NO_OPTION);
-            if(Confirmar == JOptionPane.YES_OPTION){
+            if (Confirmar == JOptionPane.YES_OPTION) {
                 EliminarPersonaje(Pecontrado);
-                JOptionPane.showMessageDialog(this, nEliminar + " Se elimino del roster de personajes");
+                JOptionPane.showMessageDialog(this, nEliminar + " se ha eliminado del roster de personajes");
                 dispose();
             }
         }
     }
+
     private void EliminarPersonaje(int in) {
         //Obtenemos el historial de peleas... si es que hay
         String historial = Personajes.personaje[in][Personajes.VICDERR];

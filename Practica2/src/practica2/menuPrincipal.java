@@ -36,41 +36,62 @@ public class menuPrincipal extends JFrame {
         //creamos TODOS LOS BOTONES PARA CADA OPCION
         JButton btAgregar = new JButton("1. Agregar Personaje");
         //accion del boton agregar personaje
-         btAgregar.addActionListener(new ActionListener() {
+        btAgregar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            Personajes agregarVentana = new Personajes();
-            agregarVentana.setVisible(true);
-            }            
-        } );      
+                Personajes agregarVentana = new Personajes();
+                agregarVentana.setVisible(true);
+            }
+        });
         JButton btModificar = new JButton("2. Modificar Personaje");
         //accion del boton de modificar personajes
-        btModificar.addActionListener(new ActionListener (){
+        btModificar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            modificarPersonaje modificarVentana = new modificarPersonaje();
-            modificarVentana.setVisible(true);
-            }        
+                modificarPersonaje modificarVentana = new modificarPersonaje();
+                modificarVentana.setVisible(true);
+            }
         });
-         
+
         JButton btEliminar = new JButton("3. Eliminar Personaje");
         //Accion del boton 3
-        btEliminar.addActionListener(new ActionListener(){
+        btEliminar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                eliminarPersonaje eliminarVentana =  new eliminarPersonaje();
-                eliminarVentana.setVisible(true);        
-            }       
-        } );
-     
+                eliminarPersonaje eliminarVentana = new eliminarPersonaje();
+                eliminarVentana.setVisible(true);
+            }
+        });
+
         JButton btVer = new JButton("4. Ver Personajes Registrados");
+        //Accion del boton  de ver personajes :3
+        btVer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                verPersonaje verVentana = new verPersonaje();
+                verVentana.setVisible(true);
+            }
+        });
+
         JButton btSimular = new JButton("5. Simulacion de Combates");
+        //Accion boton de MAdrazos
+        btSimular.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SimPelea combateVentana = new SimPelea();
+                combateVentana.setVisible(true);
+            }
+        });
         JButton btHistorial = new JButton("6. Ver Historial de Batallas");
+        //
         JButton btBuscar = new JButton("7. Buscar Personaje");
+        //
         JButton btGuardar = new JButton("8. Guardar y Cargar Estado del Sistema ");
-        JButton btYO = new JButton("9. Ver Datos del Estudiante ");
+        //
+        JButton btBitcora = new JButton("9. Ver bitacora de acciones y de combate ");
+        //
+        JButton btYO = new JButton("10. Ver Datos del Estudiante ");
 //en mac el menu se ve bonito la verdad, VIVA MAC y sus precios no
-//
         panel.add(btAgregar);
         panel.add(btModificar);
         panel.add(btEliminar);
@@ -78,11 +99,13 @@ public class menuPrincipal extends JFrame {
         panel.add(btSimular);
         panel.add(btHistorial);
         panel.add(btBuscar);
+        panel.add(btBitcora);
         panel.add(btGuardar);
+        
         panel.add(btYO);
 
-        add(panel);      
-       
+        add(panel);
+
     }
 
 }
