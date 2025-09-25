@@ -83,7 +83,15 @@ public class menuPrincipal extends JFrame {
             }
         });
         JButton btHistorial = new JButton("6. Ver Historial de Batallas");
-        //
+        //Accion del boton de historial
+        btHistorial.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                historialCombate VentanaHistorial = new historialCombate();
+                VentanaHistorial.setVisible(true);
+            }       
+        }  );
+        
         JButton btBuscar = new JButton("7. Buscar Personaje");
         //
         JButton btGuardar = new JButton("8. Guardar y Cargar Estado del Sistema ");

@@ -16,8 +16,8 @@ public class Practica2 {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             //Creamos una nueva instancia para la ventana de bienvenida
-            Bienvenida welcomeWindow = new Bienvenida("/Users/kiquemarroquin/Desktop/IPC1/c41ed7a0.wav");//el archivo debe de SER WAV NO MP3 :(((((
-
+            Bienvenida welcomeWindow = new Bienvenida("/Users/kiquemarroquin/Desktop/10thAnniversaryStreamSoundtrack/Song_That_Plays_When_Somebody_Verses_Sans_(by_Carlos_Insaneintherain_Eiene).wav");//el archivo debe de SER WAV NO MP3 :(((((
+//Cambie la cancion para que no me desesperando de oirla a CADA RATO
             //que se vea
             welcomeWindow.setVisible(true);
 

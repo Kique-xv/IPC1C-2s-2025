@@ -113,8 +113,8 @@ public class Bienvenida extends JFrame {
 
                 //inciamos la repoduccion en bucleeeeeee
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
-                System.out.println("Reproduciendo:And Now For Today’s Sponsors…");
-                System.out.println("De Deltarune, por Toby Fox");
+                System.out.println("Reproduciendo:Song_That_Plays_When_Somebody_Verses_Sans_(by_Carlos_Insaneintherain_Eiene)");
+                System.out.println("De Deltarune, por Toby Fox y compañia");
 
                 while (isRunning) {
                     //con esto mantenemos "vivo" mientras se reproduce el temazo xdddd
@@ -123,7 +123,7 @@ public class Bienvenida extends JFrame {
                 clip.stop();
                 clip.close();
                 audioStream.close();
-                System.out.println("La musica se ha detenido");
+                System.out.println("La musica se ha detenido...");
 
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InterruptedException e) {
                 e.printStackTrace();

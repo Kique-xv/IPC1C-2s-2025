@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -139,9 +141,11 @@ public class SimPelea extends JFrame {
     private void Combate(String[] atacante, String[] defensor, JTextArea bitacora) {
         String Natacante = atacante[Personajes.NOMBRE];
         String Ndefensor = defensor[Personajes.NOMBRE];
+        int turnos = 0;
 
         while (Integer.parseInt(atacante[Personajes.HP]) > 0 && Integer.parseInt(defensor[Personajes.HP]) > 0) {
             try {
+                turnos++;// cada ataque cuenta como turno
                 int dañoBase = Integer.parseInt(atacante[Personajes.ATAQUE]);
                 int agiliDef = Integer.parseInt(defensor[Personajes.AGILIDAD]);
                 int defDef = Integer.parseInt(defensor[Personajes.DEFENSA]);
@@ -150,7 +154,10 @@ public class SimPelea extends JFrame {
                 boolean esquivar = random.nextInt(10) < agiliDef;
 
                 if (esquivar) {
-                    SwingUtilities.invokeLater(() -> bitacora.append(Natacante + " HA ATACADO, PERO " + Ndefensor + "HA ESQUIVADO EL ATAQUE"));
+                    int t = turnos;
+                    SwingUtilities.invokeLater(()
+                            -> bitacora.append("\nTurno" + t + ": " + Natacante + " HA ATACADO, PERO \n "
+                                    + Ndefensor + "HA ESQUIVADO EL ATAQUE "));
                 } else {
                     int dañoFinal = dañoBase - defDef;
                     if (dañoFinal < 0) {
@@ -160,13 +167,16 @@ public class SimPelea extends JFrame {
                     int hpActualDef = Integer.parseInt(defensor[Personajes.HP]);
                     hpActualDef -= dañoFinal;
                     defensor[Personajes.HP] = String.valueOf(hpActualDef);
+
                     //Chapus para evitar un error 
+                    int t = turnos;
                     final int dañoF = dañoFinal;
                     final int HpActDef = hpActualDef;
 
 // Es la linea mas larga que he echo... dios... me habre ganado un recor guinen´t
-                    SwingUtilities.invokeLater(() -> bitacora.append(Natacante + " HA ECHO UN ATAQUE " + Ndefensor + " HA SUFRIDO \n"
-                            + dañoF + "  PUNTOS DE DAÑO, LOS DE VIDA RESTANTES DE " + Ndefensor + " ES:  " + HpActDef));
+                    SwingUtilities.invokeLater(()
+                            -> bitacora.append("\nTurno" + t + ":" + Natacante + " HA ECHO UN ATAQUE " + Ndefensor + " HA SUFRIDO \n"
+                                    + dañoF + "  PUNTOS DE DAÑO, LOS DE VIDA RESTANTES DE " + Ndefensor + " ES:  " + HpActDef));
                 }
                 int veloAtacante = Integer.parseInt(atacante[Personajes.VELOCIDAD]);
                 Thread.sleep(1000 / veloAtacante);
@@ -175,28 +185,85 @@ public class SimPelea extends JFrame {
                 return;
             }
         }
-        if (Integer.parseInt(atacante[Personajes.HP]) > 0) {
-            SwingUtilities.invokeLater(() -> {
-                bitacora.append(Natacante + " ES EL GANADOR DEL COMBATEEEEEEEEEEEEE");
-                actualHistorial(Natacante, Ndefensor);// una funcion abaja mas abajo
-                btIniLucha.setEnabled(true);
-            });
-        }
+        int turnosF = turnos;
+        //vamos arreglar esto..
+        SwingUtilities.invokeLater(() -> {
+            String ganador = "";
+            String perdedor = "";
+
+            if (Integer.parseInt(atacante[Personajes.HP]) > 0) {
+                ganador = Natacante;
+                perdedor = Ndefensor;
+
+            } else if (Integer.parseInt(defensor[Personajes.HP]) > 0) {
+                ganador = Ndefensor;
+                perdedor = Natacante;
+            }
+            if (!ganador.isEmpty()) {
+                bitacora.append("\n" + ganador + " Ha ganado el combate en \n " + turnosF + "turnos \n");
+                actualHistorial(ganador, perdedor, turnosF);
+            } else {
+                bitacora.append("TENEMOS UN EMPATE A LOS: " + turnosF + "TURNOS \n");
+            }
+            btIniLucha.setEnabled(true);
+        });
     }
 
-    private void actualHistorial(String ganar, String perder) {
-        int inGanar = Personajes.buscarPer(ganar);
-        int inPerder = Personajes.buscarPer(perder);
+    private void actualHistorial(String ganador, String perdedor, int turnos) {
+        //la hora y fehcha
+        SimpleDateFormat fechaform = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat Horaform = new SimpleDateFormat("HH:mm:ss");
 
-        if (inGanar != -1) {
-            String[] HistGanar = Personajes.personaje[inGanar][Personajes.VICDERR].split("-");
-            int victoria = Integer.parseInt(HistGanar[0]) + 1;
-            Personajes.personaje[inGanar][Personajes.VICDERR] = victoria + "-" + HistGanar[1];
+        Date ahora = new Date();
+        String fecha = fechaform.format(ahora);
+        String hora = Horaform.format(ahora);
+
+        //otro chapus
+        int vicAct = 0;
+        int derrAct = 0;
+
+        int inGanar = Personajes.buscarPer(ganador);
+        int inPerder = Personajes.buscarPer(perdedor);
+
+        String HistGanar = Personajes.personaje[inGanar][Personajes.VICDERR];
+        String HistPer = Personajes.personaje[inPerder][Personajes.VICDERR];
+
+//sin esto el programa falla... y tuve que rehacer esta basura
+        try {
+            String[] datos = HistGanar.split("\\|");
+            vicAct = Integer.parseInt(datos[0].trim());
+            derrAct = Integer.parseInt(datos[1].trim());
+        } catch (Exception e) {
+            try {
+                String[] datos = HistGanar.split("-");
+                vicAct = Integer.parseInt(datos[0].trim());
+                derrAct = Integer.parseInt(datos[1].trim());
+            } catch (Exception e2) {
+                vicAct = 0;
+                derrAct = 0;
+            }
         }
-        if (inPerder != -1) {
-            String[] HistPer = Personajes.personaje[inPerder][Personajes.VICDERR].split("-");
-            int derrota = Integer.parseInt(HistPer[1]) + 1;
-            Personajes.personaje[inPerder][Personajes.VICDERR] = HistPer[0] + "-" + derrota;
+        vicAct++;
+        Personajes.personaje[inGanar][Personajes.VICDERR] = vicAct + " | " + derrAct + " | " + turnos + "|" + fecha + " | " + hora;
+        //reseteamos el conteno de perdidas y ganancias
+        vicAct = 0;
+        derrAct = 0;
+
+        try {
+            String[] datos = HistPer.split("\\|");
+            vicAct = Integer.parseInt(datos[0].trim());
+            derrAct = Integer.parseInt(datos[1].toLowerCase());
+        } catch (Exception e) {
+            try {
+                String[] datos = HistPer.split("-");
+                vicAct = Integer.parseInt(datos[0].trim());
+                derrAct = Integer.parseInt(datos[1].trim());
+            } catch (Exception e2) {
+                vicAct = 0;
+                derrAct = 0;
+            }
         }
+        derrAct++;
+        Personajes.personaje[inPerder][Personajes.VICDERR] = vicAct + " | " + derrAct + " | " + turnos + "|" + fecha + " | " + hora;
     }
 }
