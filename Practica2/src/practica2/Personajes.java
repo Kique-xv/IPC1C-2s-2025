@@ -35,6 +35,7 @@ public class Personajes extends JFrame {
     public static final int AGILIDAD = 6;
     public static final int DEFENSA = 7;
     public static final int VICDERR = 8;//Victorias y derrotas
+    public static final int NUMCAMPOSPERSONAJE = 9;
 
     //componentes de esta interfaz
     private JTextField txtNombre;

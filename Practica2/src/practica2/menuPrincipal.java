@@ -84,21 +84,47 @@ public class menuPrincipal extends JFrame {
         });
         JButton btHistorial = new JButton("6. Ver Historial de Batallas");
         //Accion del boton de historial
-        btHistorial.addActionListener(new ActionListener(){
+        btHistorial.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 historialCombate VentanaHistorial = new historialCombate();
                 VentanaHistorial.setVisible(true);
-            }       
-        }  );
-        
+            }
+        });
+
         JButton btBuscar = new JButton("7. Buscar Personaje");
+        // accion del boton este...
+        btBuscar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                BuscarPer VentanaBuscar = new BuscarPer();
+                VentanaBuscar.setVisible(true);
+            }
+        });
+
+        JButton btGuardar = new JButton("8. Guardar Estado del Sistema ");
+        //accion del boton guardar
+        btGuardar.addActionListener(e -> gestorAchivo.GuardarPesonaje());
+
+        JButton btCargar = new JButton("9. Cargar Estado del sistema");
+        //accion bon cargar
+        btCargar.addActionListener(e -> gestorAchivo.CargarPersonajes());
+
+        JButton btLimpiar = new JButton("10. Limpiar Estado del Sistema ");
+//Accion del boton  de limpiar
+        btLimpiar.addActionListener(e -> gestorAchivo.BorrarDatos());
+
+        JButton btBitcora = new JButton("11. Ver bitacora de acciones y de combate ");
         //
-        JButton btGuardar = new JButton("8. Guardar y Cargar Estado del Sistema ");
-        //
-        JButton btBitcora = new JButton("9. Ver bitacora de acciones y de combate ");
-        //
-        JButton btYO = new JButton("10. Ver Datos del Estudiante ");
+        JButton btYO = new JButton("12. Ver Datos del Estudiante ");
+        btYO.addActionListener(new  ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                YOOOOO ventanaYO =  new YOOOOO();// sip soy yo, que mas xd
+                    ventanaYO.setVisible(true);           
+            }         
+        }  );
+       
 //en mac el menu se ve bonito la verdad, VIVA MAC y sus precios no
         panel.add(btAgregar);
         panel.add(btModificar);
@@ -106,10 +132,11 @@ public class menuPrincipal extends JFrame {
         panel.add(btVer);
         panel.add(btSimular);
         panel.add(btHistorial);
-        panel.add(btBuscar);
-        panel.add(btBitcora);
+        panel.add(btBuscar);       
         panel.add(btGuardar);
-        
+        panel.add(btCargar);
+        panel.add(btLimpiar);
+        panel.add(btBitcora);
         panel.add(btYO);
 
         add(panel);
