@@ -1,0 +1,7 @@
+--------------------
+Ventas Efectuadas: 
+Hora y Fecha de la transacción: 263-09-2025 12-:51:17
+Producto vendido: Camisa de hombre color marron
+Cantidad vendida del producto es : 15
+el total a pagar es de: 900.0 Qeutzales
+----------------------

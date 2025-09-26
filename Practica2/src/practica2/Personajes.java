@@ -126,12 +126,14 @@ public class Personajes extends JFrame {
         if (CantPersonajes > 100) {
 
             JOptionPane.showMessageDialog(this, "El limte de personajes se alcanzo,borra alguno", "Error 001", JOptionPane.ERROR_MESSAGE);
+            validarAccion.regisAccion("agregar pesonajes", false, "Salio mal");
             return;
         }
         //todo esto es para que no hayan espacios sin llenar :3 muy intelignet
         String nombre = txtNombre.getText();
         if (nombre.isEmpty() || txtArma.getText().isEmpty() || txtHp.getText().isEmpty() || txtAtaque.getText().isEmpty() || txtVelocidad.getText().isEmpty() || txtAgilidad.getText().isEmpty() || txtDefensa.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor llena todos los apartados :D", "Error 002", JOptionPane.ERROR_MESSAGE);
+            validarAccion.regisAccion("agregar personaje", false, "Salio mal APROPOSITO");
             return;
         }
 
@@ -140,31 +142,37 @@ public class Personajes extends JFrame {
             hp = Integer.parseInt(txtHp.getText());
             if (hp < 100 || hp > 500) {
                 JOptionPane.showMessageDialog(this, "Los puntos de vida deben de ser un numero entero de 100 a 500", "Error 003", JOptionPane.ERROR_MESSAGE);
+                validarAccion.regisAccion("agregar vida personaje", false, "Salio mal APROPOSITO");
                 return;
             }
 
             ataque = Integer.parseInt(txtAtaque.getText());
             if (ataque < 10 || ataque > 100) {
                 JOptionPane.showMessageDialog(this, "Los puntos de ataque deben de ser un numero entero de 10 a 100", "Error 004", JOptionPane.ERROR_MESSAGE);
+                validarAccion.regisAccion("agregar ataque personaje", false, "Salio mal APROPOSITO");
                 return;
             }
             velocidad = Integer.parseInt(txtVelocidad.getText());
             if (velocidad < 1 || velocidad > 10) {
                 JOptionPane.showMessageDialog(this, "La velocidad debe de ser un numero entero de 1 a 10", "Error 005", JOptionPane.ERROR_MESSAGE);
+                validarAccion.regisAccion("agregar  velocidad personaje", false, "Salio mal APROPOSITO");
                 return;
             }
             agilidad = Integer.parseInt(txtVelocidad.getText());
             if (agilidad < 1 || agilidad > 10) {
                 JOptionPane.showMessageDialog(this, "La agilidad debe de ser un numero entero de 1 a 10", "Error 006", JOptionPane.ERROR_MESSAGE);
+                validarAccion.regisAccion("agregar agilidad personaje", false, "Salio mal APROPOSITO");
                 return;
             }
             defensa = Integer.parseInt(txtDefensa.getText());
             if (defensa < 1 || defensa > 50) {
                 JOptionPane.showMessageDialog(this, "La defensa debe de ser un numero entero de 100 a 500", "Error 007", JOptionPane.ERROR_MESSAGE);
+                validarAccion.regisAccion("agregar defensa personaje", false, "Salio mal APROPOSITO");
                 return;
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Los apartados que son numericos deben ser llenados con eso... pos numeros", "Error 008", JOptionPane.ERROR_MESSAGE);
+            validarAccion.regisAccion("agregar personaje", false, "Salio mal APROPOSITO");
             return;
         }
 
@@ -188,5 +196,6 @@ public class Personajes extends JFrame {
         txtVelocidad.setText("");
         txtAgilidad.setText("");
         txtDefensa.setText("");
+        validarAccion.regisAccion("agregar personaje", true, "Salio bien");
     }
 }

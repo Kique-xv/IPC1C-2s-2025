@@ -7,6 +7,7 @@ import java.util.Scanner;
 import static proyecto1.Productos.EliminarProd;
 import static proyecto1.Productos.RegisVenta; // aca vienen tambien las liberias de formatos y la de la excepcion
 import static proyecto1.Productos.buscarProducto;//Lo importe porque... si ponia el codigo esto se haria muy largo :(
+import static proyecto1.Reportes.ReporteHist;
 import static proyecto1.Reportes.generarPDF;//ahoa si xddd
 import static proyecto1.ValidarAccion.LimpHistorial;// para limpiar el historial
 import static proyecto1.ValidarAccion.MostarAcciones;//Esto es para  ver la bitacora
@@ -157,6 +158,7 @@ public class Proyecto1 {
                     System.out.println("Bievenido a las opciones de la bitaciora de acciones");
                     System.out.println("1. Ver bitacora de acciones : ");
                     System.out.println("2. Limpiar bitacora e historial de ventas : ");
+                    System.out.println("3. Bitacora en pdf");
                     System.out.println("Elije una opcion: ");
                     try {
                         int optBit = Validar.VerificarNum(sc);
@@ -176,6 +178,9 @@ public class Proyecto1 {
                                 } else {
                                     System.out.println("No se realizo la limpieza");
                                 }
+                                break;
+                            case 3:
+                                ReporteHist(vendedor);
                                 break;
                             default:
                                 System.out.println("Error 016: Opcion no valida");

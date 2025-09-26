@@ -47,3 +47,297 @@ Usuario: Guillermo Marroquin
 Accion :Salir del programa
 Estado :Correcta
 ----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_49_2025 12:49:28
+Usuario: Guillermo Marroquin
+Accion :Agregar producto
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_49_2025 12:49:44
+Usuario: Guillermo Marroquin
+Accion :Busqueda de producto
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_49_2025 12:49:44
+Usuario: Guillermo Marroquin
+Accion : Buscar Producto producto
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_50_2025 12:50:16
+Usuario: Guillermo Marroquin
+Accion :Busqueda de producto
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_50_2025 12:50:16
+Usuario: Guillermo Marroquin
+Accion : Buscar Producto producto
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_50_2025 12:50:32
+Usuario: Guillermo Marroquin
+Accion :Busqueda de producto
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_50_2025 12:50:32
+Usuario: Guillermo Marroquin
+Accion : Buscar Producto producto
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_50_2025 12:50:43
+Usuario: Guillermo Marroquin
+Accion :Busqueda de producto
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_50_2025 12:50:43
+Usuario: Guillermo Marroquin
+Accion : Buscar Producto producto
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_51_2025 12:51:17
+Usuario: Guillermo Marroquin
+Accion :venta de:  15unidades Camisa de hombre color marron
+Estado :corecta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_51_2025 12:51:17
+Usuario: Guillermo Marroquin
+Accion :Registrar venta  
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_53_2025 12:53:21
+Usuario: Guillermo Marroquin
+Accion :Ver bitacora de acciones
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_53_2025 12:53:55
+Usuario: Guillermo Marroquin
+Accion :Generar reporte de stock 
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_53_2025 12:53:55
+Usuario: Guillermo Marroquin
+Accion : Registrar Venta
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_54_2025 12:54:21
+Usuario: Guillermo Marroquin
+Accion :Generar reporte de ventas 
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_54_2025 12:54:21
+Usuario: Guillermo Marroquin
+Accion : Registrar Venta
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_55_2025 12:55:26
+Usuario: Guillermo Marroquin
+Accion :Ingreso de opcion al menu
+Estado :fallida
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_55_2025 12:55:51
+Usuario: Guillermo Marroquin
+Accion :Ingreso de opcion del menu 
+Estado :Fallida
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_25_2025 13:25:17
+Usuario: Guillermo Marroquin
+Accion :Generar Reportes 
+Estado :fallida
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_25_2025 13:25:17
+Usuario: Guillermo Marroquin
+Accion : Registrar Venta
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_31_2025 13:31:22
+Usuario: Guillermo Marroquin
+Accion :Generar Bitacora en pdf 
+Estado :fallida
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_31_2025 13:31:22
+Usuario: Guillermo Marroquin
+Accion :Bitacora de acciones
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_32_2025 13:32:20
+Usuario: Guillermo Marroquin
+Accion :Generar Bitacora en pdf
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_32_2025 13:32:20
+Usuario: Guillermo Marroquin
+Accion :Bitacora de acciones
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_34_2025 13:34:02
+Usuario: Guillermo Marroquin
+Accion :Generar Bitacora en pdf
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_34_2025 13:34:02
+Usuario: Guillermo Marroquin
+Accion :Bitacora de acciones
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_35_2025 13:35:29
+Usuario: Guillermo Marroquin
+Accion :Generar Bitacora en pdf
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_35_2025 13:35:29
+Usuario: Guillermo Marroquin
+Accion :Bitacora de acciones
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_38_2025 13:38:43
+Usuario: Guillermo Marroquin
+Accion :Generar Bitacora en pdf
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_38_2025 13:38:43
+Usuario: Guillermo Marroquin
+Accion :Bitacora de acciones
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_43_2025 13:43:56
+Usuario: Guillermo Marroquin
+Accion :Generar Bitacora en pdf
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_43_2025 13:43:56
+Usuario: Guillermo Marroquin
+Accion :Bitacora de acciones
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_44_2025 13:44:00
+Usuario: Guillermo Marroquin
+Accion :Ver bitacora de acciones
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_44_2025 13:44:10
+Usuario: Guillermo Marroquin
+Accion :Generar Reportes 
+Estado :fallida
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_44_2025 13:44:10
+Usuario: Guillermo Marroquin
+Accion : Registrar Venta
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_47_2025 13:47:45
+Usuario: Guillermo Marroquin
+Accion :Generar Bitacora en pdf
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_47_2025 13:47:45
+Usuario: Guillermo Marroquin
+Accion :Bitacora de acciones
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_49_2025 13:49:41
+Usuario: Guillermo Marroquin
+Accion :Generar Bitacora en pdf
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_51_2025 13:51:12
+Usuario: Guillermo Marroquin
+Accion :Generar Bitacora en pdf
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_53_2025 13:53:19
+Usuario: Guillermo Marroquin
+Accion :Agregar producto
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_53_2025 13:53:36
+Usuario: Guillermo Marroquin
+Accion :Eliminacion del producto con el codigo:  0
+Estado :Correcta
+----------------------------------------------
+----------------------------------------------
+--------BITACORA DE ACCIONES--------
+Fecha y Hora: 20_53_2025 13:53:40
+Usuario: Guillermo Marroquin
+Accion :Agregar producto
+Estado :fallida
+----------------------------------------------

@@ -32,6 +32,7 @@ public class Reportes {
         System.out.println("¿Qué reporte se desea generar?");
         System.out.println("1. Reporte de Stock");
         System.out.println("2. Reporte de ventas");
+        System.out.println("3. Bitacora de Acciones");
         System.out.println("Ingresa tu opcion: ");
 
         try {
@@ -134,6 +135,35 @@ public class Reportes {
             System.out.println("Error 013: ocurrio un error de lectura o escritura");
             VerAccion(vendedor, "Generar reporte de ventas ", "fallida");
             e.printStackTrace();
-        }    
+        }
+    }
+
+    public static void ReporteHist(String vendedor) {
+        LocalDateTime HFactual = LocalDateTime.now();
+        DateTimeFormatter HFormato = DateTimeFormatter.ofPattern("dd_MM_YYYY_HH:mm:ss");
+
+        String nomArchiv = HFactual.format(HFormato) + "_Bitacora.pdf";
+        try {
+            PdfWriter Escribir = new PdfWriter(nomArchiv);
+            PdfDocument pdf = new PdfDocument(Escribir);
+            Document Doc = new Document(pdf);
+            Scanner Fs = new Scanner(new FileReader("Bitacora.txt"));
+            {
+            }
+            Doc.add(new Paragraph("Bitacora de aciones- " + HFactual.format(DateTimeFormatter.ofPattern("dd_MM_YYYYHH:mm:ss"))));
+            while (Fs.hasNextLine()) {
+                Doc.add(new Paragraph(Fs.nextLine()));
+            }
+            Doc.close();
+            System.out.println("Bitacora de acciones generada en :" + nomArchiv);
+            VerAccion(vendedor, "Generar Bitacora en pdf", "Correcta");
+        } catch (FileNotFoundException e) {
+            System.out.println("Error 014: el archivo de bitacora no fue encontrado :");
+            VerAccion(vendedor, "Generar Bitacora en pdf ", "fallida");
+        } catch (IOException e) {
+            System.out.println("Error 015: Algo fallo que cosa ps no se");
+            VerAccion(vendedor, "Generar Bitacora en pdf", "fallida");
+            e.printStackTrace();
+        }
     }
 }

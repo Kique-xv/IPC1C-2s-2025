@@ -83,6 +83,8 @@ public class historialCombate extends JFrame {
 
         if (Personajes.CantPersonajes == 0) {
             JOptionPane.showMessageDialog(this, "No hay personajes registrados, como para que se madreen", "Error 027", JOptionPane.ERROR_MESSAGE);
+                                                                              validarAccion.regisAccion("ver historial de madrazos entre personajes" , false, "Salio MAL APROPOSITO");
+
         } else {
 
             for (int i = 0; i < Personajes.CantPersonajes; i++) {
@@ -112,6 +114,8 @@ public class historialCombate extends JFrame {
                 Hist.append("Ultimo Combate: ").append(turnos).append(" turnos \n");
                 Hist.append("fecha  :").append(fecha).append("  |Hora:   ").append(hora).append("\n");
                 Hist.append("---------------------------------------------------------\n");
+                                                                                  validarAccion.regisAccion("ver historial de madrazos entre personajes" , true, "Salio bien");
+
             }
         }
         Harea.setText(Hist.toString());

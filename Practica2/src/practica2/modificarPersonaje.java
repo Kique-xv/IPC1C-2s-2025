@@ -116,14 +116,14 @@ public class modificarPersonaje extends JFrame {
 
         //Agregamos todo esto a la ventana en cuestion
         add(panel);
-        
-        btBuscar.addActionListener(new ActionListener (){
+
+        btBuscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-              buscarPer();  
+                buscarPer();
             }
-            }  );
-  
+        });
+
         //le agregamos la accion al boton de guardar
         btGuardar.addActionListener(new ActionListener() {
             @Override
@@ -131,13 +131,16 @@ public class modificarPersonaje extends JFrame {
                 guardarDatos(); //Un llamado a un metodo
             }
         });
-    } 
+    }
+
     private void buscarPer() {
         String buscar = txtBuscar.getText().trim();
         pEncontrar = -1; //resetear el indice
 
         if (buscar.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingresa un ID o Nombre para busacar", "Error 011", JOptionPane.ERROR_MESSAGE);
+            validarAccion.regisAccion("Buscar personaje para modificarlo", false, "Salio MAL APROPOSITO");
+
             return;
         }
 
@@ -153,6 +156,8 @@ public class modificarPersonaje extends JFrame {
             }
         }
         JOptionPane.showMessageDialog(this, "El personaje no se ha encontrado", "Error 012", JOptionPane.ERROR_MESSAGE);
+        validarAccion.regisAccion("Buscar personaje para modificarlo", false, "Salio MAL");
+
     }
 
     //un metodo para mostrar el personaje, solo que aca es con JLabel en vez del System.out.println
@@ -178,6 +183,7 @@ public class modificarPersonaje extends JFrame {
     private void guardarDatos() {
         if (pEncontrar == -1) {
             JOptionPane.showMessageDialog(this, "Por favor, busacr un personaje primero", "Error 013", JOptionPane.ERROR_MESSAGE);
+            validarAccion.regisAccion("Buscar personaje para modificarlo", false, "Salio MAL APROPOSITO");
             return;
         }
 
@@ -186,26 +192,31 @@ public class modificarPersonaje extends JFrame {
             int hp = Integer.parseInt(txtNHp.getText());
             if (hp < 100 || hp > 500) {
                 JOptionPane.showMessageDialog(this, "Los puntos de vida deben de estar entre 100 y 500", "Error 014", JOptionPane.ERROR_MESSAGE);
+                validarAccion.regisAccion("Modifcar vida personaje", false, "Salio MAL APROPOSITO");
                 return;
             }
             int ataque = Integer.parseInt(txtNAtaque.getText());
             if (ataque < 10 || ataque > 100) {
                 JOptionPane.showMessageDialog(this, "Los puntos de ataque deben de estar entre 100 y 500", "Error 015", JOptionPane.ERROR_MESSAGE);
+                validarAccion.regisAccion("Modifcar ataque personaje", false, "Salio MAL APROPOSITO");
                 return;
             }
             int velocidad = Integer.parseInt(txtNVelocidad.getText());
             if (velocidad < 1 || velocidad > 10) {
                 JOptionPane.showMessageDialog(this, "La agilidad debe de estar entre 1 a 10", "Error 016", JOptionPane.ERROR_MESSAGE);
+                validarAccion.regisAccion("Modifcar velocidad personaje", false, "Salio MAL APROPOSITO");
                 return;
             }
             int agilidad = Integer.parseInt(txtNAgilidad.getText());
             if (agilidad < 1 || agilidad > 10) {
                 JOptionPane.showMessageDialog(this, "La agilidad debe de estar entre 1 a 10", "Error 017", JOptionPane.ERROR_MESSAGE);
+                validarAccion.regisAccion("Modifcar agilidad personaje", false, "Salio MAL APROPOSITO");
                 return;
             }
             int defensa = Integer.parseInt(txtNDefensa.getText());
             if (defensa < 1 || defensa > 50) {
                 JOptionPane.showMessageDialog(this, "La defensa debe de estar entre 1 a 50", "Error 018", JOptionPane.ERROR_MESSAGE);
+                validarAccion.regisAccion("Modifcar defensa personaje", false, "Salio MAL APROPOSITO");
                 return;
             }
             //Actualizacion de la matriz
@@ -217,8 +228,10 @@ public class modificarPersonaje extends JFrame {
             Personajes.personaje[pEncontrar][Personajes.DEFENSA] = String.valueOf(defensa);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Los apartados que son numericos deben ser llenados con eso... pos numeros", " Error 019", JOptionPane.ERROR_MESSAGE);
+            validarAccion.regisAccion("Modifcar al personaje", false, "Salio MAL APROPOSITO");
         }
     }
+
     //esto es bueno para limpiar las entradas
     private void Limpiar() {
         txtBuscar.setText("");

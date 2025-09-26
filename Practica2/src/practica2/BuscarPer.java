@@ -76,6 +76,8 @@ public class BuscarPer extends JFrame {
         String Nbuscar = txtBuscar.getText().trim();
         if (Nbuscar.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Mira... pon un nombre si?", "Error 028", JOptionPane.ERROR_MESSAGE);
+            validarAccion.regisAccion("buscar pesonajes", false, "Salio MAL APROPOSITO");
+
             return;
         }
         int indicePer = Personajes.buscarPer(Nbuscar);//sabia que seria util hacer el llamado
@@ -115,13 +117,15 @@ public class BuscarPer extends JFrame {
             String turnos = datos.length > 2 ? datos[2].trim() : "N/A";
             String fecha = datos.length > 3 ? datos[3].trim() : "----";
             String hora = datos.length > 4 ? datos[4].trim() : "--:--:--";
-            
+
             resultado.append("Historial: ").append("Vicotorias: ").append(victorias).append(" , Derrotas:").append(derrotas).append("\n");
             resultado.append("Ultimo Combate: ").append(turnos).append("  turnos,  ").append("Fecha:  ").append(fecha).append(", Hora: ").append(hora).append("\n");
 
             Area.setText(resultado.toString());
+            validarAccion.regisAccion("Buscar el personaje", true, "Salio bien :p");
         } else {
             JOptionPane.showMessageDialog(this, "No hemos encontrado al personaje... no pusiste nada verdad?", "Error 029", JOptionPane.ERROR_MESSAGE);
+            validarAccion.regisAccion("Buscar personajes", false, "Salio MAL");
         }
     }
 }

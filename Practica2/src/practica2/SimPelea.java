@@ -97,20 +97,27 @@ public class SimPelea extends JFrame {
         //otro chapus...
         if (Personajes.CantPersonajes < 2) {
             JOptionPane.showMessageDialog(this, "NECESITAS ALMENOS DOS Personajes para el combate", "Error 022", JOptionPane.ERROR_MESSAGE);
+                                                                                 validarAccion.regisAccion("Madrazos entre personajes" , false, "Salio MAL APROPOSITO");
+
             return;
         }
 
         if (Luchador1 == null || Luchador2 == null) {
             JOptionPane.showMessageDialog(this, "Selecciona DOS Personajes para el combate", "Error 023", JOptionPane.ERROR_MESSAGE);
+                                                                             validarAccion.regisAccion("Madrazos entre personajes" , false, "Salio MAL APROPOSITO");
+
         }
         if (Luchador1.equals(Luchador2)) {
             JOptionPane.showMessageDialog(this, "Un personaje no puede pelear solito, seria muy raro eso", "Error 024", JOptionPane.ERROR_MESSAGE);
+                                                                              validarAccion.regisAccion("Madrazos entre personajes" , false, "Salio MAL APROPOSITO");
+
         }
         int indice1 = Personajes.buscarPer(Luchador1);
         int indice2 = Personajes.buscarPer(Luchador2);
 
         if (indice1 == -1 || indice2 == -1) {
             JOptionPane.showMessageDialog(this, "Algun personaje, no existe, ¿Cual? no se la verdad", "Error 025", JOptionPane.ERROR_MESSAGE);
+                                                                      validarAccion.regisAccion("Madrazos entre personajes" , false, "Salio MAL APROPOSITO");
             return;
         }
         //los luchadores
@@ -123,6 +130,8 @@ public class SimPelea extends JFrame {
 
         if (Hp1 <= 0 || Hp2 <= 0) {
             JOptionPane.showMessageDialog(this, "Alguno de los personajes ya se murio xD", "Error 026", JOptionPane.ERROR_MESSAGE);
+                                                                       validarAccion.regisAccion("Madrazos entre personajes" , false, "Salio MAL");
+
             return;
         }
         bitacoraArea.setText("BIENVENIDOS AL COMBATE, HOY SE ENFRETARÁ: " + Luchador1 + "CONTRA" + Luchador2 + "SIGAN VIENDO");
@@ -202,10 +211,13 @@ public class SimPelea extends JFrame {
             if (!ganador.isEmpty()) {
                 bitacora.append("\n" + ganador + " Ha ganado el combate en \n " + turnosF + "turnos \n");
                 actualHistorial(ganador, perdedor, turnosF);
+                validarAccion.regisAccion("madrazos entre personajes", true, "Salio bien");
+
             } else {
                 bitacora.append("TENEMOS UN EMPATE A LOS: " + turnosF + "TURNOS \n");
             }
             btIniLucha.setEnabled(true);
+
         });
     }
 

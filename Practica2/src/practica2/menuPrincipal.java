@@ -114,17 +114,19 @@ public class menuPrincipal extends JFrame {
 //Accion del boton  de limpiar
         btLimpiar.addActionListener(e -> gestorAchivo.BorrarDatos());
 
-        JButton btBitcora = new JButton("11. Ver bitacora de acciones y de combate ");
-        //
+        JButton btBitcora = new JButton("11. limpiar bitacora de acciones");
+        //accion boton de bitacora, 
+        btBitcora.addActionListener(e -> validarAccion.MostrarBit());
+
         JButton btYO = new JButton("12. Ver Datos del Estudiante ");
-        btYO.addActionListener(new  ActionListener(){
+        btYO.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                YOOOOO ventanaYO =  new YOOOOO();// sip soy yo, que mas xd
-                    ventanaYO.setVisible(true);           
-            }         
-        }  );
-       
+                YOOOOO ventanaYO = new YOOOOO();// sip soy yo, que mas xd
+                ventanaYO.setVisible(true);
+            }
+        });
+
 //en mac el menu se ve bonito la verdad, VIVA MAC y sus precios no
         panel.add(btAgregar);
         panel.add(btModificar);
@@ -132,7 +134,7 @@ public class menuPrincipal extends JFrame {
         panel.add(btVer);
         panel.add(btSimular);
         panel.add(btHistorial);
-        panel.add(btBuscar);       
+        panel.add(btBuscar);
         panel.add(btGuardar);
         panel.add(btCargar);
         panel.add(btLimpiar);
@@ -142,5 +144,5 @@ public class menuPrincipal extends JFrame {
         add(panel);
 
     }
-
 }
+// cada vez estas cosas se ponen mas dificiles

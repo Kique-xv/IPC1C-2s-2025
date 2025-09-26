@@ -3,6 +3,7 @@
 package practica2;
 //Todas esatas liberias son porque si okey?
 //Esto sera muy divertido de explicarlo en la documentacion
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -115,6 +116,7 @@ public class Bienvenida extends JFrame {
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
                 System.out.println("Reproduciendo:Song_That_Plays_When_Somebody_Verses_Sans_(by_Carlos_Insaneintherain_Eiene)");
                 System.out.println("De Deltarune, por Toby Fox y compañia");
+                validarAccion.regisAccion("Escuchar un temazo", true, "Salio bien");
 
                 while (isRunning) {
                     //con esto mantenemos "vivo" mientras se reproduce el temazo xdddd

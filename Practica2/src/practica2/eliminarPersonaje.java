@@ -84,6 +84,8 @@ public class eliminarPersonaje extends JFrame {
 
         if (Buscar.isEmpty()) {
             JOptionPane.showMessageDialog(this, "INGRESA EL NOMBRE O EL ID CTM", "Error 020", JOptionPane.ERROR_MESSAGE);
+            validarAccion.regisAccion("buscar al personaje pa eliminarlo", false, "Salio MAL APROPOSITO");
+
             return;
         }
         Pecontrado = Personajes.buscarPer(Buscar);
@@ -93,10 +95,14 @@ public class eliminarPersonaje extends JFrame {
             LbPencontrado.setText("El personaje a eliminar es: " + Necontrado);
             LbPencontrado.setVisible(true);
             btEliminar.setVisible(true);
+            validarAccion.regisAccion("encontrar el personaje para eliminarlo", true, "Salio bien");
+
             return;
         }
 
         JOptionPane.showMessageDialog(this, "No se ha encontrado al personaje, f por ti", "Error 021", JOptionPane.ERROR_MESSAGE);
+        validarAccion.regisAccion("Buscar al personaje para borrarlo", false, "Salio MAL");
+
     }
 
     private void confimarEliminar() {
@@ -111,6 +117,10 @@ public class eliminarPersonaje extends JFrame {
                 EliminarPersonaje(Pecontrado);
                 JOptionPane.showMessageDialog(this, nEliminar + " se ha eliminado del roster de personajes");
                 dispose();
+                validarAccion.regisAccion("Borrar el personaje", true, "Salio bien");
+            } else {
+                validarAccion.regisAccion("Eliminar el personaje", true, "Salio... y ya");
+
             }
         }
     }
