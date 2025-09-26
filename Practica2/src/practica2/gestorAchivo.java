@@ -28,7 +28,7 @@ public class gestorAchivo {
                 escribir.println(String.join("|", Personajes.personaje[i]));
             }
             JOptionPane.showMessageDialog(null, "Se ha hecho guardado los Datos :D");
-            validarAccion.regisAccion("guardar datos del personaje", true, " datos de " + Personajes.CantPersonajes + "Salio bien");
+            validarAccion.regisAccion("guardar datos del personaje", true,  "Salio bien");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "No se pudo guardar, porque? yo que se man D:" + e.getMessage(), "Error 030", JOptionPane.ERROR_MESSAGE);
             validarAccion.regisAccion("guardar datos del personaje", false, " datos de " + Personajes.CantPersonajes + "Salio MAL");
@@ -61,7 +61,7 @@ public class gestorAchivo {
                 }
             }
             JOptionPane.showMessageDialog(null, "Se ha Cargado el sistema :D");
-            validarAccion.regisAccion("guardar datos en archivo", true, "Salio MAL");
+            validarAccion.regisAccion("guardar datos en archivo", true, "Salio bien");
 
         } catch (IOException | NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "No se pudo cargar el archivo.... SIP NOS JODIMOS" + e.getMessage(), "Error 032", JOptionPane.ERROR_MESSAGE);

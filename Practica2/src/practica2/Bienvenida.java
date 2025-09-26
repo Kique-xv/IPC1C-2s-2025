@@ -48,7 +48,7 @@ public class Bienvenida extends JFrame {
         JPanel mainPanel = new JPanel(new GridLayout(2, 1));
 
         //El mensaje que saldra en la ventana osea adentro pue
-        JLabel SaludoMesj = new JLabel("Bienvenido a POKEMON STADIUM TEXT VERSION", SwingConstants.CENTER);
+        JLabel SaludoMesj = new JLabel("BIENVENIDO A  SUPER SMASHING FIGHTERS TEXT VERSION", SwingConstants.CENTER);
         SaludoMesj.setFont(new Font("Papyrus", Font.BOLD, 19));
 
         //crearemos el boton de salir y se va a ordernar con el mensaje HOY SI
@@ -126,7 +126,7 @@ public class Bienvenida extends JFrame {
                 clip.close();
                 audioStream.close();
                 System.out.println("La musica se ha detenido...");
-
+                System.out.println("\n                  TODO  LO QUE HA ESTADO PASANDO MIENTRAS SE EJECUTA ESTA COSA :          ");
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InterruptedException e) {
                 e.printStackTrace();
             }

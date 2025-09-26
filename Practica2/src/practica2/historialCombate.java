@@ -73,8 +73,8 @@ public class historialCombate extends JFrame {
         SimpleDateFormat fechahora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date Factual = new Date();
         String HFformat = fechahora.format(Factual);
-        
-        LbFecha.setText("Ultima actualizacion: " +HFformat);
+
+        LbFecha.setText("Ultima actualizacion: " + HFformat);
 
         StringBuilder Hist = new StringBuilder();
 
@@ -83,7 +83,7 @@ public class historialCombate extends JFrame {
 
         if (Personajes.CantPersonajes == 0) {
             JOptionPane.showMessageDialog(this, "No hay personajes registrados, como para que se madreen", "Error 027", JOptionPane.ERROR_MESSAGE);
-                                                                              validarAccion.regisAccion("ver historial de madrazos entre personajes" , false, "Salio MAL APROPOSITO");
+            validarAccion.regisAccion("ver historial de madrazos entre personajes", false, "Salio MAL APROPOSITO");
 
         } else {
 
@@ -92,10 +92,10 @@ public class historialCombate extends JFrame {
                 String vicDerr = Personajes.personaje[i][Personajes.VICDERR];
 
                 String[] datos = new String[5];
-                
-                if(vicDerr.contains("|")){
+
+                if (vicDerr.contains("|")) {
                     datos = vicDerr.split("\\|");
-                }else {
+                } else {
                     datos[0] = "0";
                     datos[1] = "0";
                     datos[2] = "N/A";
@@ -114,7 +114,7 @@ public class historialCombate extends JFrame {
                 Hist.append("Ultimo Combate: ").append(turnos).append(" turnos \n");
                 Hist.append("fecha  :").append(fecha).append("  |Hora:   ").append(hora).append("\n");
                 Hist.append("---------------------------------------------------------\n");
-                                                                                  validarAccion.regisAccion("ver historial de madrazos entre personajes" , true, "Salio bien");
+                validarAccion.regisAccion("ver historial de madrazos entre personajes", true, "Salio bien");
 
             }
         }

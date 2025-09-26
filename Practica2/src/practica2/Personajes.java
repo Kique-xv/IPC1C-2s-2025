@@ -125,7 +125,7 @@ public class Personajes extends JFrame {
     private void guardarPersonaje() {
         if (CantPersonajes > 100) {
 
-            JOptionPane.showMessageDialog(this, "El limte de personajes se alcanzo,borra alguno", "Error 001", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "El limte de personajes se alcanzo, borra alguno", " Error 001 ", JOptionPane.ERROR_MESSAGE);
             validarAccion.regisAccion("agregar pesonajes", false, "Salio mal");
             return;
         }

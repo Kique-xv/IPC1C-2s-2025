@@ -1,6 +1,3 @@
-[2025-09-25 18:39:50] [Salio bien] - Escuchar un temazo: Salio bien
-[2025-09-25 18:40:12] [Salio bien] - guardar datos en archivo: Salio MAL
-[2025-09-25 18:40:22] [Salio mal] - buscar pesonajes: Salio MAL APROPOSITO
-[2025-09-25 18:40:35] [Salio mal] - Buscar personaje para modificarlo: Salio MAL APROPOSITO
-[2025-09-25 18:41:25] [Salio bien] - guardar datos del personaje:  datos de 2Salio bien
-[2025-09-25 18:41:34] [Salio bien] - borrar datos del archivo: Salio bien
+[2025-09-26 11:03:43] [Salio bien] - Borrar la bitacora: Salio bien
+[2025-09-26 11:03:46] [Salio mal] - Borrar datos del hisotial: Salio MAL
+[2025-09-26 11:03:53] [Salio mal] - buscar pesonajes: Salio MAL APROPOSITO

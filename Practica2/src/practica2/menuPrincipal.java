@@ -140,7 +140,6 @@ public class menuPrincipal extends JFrame {
         panel.add(btLimpiar);
         panel.add(btBitcora);
         panel.add(btYO);
-
         add(panel);
 
     }

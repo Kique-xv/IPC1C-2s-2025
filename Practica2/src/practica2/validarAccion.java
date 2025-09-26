@@ -45,8 +45,6 @@ public class validarAccion {
     public static void MostrarBit() {
         File archivo = new File(NombreBit);
         //ojala que no se vea feo despues del archivo de musica o si no me mato, se va a ver TODAS LAS LLAMADAS QUE HE HECHO DE ESTE METODO, no este pero ya sabes... enserio estas leyedo esto...
-        System.out.println("\n                  TODO  LO QUE HA ESTADO PASANDO MIENTRAS SE EJECUTA ESTA COSA :          ");
-
         if (!archivo.exists()) {
             JOptionPane.showMessageDialog(null, "La bicatora no exixte xd, ojala no la hayas borrado menso", "Error 031", JOptionPane.ERROR_MESSAGE);
             validarAccion.regisAccion("Buscar bitacora", false, "Salio mal APROPOSITO");
