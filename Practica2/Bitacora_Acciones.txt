@@ -1,3 +1,9 @@
 [2025-09-26 11:03:43] [Salio bien] - Borrar la bitacora: Salio bien
 [2025-09-26 11:03:46] [Salio mal] - Borrar datos del hisotial: Salio MAL
 [2025-09-26 11:03:53] [Salio mal] - buscar pesonajes: Salio MAL APROPOSITO
+[2025-09-26 17:33:13] [Salio bien] - Escuchar un temazo: Salio bien
+[2025-09-26 17:40:52] [Salio bien] - agregar personaje: Salio bien
+[2025-09-26 17:41:07] [Salio bien] - agregar personaje: Salio bien
+[2025-09-26 17:47:44] [Salio bien] - Escuchar un temazo: Salio bien
+[2025-09-26 17:48:01] [Salio bien] - agregar personaje: Salio bien
+[2025-09-26 17:48:13] [Salio mal] - Agregar Personaje: salio mal APROPPOSITO

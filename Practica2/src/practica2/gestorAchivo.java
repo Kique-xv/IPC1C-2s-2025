@@ -42,7 +42,6 @@ public class gestorAchivo {
         if (!archivo.exists()) {
             JOptionPane.showMessageDialog(null, "No hemos encontrado nada... Estamos Jodidos", "Error 031", JOptionPane.WARNING_MESSAGE);
             validarAccion.regisAccion("Encontrar el archivo", false, "Salio MAL");
-
             return;
         }
         try (BufferedReader lector = new BufferedReader(new FileReader(archivo))) {

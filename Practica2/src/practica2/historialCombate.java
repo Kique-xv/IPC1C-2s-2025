@@ -73,20 +73,14 @@ public class historialCombate extends JFrame {
         SimpleDateFormat fechahora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date Factual = new Date();
         String HFformat = fechahora.format(Factual);
-
         LbFecha.setText("Ultima actualizacion: " + HFformat);
-
         StringBuilder Hist = new StringBuilder();
-
         Hist.append("Historial de Victorias y Derrotas \n");
         Hist.append("-------------------------------------------- \n");//es innecesario, pero se ve mas bonito asi 
-
         if (Personajes.CantPersonajes == 0) {
             JOptionPane.showMessageDialog(this, "No hay personajes registrados, como para que se madreen", "Error 027", JOptionPane.ERROR_MESSAGE);
             validarAccion.regisAccion("ver historial de madrazos entre personajes", false, "Salio MAL APROPOSITO");
-
         } else {
-
             for (int i = 0; i < Personajes.CantPersonajes; i++) {
                 String nombre = Personajes.personaje[i][Personajes.NOMBRE];
                 String vicDerr = Personajes.personaje[i][Personajes.VICDERR];
@@ -108,14 +102,12 @@ public class historialCombate extends JFrame {
                 String turnos = datos.length > 2 ? datos[2] : "N/A";
                 String fecha = datos.length > 3 ? datos[3] : "----";
                 String hora = datos.length > 4 ? datos[4] : "--:--:--";
-
                 Hist.append("Personaje: ").append(nombre).append("\n");//salto de linea
                 Hist.append("Vicotorias: ").append(victorias).append("Derrotas: ").append(derrotas).append("\n");
                 Hist.append("Ultimo Combate: ").append(turnos).append(" turnos \n");
                 Hist.append("fecha  :").append(fecha).append("  |Hora:   ").append(hora).append("\n");
                 Hist.append("---------------------------------------------------------\n");
                 validarAccion.regisAccion("ver historial de madrazos entre personajes", true, "Salio bien");
-
             }
         }
         Harea.setText(Hist.toString());

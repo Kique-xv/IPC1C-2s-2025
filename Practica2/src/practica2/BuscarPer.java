@@ -91,6 +91,7 @@ public class BuscarPer extends JFrame {
             String velocidad = personaje[Personajes.VELOCIDAD];
             String vicDerr = personaje[Personajes.VICDERR];
             String defensa = personaje[Personajes.DEFENSA];
+            String agilidad = personaje[Personajes.AGILIDAD];
 
             StringBuilder resultado = new StringBuilder();
             resultado.append("Hemos encontrado a este Buey: \n");
@@ -99,6 +100,7 @@ public class BuscarPer extends JFrame {
             resultado.append("Los puntos  de vida son: ").append(Hp).append("\n");
             resultado.append("Los puntos de ataque son: ").append(ataque).append("\n");
             resultado.append("La velocidad es: ").append(velocidad).append("\n");
+            resultado.append("La agilidad es: ").append(agilidad).append("\n");
             resultado.append("Los puntos de defensa son : ").append(defensa).append("\n");
 
 //un chapus de ayuda

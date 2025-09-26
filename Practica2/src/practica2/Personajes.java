@@ -63,7 +63,9 @@ public class Personajes extends JFrame {
         }
         return -1;
     }
-
+public static boolean Nrepetido(String nombre){
+    return buscarPer(nombre) != -1;
+}
     //ahora si la clase para guardar el personaje 
     public Personajes() {
         setTitle("Agregar Personaje");
@@ -134,6 +136,15 @@ public class Personajes extends JFrame {
         if (nombre.isEmpty() || txtArma.getText().isEmpty() || txtHp.getText().isEmpty() || txtAtaque.getText().isEmpty() || txtVelocidad.getText().isEmpty() || txtAgilidad.getText().isEmpty() || txtDefensa.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor llena todos los apartados :D", "Error 002", JOptionPane.ERROR_MESSAGE);
             validarAccion.regisAccion("agregar personaje", false, "Salio mal APROPOSITO");
+            return;
+        }
+        if (Nrepetido(nombre)) {
+            JOptionPane.showMessageDialog(this, 
+                                          "El nombre '" + nombre + "' ya está registrado. inventa  uno distinto.", 
+                                          "Error: Nombre Duplicado", 
+                                          JOptionPane.ERROR_MESSAGE);
+            // Uso de BitacoraAcciones
+            validarAccion.regisAccion("Agregar Personaje", false, "salio mal APROPPOSITO");
             return;
         }
 
