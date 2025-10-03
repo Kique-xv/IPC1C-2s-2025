@@ -43,8 +43,27 @@ public class AdminDUsuarios {
 
             while ((linea = Lector.readLine()) != null && CantUsuarios < listadUsuarios.length) {
                 String[] datos = linea.split(",");
+                String tipousur = datos.length > Usuarios.TIPOUSUR ? datos[Usuarios.TIPOUSUR].trim() : "";
+//cambiamos para que haya diferencia entre vendores y los demas usuarios
+                if (tipousur.equals("VENDEDOR") && datos.length >= Vendedor.NUM_CAMPOSV) {
+                    //cargamos un ibjeto vendedor, con todos sus cambpos incluyendo sus ventas
+                    try {
+                        String id = datos[Usuarios.ID].trim();
+                        String nombre = datos[Usuarios.NOMBRE].trim();
+                        String Contraseña = datos[Usuarios.CONTRASEÑA].trim();
+                        String genero = datos[Vendedor.GENERO].trim();
+                        int ventas = Integer.parseInt(datos[Vendedor.VENTAS_HECHAS].trim());
 
-                if (datos.length == Usuarios.CAMPOS) {
+                        Vendedor Nvendedor = new Vendedor(id, nombre, Contraseña, genero);
+                        //poner un setter
+                        //el dato de ventas se va amantener en el csv
+                        listadUsuarios[CantUsuarios++] = Nvendedor;
+
+                    } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                        JOptionPane.showMessageDialog(null, "Error al crear al vendedir, por datos incompletos o algo", "Error 02", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else if (datos.length == Usuarios.CAMPOS) {
+                    //agregamos un objeto usuaio base (el admon)
                     listadUsuarios[CantUsuarios++] = new Usuarios(
                             datos[Usuarios.ID].trim(),
                             datos[Usuarios.NOMBRE].trim(),
@@ -57,7 +76,7 @@ public class AdminDUsuarios {
                 JOptionPane.showMessageDialog(null, "Los usuarios creados se han cargado", "Accion exitosamente exitosa", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Algo salio mal en la carga de los archivos", "Error 02", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Algo salio mal en la carga de los archivos", "Error 03", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -65,11 +84,11 @@ public class AdminDUsuarios {
         try (PrintWriter escribir = new PrintWriter(new FileWriter(ArchiUsur))) {
             for (int i = 0; i < CantUsuarios; i++) {
                 Usuarios u = listadUsuarios[i];
-                escribir.println(u.getId() + "," + u.getNombre() + "," + u.getcontraseña() + "," + u.getTipoUsuario());
+                escribir.println(String.join(",", u.toArray()));
             }
-            JOptionPane.showMessageDialog(null, "Los suarios fueron guardados en el archivo correspondiente", "Accion salio bien", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Los usuarios fueron guardados en el archivo correspondiente", "Accion Exitosa", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Algo salio mal al guardar a los usuarios", "Error 03", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Algo salio mal al guardar a los usuarios", "Error 04", JOptionPane.ERROR_MESSAGE);
         }
     }
 //un metodo para validar las credenciales de los usuarios
@@ -77,6 +96,7 @@ public class AdminDUsuarios {
     public static Usuarios autenticazion(String id, String Contraseña) {
         for (int i = 0; i < CantUsuarios; i++) {
             Usuarios u = listadUsuarios[i];
+            //asumamos que el usuaior y contraseña existen
             if (u.getId().equals(id) && u.getcontraseña().equals(Contraseña)) {
                 return u;
             }
@@ -89,7 +109,75 @@ public class AdminDUsuarios {
             listadUsuarios[CantUsuarios++] = nUsuarios;
             GuardarUsuarios();
         } else {
-            JOptionPane.showMessageDialog(null, "se ha llegado al maximo de usuarios registrados", "Error 04", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "se ha llegado al maximo de usuarios registrados", "Error 05", JOptionPane.WARNING_MESSAGE);
         }
+    }
+
+    //un metodo auxiliar para ver si es unico el codifo calro
+    public static boolean CodRepetido(String id) {
+        for (int i = 0; i < CantUsuarios; i++) { //buscar en la matriz de usuarios
+            if (listadUsuarios[i].getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //esto de aca para abajo es para los vendedores
+    public static Vendedor BuscarVendedor(String id) {
+        for (int i = 0; i < CantUsuarios; i++) {
+            Usuarios u = listadUsuarios[i];
+            //verificamos que la instancia del vendedor y el id sean iagualisyos, como todas la mujeres
+            if (u instanceof Vendedor && u.getId().equals(id)) {
+                return (Vendedor) u;
+            }
+        }
+        return null; //no devuelve nada como ella 7-7
+    }
+    //creamos y agregamos un nuevo vendeor si el codigo SI ES unnicos
+    public static boolean CreacionVendedor(String id, String nombre, String genero, String contrseña) {
+        if (CantUsuarios >= listadUsuarios.length) {
+            JOptionPane.showMessageDialog(null, "El limte de usuarios fue alcanzado", "Error 06", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (CodRepetido(id)) {
+            JOptionPane.showMessageDialog(null, "El codigo de vendedor ya esta en uso", "Error 07", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        Vendedor Nvendedor = new Vendedor(id, nombre, contrseña, genero);
+        listadUsuarios[CantUsuarios++] = Nvendedor;
+        GuardarUsuarios();
+        return true;
+    }
+//un metodo para modifcar el nombre y contraseña
+    public static boolean ModVendedor(String id, String Nnombre, String Ncontraseña){
+        for(int i=0; i < CantUsuarios; i++){
+            Usuarios u = listadUsuarios[i];
+            if(u instanceof Vendedor && u.getId().equals(id)){
+                Vendedor v = (Vendedor) u;
+                //los setters de vendedro ira aqui
+         
+                GuardarUsuarios();
+                return true;
+            }
+        }
+        return false;
+    }
+  //un metodo de eliminacion por el codigo
+    public static boolean EliminarVendedor(String id){
+        for(int i =0; i<CantUsuarios; i++){
+            Usuarios u = listadUsuarios[i];
+            if(u instanceof Vendedor && u.getId().equals(id)){
+                //el todo confiable ciclo for
+                for(int j = i; j<CantUsuarios-1; j++){
+                    listadUsuarios[j] = listadUsuarios[j+1];
+                }
+                listadUsuarios[CantUsuarios-1] = null; //eliminamos la ultima referencia 
+                CantUsuarios--;
+                GuardarUsuarios();
+                return true;
+            }
+        }
+        return false;
     }
 }

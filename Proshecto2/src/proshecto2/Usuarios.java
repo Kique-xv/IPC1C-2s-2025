@@ -19,17 +19,21 @@ public class Usuarios implements Serializable{
     public static final int TIPOUSUR =3; 
     public static final int CAMPOS =4; 
 
-    private String id;
-    private String nombre;
-    private String Contraseña;
-    private String tipoUsuario;
+    protected String id;
+    protected String nombre;
+    protected String Contraseña;
+    protected String tipoUsuario;
     
-    public Usuarios(String id, String  nombre, String Contraseña, String tipoUusario){
+    public Usuarios(String id, String  nombre, String Contraseña, String tipoUsario){
         //gracias inge moises :3
         this.id = id;
         this.nombre = nombre;
         this.Contraseña = Contraseña;
-        this.tipoUsuario = tipoUsuario;    
+        if(tipoUsuario != null && !tipoUsuario.trim().isEmpty() ){
+            this.tipoUsuario = tipoUsuario.trim().toUpperCase();
+        } else{
+            this.tipoUsuario = "ADMIN"; //asginamos un admin por si las moscas
+        }
     }
     //los getters, GRACIAS INGE ME ESTA SALVANDo LA COLA
     public String getId(){
