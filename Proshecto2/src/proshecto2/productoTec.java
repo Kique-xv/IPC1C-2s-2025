@@ -20,6 +20,9 @@ public class productoTec extends Productos {
     public int getMesesGarantia() {
         return MesesGarantia;
     }
+ public void setMesesGarantia(int MesesGarantia) {
+    this.MesesGarantia = MesesGarantia;
+}   
 //ets madre salio al aplicar losmetodos abstractos
 
     @Override
@@ -28,6 +31,7 @@ public class productoTec extends Productos {
             super.codigo,
             super.nombre,
             super.categoria,
+           
             String.valueOf(super.precio),
             String.valueOf(super.stock),
             String.valueOf(this.MesesGarantia)

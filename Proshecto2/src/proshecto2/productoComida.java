@@ -11,7 +11,7 @@ public class productoComida extends Productos {
 public static final int CAMPOCOM = Productos.CAMPOS_Prod +1;
 
 private String FechaVencer;
-    public productoComida(String codigo, String nombre, String categoria, double precio, int stock, String FechaVencer) {
+    public productoComida(String codigo, String nombre, double precio, int stock, String FechaVencer) {
         super(codigo, nombre, "ALIMENTO", precio, stock);
         this.FechaVencer= FechaVencer;
     }
@@ -25,6 +25,7 @@ private String FechaVencer;
             super.codigo,
             super.nombre,
             super.categoria,
+       
             String.valueOf(super.precio),
             String.valueOf(super.stock),
             this.FechaVencer
@@ -35,6 +36,9 @@ private String FechaVencer;
     public String toCsLine() {
         return super.codigo + "," +super.nombre+ ","+ super.categoria+" ," +super.precio+ "," +super.stock+ "," +this.FechaVencer;
     }
+    public void setFechaVencer(String FechaVencer) {
+    this.FechaVencer = FechaVencer;
+}
     }
     
 

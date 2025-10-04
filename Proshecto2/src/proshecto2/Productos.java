@@ -12,7 +12,7 @@ public abstract class Productos {
     public static final int CATEGORIA =2;
     public static final int PRECIO =3;
     public static final int STOCK =4;
-    public static final int CAMPOS_Prod =5;
+    public static final int CAMPOS_Prod =6;
     //usamos los protected para usarlas en las demas clases
     protected String codigo;
     protected String nombre;
@@ -42,6 +42,13 @@ public abstract class Productos {
     } 
     public int getStock(){
         return stock;
+    }
+    public void setNombre(String nombre){
+        this.nombre =nombre;
+    }
+   
+    public void setStock(int stock){
+        this.stock = stock;
     }
     //los metodos abstractos para los gestores, asi no la kgo como con los vendedores
     public abstract String[] toArray();

@@ -39,6 +39,9 @@ public class MenuAdmin  extends JFrame{
         btVendedores.addActionListener(e -> {
             new GestionVendedor().setVisible(true);
         }  );
+        btProductos.addActionListener(e ->{
+            new GestionProductos().setVisible(true);
+        } );
       add(panel, BorderLayout.CENTER);
     }
 }

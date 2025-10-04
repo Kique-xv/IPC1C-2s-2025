@@ -115,3 +115,4 @@ public class AdminDUsuarios {
         return false;
     }
 }
+//los metodos de vendedor los quite de aca y los puse en su lugar en administracion de vendedores xd,
