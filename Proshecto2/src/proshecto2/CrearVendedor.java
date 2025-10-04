@@ -65,15 +65,13 @@ public class CrearVendedor extends JFrame {
             JOptionPane.showMessageDialog(this, "Todos los campos deben de ser llenados", "Error de validacion", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if (AdminDUsuarios.CreacionVendedor(codigo, nombre, genero, contraseña)) {
+        if (AdminDVendedores.CreacionVendedor(codigo, nombre, genero, contraseña)) {
             JOptionPane.showMessageDialog(this, " Vendedor " + nombre + " Creado, ventas realizadas 0 ", "Vendedor creado", JOptionPane.INFORMATION_MESSAGE);
 //limpieza de los campos despuesd de crear
             txtCodigo.setText("");
             txNombre.setText("");
             txtContraseña.setText("");
             JcGenero.setSelectedIndex(0);
-        } else {
-            //el error ya lo majero en la calse de admin de usuarios
-        }
+        } 
     }
 }

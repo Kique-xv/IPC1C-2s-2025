@@ -99,7 +99,7 @@ public class ModVendedor extends JFrame {
             JOptionPane.showMessageDialog(this, "Debes de ingresar un codigo para buscar", "Error 07", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        Vendedor vendedor = AdminDUsuarios.BuscarVendedor(Codigo);//;D
+        Vendedor vendedor = AdminDVendedores.BuscarVendedor(Codigo);//;D
         if (vendedor != null) {
             JOptionPane.showMessageDialog(this, "Vendedor encontrado: " + vendedor.getNombre() + "", " Accion exitosa", JOptionPane.INFORMATION_MESSAGE);
 
@@ -133,7 +133,7 @@ public class ModVendedor extends JFrame {
             JOptionPane.showMessageDialog(this, "El nombre y contraseña no pueden de estar vacios", "Error 09", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if (AdminDUsuarios.ModVendedor(codigo, Nnombre, NContraseña)) {//llamado al metodo de modifcar vendedro, me ahorro trabajo
+        if (AdminDVendedores.ModVendedor(codigo, Nnombre, NContraseña)) {//llamado al metodo de modifcar vendedro, me ahorro trabajo
             JOptionPane.showMessageDialog(this, "vendedor modificado", "Modifcacion exitosa", JOptionPane.INFORMATION_MESSAGE);
             this.dispose(); //cerrar al terminar
         } else {

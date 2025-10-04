@@ -61,6 +61,7 @@ public class IngresarUsuarios extends JFrame {
                 JOptionPane.showMessageDialog(this, "Bienvenodo admin", "Acceso otorgado", JOptionPane.INFORMATION_MESSAGE);
                 new MenuAdmin().setVisible(true); //abre el menu de admin
                 this.dispose();
+                
             } else if ("VENDEDOR".equals(tipo)) {
                 JOptionPane.showMessageDialog(this, "Bienvenido Vendedor", "Acceso otorgado", JOptionPane.INFORMATION_MESSAGE);
                 //new MenuVendedor.setVisible(true) cuadno ya este ese modulo

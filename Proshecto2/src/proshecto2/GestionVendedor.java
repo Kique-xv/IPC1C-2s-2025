@@ -41,7 +41,7 @@ public class GestionVendedor extends JFrame {
         btCrear.addActionListener(e -> new CrearVendedor().setVisible(true));
      btModificar.addActionListener(e -> new ModVendedor().setVisible(true));
      btEliminar.addActionListener(e -> new EliminarVendedor().setVisible(true));
-        
+      btCargar.addActionListener(e -> new CargarVendedor().setVisible(true));
      add(panel, BorderLayout.CENTER);
      setVisible(true);
     }

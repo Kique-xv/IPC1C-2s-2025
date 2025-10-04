@@ -46,7 +46,7 @@ public class EliminarVendedor extends JFrame{
             JOptionPane.showMessageDialog(this, "Debes de ingresar el codigo del vendedor" , "Error 11" , JOptionPane.ERROR_MESSAGE);
        return;
         }
-        Vendedor vendedor = AdminDUsuarios.BuscarVendedor(codigo);
+        Vendedor vendedor = AdminDVendedores.BuscarVendedor(codigo);
         
         if(vendedor != null){
            int Confirmar = JOptionPane.showConfirmDialog(this, 
@@ -54,7 +54,7 @@ public class EliminarVendedor extends JFrame{
                    "¿Confirmar Eliminacion?" , JOptionPane.YES_NO_OPTION);
     
         if(Confirmar == JOptionPane.YES_OPTION){
-            if(AdminDUsuarios.EliminarVendedor(codigo)){
+            if(AdminDVendedores.EliminarVendedor(codigo)){
                 JOptionPane.showMessageDialog(this, "El vendedor fue eliminado", "Eliminacion exitosa", JOptionPane.INFORMATION_MESSAGE);
            this.dispose(); //cerrar la ventana
            
@@ -63,7 +63,7 @@ public class EliminarVendedor extends JFrame{
             }
         }   
         } else{
-            JOptionPane.showMessageDialog(this, "No se ha encotrado al vendedor" ,"Error 12" , JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se ha encotrado al vendedor" ,"Error 13" , JOptionPane.ERROR_MESSAGE);
         }
     }
 }
