@@ -65,7 +65,7 @@ public class AdminDUsuarios {
                 }
             }
             if (CantUsuarios > 0) {
-                JOptionPane.showMessageDialog(null, "Los usuarios creados se han cargado", "Accion exitosamente exitosa", JOptionPane.INFORMATION_MESSAGE);
+              //  JOptionPane.showMessageDialog(null, "Los usuarios creados se han cargado", "Accion exitosamente exitosa", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Algo salio mal en la carga de los archivos", "Error 03", JOptionPane.ERROR_MESSAGE);

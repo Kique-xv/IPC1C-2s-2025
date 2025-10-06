@@ -22,8 +22,9 @@ public class CargarVendedor extends JFrame {
 
     private JTextArea resulArea;
     private JButton btCargar;
-
-    public CargarVendedor() {
+private GestionVendedor ventana1;
+    public CargarVendedor(GestionVendedor ventana1) {
+        this.ventana1 = ventana1;
         setTitle("Cargar vendedores");
         setSize(600, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -105,12 +106,16 @@ public class CargarVendedor extends JFrame {
             return;
         }
         JOptionPane.showMessageDialog(this,
-                "Carga Masiva Terminada:\n"
-                + "Total de Éxitos: " + CargadosB + "\n"
-                + "Total Errores de Formato: " + FallasForm + "\n"
-                + "Total Errores Lógicos (Duplicados/Otros): " + ErrorLogic,
+                "Carga de vendedores Terminada:\n"
+                + "total lineas exitosas: " + CargadosB + "\n"
+                + "total errores de formato: " + FallasForm + "\n"
+                + "total de errores lógicos duplicados u utros " + ErrorLogic,
                 "Resumen de Carga",
-                JOptionPane.INFORMATION_MESSAGE
-        );
+                JOptionPane.INFORMATION_MESSAGE  ); 
+       
+         if (ventana1 != null) {
+           ventana1.actualizarTabla();
     }
+         this.dispose();
 }
+       }

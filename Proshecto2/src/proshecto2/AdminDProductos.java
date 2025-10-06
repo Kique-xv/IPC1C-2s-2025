@@ -1,19 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package proshecto2;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.swing.JOptionPane;
-import static proshecto2.AdminDVendedores.BuscarVendedor;
-import static proshecto2.AdminDVendedores.GuardarVendedor;
 
+import proshecto2.Productos;
 /**
  *
  * @author kiquemarroquin
@@ -61,13 +58,15 @@ public class AdminDProductos {
                             //cargamos los datos, del producto de comida
                             String caducidad = datos[productoComida.VENCIMIENTO].trim();
                             Nproducto = new productoComida(codigo, nombre, precio, stock, caducidad);
+                        } else if (categoria.equals("OTROS") && datos.length == productoOtros.CAMPORT) {
+                            Nproducto = new productoOtros(codigo, nombre, precio, stock);
                         } else {
                             JOptionPane.showMessageDialog(null, "Error el fomato de linea o la categoria no es la correcta", "Error", JOptionPane.ERROR_MESSAGE);
                             continue;
                         }
                         listadProductos[CantProducto++] = Nproducto;
                     } catch (Exception e) {
-                        JOptionPane.showMessageDialog(null, "Error al crear el producto desde el csv", "Error", JOptionPane.ERROR_MESSAGE);
+                     //   JOptionPane.showMessageDialog(null, "Error al crear el producto desde el csv", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -90,7 +89,7 @@ public class AdminDProductos {
 
     public static boolean CodRepetido(String codigo) {
         for (int i = 0; i < CantProducto; i++) {
-            if (listadProductos[i].getCodigo().equals(codigo)) {
+            if (listadProductos[i].getCodigo().equalsIgnoreCase(codigo)) {
                 return true;
             }
         }
@@ -99,14 +98,14 @@ public class AdminDProductos {
 
     public static Productos BuscarProd(String codigo) {
         for (int i = 0; i < CantProducto; i++) {
-            if (listadProductos[i].getCodigo().equals(codigo)) {
+            if (listadProductos[i].getCodigo().equalsIgnoreCase(codigo)) {
                 return listadProductos[i];
             }
         }
         return null;
     }
 
-    public static boolean CreacionProducto(String codigo, String nombre, String categoria, double precio, int stock, String Atributo) {
+    public static boolean CreacionProducto(String codigo, String nombre, double precio, int stock, String categoria, String Atributo) {
         if (CantProducto >= MProductos) {
             JOptionPane.showMessageDialog(null, "Se llego al limite de productos", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -125,6 +124,8 @@ public class AdminDProductos {
             } else if (catego.equals("ALIMENTO")) {
                 //la fecha de vencimineto ya viene como estring
                 Nproducto = new productoComida(codigo, nombre, precio, stock, Atributo);
+            } else if (catego.equals("OTROS")) {
+                Nproducto = new productoOtros(codigo, nombre, precio, stock);
             } else {
                 JOptionPane.showMessageDialog(null, "Caetgoria de producto no valida", "Error", JOptionPane.ERROR_MESSAGE);
                 return false;
@@ -136,34 +137,34 @@ public class AdminDProductos {
 
         if (Nproducto != null) {
             listadProductos[CantProducto++] = Nproducto;
-            GuardarProductos();
+          GuardarProductos(); 
             return true;
         }
         return false;
     }
 
     //los demas metodos faltan todvia xd
-    public static boolean ModProductos(String Codigo, String id, String Nnombre, String Natributo) {
+    public static boolean ModProductos(String Codigo, String Nnombre, String Natributo) {
         Productos p = BuscarProd(Codigo);
         if (p != null) {
             p.setNombre(Nnombre);
             p.setStock(MProductos);
             return true;
         }
-        try{
-            if(p instanceof productoTec){
+        try {
+            if (p instanceof productoTec) {
                 productoTec Pt = (productoTec) p;
                 int garantia = Integer.parseInt(Natributo);
                 Pt.setMesesGarantia(garantia);
-            } else if(p instanceof productoComida){
+            } else if (p instanceof productoComida) {
                 productoComida Pa = (productoComida) p;
                 Pa.setFechaVencer(Natributo);
-            } else{
+            } else {
                 //por si las moscas
                 JOptionPane.showMessageDialog(null, "Tipo de producto desconocido", "Error", JOptionPane.ERROR_MESSAGE);
-           return false;
+                return false;
             }
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "el nuevo valo especifico (La garantia o la caducidad) no es valido", "Error", JOptionPane.ERROR_MESSAGE);
         }
         GuardarProductos();
@@ -185,5 +186,105 @@ public class AdminDProductos {
             }
         }
         return false;
+    }
+
+    public static String CargadProductos(String Archiv) {
+        int producCargado = 0;
+        int lineaFail = 0;
+        StringBuilder Error = new StringBuilder();
+        try (BufferedReader lector = new BufferedReader(new FileReader(Archiv))) {
+            String linea;
+            int numLinea = 0;
+
+            while ((linea = lector.readLine()) != null) {
+                numLinea++;
+                String lineat = linea.trim();
+                if (lineat.isEmpty()) {
+                    continue;
+                }
+
+                String[] datos = lineat.split(",");
+
+                //validamos que haya almenos 6 campos los 5 normales + el atributo unico
+                if (datos.length != Productos.CAMPOS_Prod) {
+                    Error.append("Linea").append(numLinea).append(": formato incorrecto, se esperan 6 lineas").append(datos.length).append("\n");
+                    lineaFail++;
+                    continue;
+                }
+                try {
+                    //mapeamos los datos
+                    String codigo = datos[0].trim();
+                    String nombre = datos[1].trim();
+                    String precioStr = datos[2].trim();
+                    String stockStr = datos[3].trim();
+                    String categoria = datos[4].trim().toUpperCase();
+                    String atributo = datos[5].trim();
+//pareseamos los numeros
+                    double precio = Double.parseDouble(precioStr);
+                    int stock = Integer.parseInt(stockStr);
+
+//validaciones de los valores de precio y stcock
+                    if (precio <= 0 || stock <= 0) {
+                        throw new Exception("El precio y el stock deben ser valores positivos.");
+                    }
+                    //previsualizar el atributo y el formato
+                    if (categoria.equals("TECNOLOGIA")) {
+                        try {
+                            int garantia = Integer.parseInt(atributo);
+                            if (garantia <= 0) {
+                                throw new Exception("La garantia debe de ser un numero entero");
+                            }
+                        } catch (NumberFormatException e) {
+                            throw new Exception("La garantia no es un valor valido");
+                        }
+                    } else if (categoria.equals("OTROS")) {
+                        //por si las moscas, aunque la categoria otros ignora el atributo especifico xd, pero en fin, para que esta mrd no se caiga a pedazos
+                        atributo = "N/A"; //no atributo
+                    }
+                    //llamamos al metodo de crear producto, para el manejo de  errores como el codigo repetido, y el fomato de fecha y garantia
+                    if (CreacionProducto(codigo, nombre, precio, stock, categoria, atributo)) {
+                        producCargado++;
+                    } else {
+                        //por si falla debe de salir el mensaje de las validaciones pero por si las moscas
+                        Error.append("Linea ").append(numLinea).append(": fallo al crearse, posiblemente, por el codigo duplicado, el precio o stock on invalidos o el limite de productos ya se alcanzo \n ");
+                        lineaFail++;
+                    }
+                } catch (Exception e) {
+                    //capturamos errore en el precio o stock o las validaciones de gestion de productos
+                    Error.append("Linea ").append(numLinea).append(": error de datos").append(e.getMessage()).append("\n");
+                    lineaFail++;
+                }
+            }
+  if(producCargado > 0 ){
+        GuardarProductos();
+    }
+        } catch (FileNotFoundException e) {
+            return "Error al no enocontrar al arhivo ";
+        } catch (IOException e) {
+            return "Error al leer el archivo " + e.getMessage();
+        }
+        if (lineaFail > 0) {
+            Error.insert(0, "resumen: " + producCargado + ": productos cargados " + lineaFail + " lineas fallaron \n");
+            return Error.toString();
+        } else {
+            return "carga de archivos exitosa :D " + producCargado + " productos creados ";
+        }
+    }
+    //para la tabla
+    public static Object[][] DatosTablaProd(){
+        //las 3 columnas codigo, nombre y la categoria
+        if(listadProductos == null || CantProducto == 0){
+            return new Object[0][3];
+        }
+        Object[][] datos = new Object[CantProducto][3];
+        
+        for(int i=0; i<CantProducto; i++){
+            Productos p = listadProductos[i];
+            
+            datos[i][0] = p.getCodigo();
+            datos[i][1] = p.getNombre();
+            datos[i][2] = p.getCategoria();
+        }
+        return datos;
     }
 }

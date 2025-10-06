@@ -19,7 +19,9 @@ public class EliminarVendedor extends JFrame{
     private JTextField txtCodEliminar;
     private JButton btEliminar;
     
-    public EliminarVendedor(){
+    private GestionVendedor ventana1;
+    public EliminarVendedor(GestionVendedor ventana1){
+        this.ventana1 = ventana1;
         setTitle("Eliminiar Vendedor:");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -56,7 +58,10 @@ public class EliminarVendedor extends JFrame{
         if(Confirmar == JOptionPane.YES_OPTION){
             if(AdminDVendedores.EliminarVendedor(codigo)){
                 JOptionPane.showMessageDialog(this, "El vendedor fue eliminado", "Eliminacion exitosa", JOptionPane.INFORMATION_MESSAGE);
-           this.dispose(); //cerrar la ventana
+if (ventana1 != null) {
+         ventana1.actualizarTabla();
+         }                
+this.dispose(); //cerrar la ventana
            
             } else{
                 JOptionPane.showMessageDialog(this, "Error al elimniar el vendedor", "Error 12", JOptionPane.ERROR_MESSAGE);

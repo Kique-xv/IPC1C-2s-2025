@@ -34,7 +34,7 @@ private String FechaVencer;
 
     @Override
     public String toCsLine() {
-        return super.codigo + "," +super.nombre+ ","+ super.categoria+" ," +super.precio+ "," +super.stock+ "," +this.FechaVencer;
+        return super.codigo + "," + super.nombre + "," + super.precio + "," + super.stock + "," + super.categoria + "," + this.FechaVencer;
     }
     public void setFechaVencer(String FechaVencer) {
     this.FechaVencer = FechaVencer;

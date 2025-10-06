@@ -26,7 +26,9 @@ public class ModVendedor extends JFrame {
     private JButton btBuscar;
     private JButton btModificar;
 
-    public ModVendedor() {
+    private GestionVendedor ventana1;
+    public ModVendedor(GestionVendedor ventana1) {
+        this.ventana1 = ventana1;
         setTitle("Modificar Vendedor");
         setSize(450, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -135,6 +137,9 @@ public class ModVendedor extends JFrame {
         }
         if (AdminDVendedores.ModVendedor(codigo, Nnombre, NContraseña)) {//llamado al metodo de modifcar vendedro, me ahorro trabajo
             JOptionPane.showMessageDialog(this, "vendedor modificado", "Modifcacion exitosa", JOptionPane.INFORMATION_MESSAGE);
+           if (ventana1 != null) {
+             ventana1.actualizarTabla();
+         }
             this.dispose(); //cerrar al terminar
         } else {
             JOptionPane.showMessageDialog(this, "Error al modificar el vendedor", "Error 10", JOptionPane.ERROR_MESSAGE);

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 
+import proshecto2.Vendedor;
 /**
  *
  * @author kiquemarroquin
@@ -18,7 +19,7 @@ public class AdminDVendedores {
     private static final int MVendedores = 50;
 
     //esta es la matriz solo para los vendedores
-    private static Vendedor[] listadVendedores = new Vendedor[MVendedores];
+    private static Vendedor[] listadVendedores = new Vendedor[100];
     private static int CantVendedores = 0;
 
     static {
@@ -54,7 +55,7 @@ public class AdminDVendedores {
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, "Error al crear al vendedor desde el CSV" + linea, "Error 16", JOptionPane.ERROR_MESSAGE);
                     }
-                }
+                }           
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al cargar el archivo CSV de vendedores.", "Error 17", JOptionPane.ERROR_MESSAGE);
@@ -76,10 +77,10 @@ public class AdminDVendedores {
     //tdodo esto lo traje de administrador de usuarios porque al guardar los vendedores en el mismo archivo que el admin crea problemaas ayuda son  las 3 am 7.7
 
     public static boolean CodRepetido(String id) {
-        System.out.println("DEBUG: Buscando duplicado para ID: " + id);
+       // System.out.println("DEBUG: Buscando duplicado para ID: " + id);
         for (int i = 0; i < CantVendedores; i++) { //buscar en la matriz de vendedore
          //   System.out.println("DEBUG: Comparando con vendedor cargado: " + listadVendedores[i].getId());
-            if (listadVendedores[i].getId().equals(id)) {
+            if (listadVendedores[i].getId().equalsIgnoreCase(id)) {
                 return true;
             }
         }
@@ -89,7 +90,7 @@ public class AdminDVendedores {
     public static Vendedor BuscarVendedor(String id) {
         for (int i = 0; i < CantVendedores; i++) {
             //verificamos que la instancia del vendedor y el id sean iagualisyos, como todas la mujeres
-            if (listadVendedores[i].getId().equals(id)) {
+            if (listadVendedores[i].getId().equalsIgnoreCase(id)) {
                 return listadVendedores[i];
             }
         }
@@ -139,5 +140,25 @@ public class AdminDVendedores {
             }
         }
         return false;
+    }
+    //para la tabla de vendedores LPM
+    public static Object[][] DatosTablaVendedor(){
+        //miramos si hay vendedores cargados para evitar errores
+        if(listadVendedores == null || CantVendedores == 0){
+            return new Object[0][4];
+    }
+    Object[][] datos = new Object[CantVendedores][4];
+    
+    for(int i= 0; i<CantVendedores; i++){
+        //obtenemos el objeto vendedore de la lista
+        Vendedor v = listadVendedores[i];
+        
+        datos[i][0] = v.getId();
+        datos[i][1] = v.getNombre();
+        datos[i][2] = v.getGenero();
+        //ESTO imPEDIA QUE LA MALDITA TABLA SE ACTUALICE
+        datos[i][3] = v.getVentasHechas();
+    }
+    return datos;
     }
 }

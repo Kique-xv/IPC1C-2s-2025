@@ -16,11 +16,14 @@ import javax.swing.JTextField;
  */
 public class CrearVendedor extends JFrame {
 
+    private GestionVendedor ventana1;
+
     private JTextField txtCodigo, txNombre, txtContraseña;
     private JComboBox<String> JcGenero;
     private JButton btCrear;
 
-    public CrearVendedor() {
+    public CrearVendedor(GestionVendedor ventana1) {
+        this.ventana1 = ventana1;
         setTitle("Crear nuevo vendedor");
         setSize(400, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -67,11 +70,14 @@ public class CrearVendedor extends JFrame {
         }
         if (AdminDVendedores.CreacionVendedor(codigo, nombre, genero, contraseña)) {
             JOptionPane.showMessageDialog(this, " Vendedor " + nombre + " Creado, ventas realizadas 0 ", "Vendedor creado", JOptionPane.INFORMATION_MESSAGE);
+            if (ventana1 != null) {
+                ventana1.actualizarTabla();
+            }
 //limpieza de los campos despuesd de crear
             txtCodigo.setText("");
             txNombre.setText("");
             txtContraseña.setText("");
             JcGenero.setSelectedIndex(0);
-        } 
+        }
     }
 }

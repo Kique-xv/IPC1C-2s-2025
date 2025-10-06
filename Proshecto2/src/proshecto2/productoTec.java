@@ -40,6 +40,6 @@ public class productoTec extends Productos {
 
     @Override
     public String toCsLine() {
-        return super.codigo + "," + super.nombre + "," + super.categoria + "," + super.precio + "," + super.stock + "," + this.MesesGarantia;
+        return super.codigo + "," + super.nombre + "," + super.precio + "," + super.stock + "," + super.categoria + "," + this.MesesGarantia;
     }
 }
