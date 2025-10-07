@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -18,10 +19,11 @@ import javax.swing.table.DefaultTableModel;
  * @author kiquemarroquin
  */
 public class GestionProductos extends JFrame {
-
+   private   JTable tablaProd;
     private DefaultTableModel tmodelo;
-
+    private JButton btBuscar;
     public GestionProductos() {
+
         setTitle("Gestion de productos");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -40,11 +42,13 @@ public class GestionProductos extends JFrame {
         JButton btModificar = new JButton("Modificar Producto");
         JButton btEliminar = new JButton("Eliminar Producto");
         JButton btCargar = new JButton("Carga masiva de productos");
+        JButton btBuscar = new JButton("ver detalles del producto");
 
         panel.add(btCrear);
         panel.add(btModificar);
         panel.add(btEliminar);
         panel.add(btCargar);
+        panel.add(btBuscar);
         add(panel, BorderLayout.WEST); //ahora a la derecha
 
 //la misma cosa que en la de vendedores solo que aca xd
@@ -60,6 +64,8 @@ public class GestionProductos extends JFrame {
         btModificar.addActionListener(e -> new ModProducto(this).setVisible(true));
         btEliminar.addActionListener(e -> new EliminarProducto(this).setVisible(true));
         btCargar.addActionListener(e -> new CargarProducto(this).setVisible(true));
+        btBuscar.addActionListener(e -> verDatProd());
+
         setVisible(true);
     }
 
@@ -101,11 +107,10 @@ public class GestionProductos extends JFrame {
             }
         };
         //la tabla en cuestion
-        JTable tablaProd = new JTable(this.tmodelo);
-
-        tablaProd.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-        tablaProd.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
-        tablaProd.setRowHeight(25);
+        this.tablaProd = new JTable(this.tmodelo);
+       this.tablaProd.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        this.tablaProd.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        this.tablaProd.setRowHeight(25);
 
         //contenedor de la tabla
         JPanel panelCont = new JPanel(new BorderLayout());
@@ -114,7 +119,44 @@ public class GestionProductos extends JFrame {
 
         panelCont.add(subtitulo, BorderLayout.NORTH);
 
-        panelCont.add(new JScrollPane(tablaProd), BorderLayout.CENTER);
+        panelCont.add(new JScrollPane(this.tablaProd), BorderLayout.CENTER);
         return panelCont;
     }
+    //esto es para ver los detalles del producto
+private void verDatProd() {
+    int Fila = this.tablaProd.getSelectedRow();
+    
+    // Validación de que seleccione una fila
+    if (Fila == -1) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Debes seleccionar un producto de la tabla para ver sus detalles.",
+            "Selecciona un producto",
+            JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+    
+    // obtenermos el codigo para Leer el valor de la columna 0 
+    String codigoBuscar = tablaProd.getValueAt(Fila, 0).toString();
+    
+    // Buscar el objeto
+    Productos p = AdminDProductos.BuscarProd(codigoBuscar);
+
+    if (p != null) {
+        // Lanzar la ventana de los detalles gracias a VerDetallesProd
+        VerDetallesProd detallesVentana = new VerDetallesProd(p);
+        detallesVentana.setVisible(true); // Mostrará el JDialog modal
+        
+    } else {
+        // Este es un caso de error raro producto en tabla, pero no en memoria, gracias utub
+        JOptionPane.showMessageDialog(
+            this,
+            "El producto seleccionado no pudo ser recuperado del administrador.",
+            "Error",
+            JOptionPane.ERROR_MESSAGE
+        );
+    }
+}    
 }
+    
