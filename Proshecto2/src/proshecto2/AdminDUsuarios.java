@@ -43,24 +43,15 @@ public class AdminDUsuarios {
 
             while ((linea = Lector.readLine()) != null && CantUsuarios < listadUsuarios.length) {
                 String[] datos = linea.split(",");
-                String tipousur = datos.length > Usuarios.TIPOUSUR ? datos[Usuarios.TIPOUSUR].trim() : "";
 //cambiamos para que haya diferencia entre vendores y los demas usuarios
-                if (tipousur.equals("VENDEDOR") && datos.length >= Vendedor.NUM_CAMPOS_VENDEDOR) {
-                    //cargamos un ibjeto vendedor, con todos sus cambpos incluyendo sus ventas
-                    try {
-                        String id = datos[Usuarios.ID].trim();
-                        String nombre = datos[Usuarios.NOMBRE].trim();
-                        String Contraseña = datos[Usuarios.CONTRASEÑA].trim();
-                    } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                        JOptionPane.showMessageDialog(null, "Error al crear al usuario, por datos incompletos o algo", "Error 02", JOptionPane.ERROR_MESSAGE);
-                    }
-                } else if (datos.length == Usuarios.CAMPOS) {
-                    //agregamos un objeto usuaio base (el admon)
-                    listadUsuarios[CantUsuarios++] = new Usuarios(
+                if (datos.length >= Usuarios.CAMPOS) {
+                    String tipo = datos[Usuarios.TIPOUSUR].trim(); 
+                    
+                 listadUsuarios[CantUsuarios++] = new Usuarios(
                             datos[Usuarios.ID].trim(),
                             datos[Usuarios.NOMBRE].trim(),
                             datos[Usuarios.CONTRASEÑA].trim(),
-                            datos[Usuarios.TIPOUSUR].trim()
+                            datos[Usuarios.TIPOUSUR].trim()                   
                     );
                 }
             }
@@ -76,12 +67,15 @@ public class AdminDUsuarios {
         try (PrintWriter escribir = new PrintWriter(new FileWriter(ArchiUsur))) {
             for (int i = 0; i < CantUsuarios; i++) {
                 Usuarios u = listadUsuarios[i];
+                
+                Usuarios usurBase = new Usuarios(u.getId(), u.getNombre(), u.getcontraseña(), u.getTipoUsuario());
                 escribir.println(String.join(",", u.toArray()));
             }
             JOptionPane.showMessageDialog(null, "Los usuarios fueron guardados en el archivo correspondiente", "Accion Exitosa", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Algo salio mal al guardar a los usuarios", "Error 04", JOptionPane.ERROR_MESSAGE);
         }
+        cargarUsuarios();
     }
 //un metodo para validar las credenciales de los usuarios
 

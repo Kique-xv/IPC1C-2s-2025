@@ -75,7 +75,6 @@ public class AdminDVendedores {
         }
     }
     //tdodo esto lo traje de administrador de usuarios porque al guardar los vendedores en el mismo archivo que el admin crea problemaas ayuda son  las 3 am 7.7
-
     public static boolean CodRepetido(String id) {
        // System.out.println("DEBUG: Buscando duplicado para ID: " + id);
         for (int i = 0; i < CantVendedores; i++) { //buscar en la matriz de vendedore
@@ -110,6 +109,9 @@ public class AdminDVendedores {
         Vendedor Nvendedor = new Vendedor(id, nombre, contrseña, genero);
         listadVendedores[CantVendedores++] = Nvendedor;
         GuardarVendedor();
+        
+        Usuarios nUsuario = new Usuarios(id, nombre, contrseña, "VENDEDOR");
+        AdminDUsuarios.AgregarUsuario(Nvendedor);
         return true;
     }
 //un metodo para modifcar el nombre y contraseña
@@ -160,5 +162,14 @@ public class AdminDVendedores {
         datos[i][3] = v.getVentasHechas();
     }
     return datos;
+    }
+    public static Vendedor ValidIngreso(String id, String Contraseña) {
+        //buscamos al vendedor por codigo
+        Vendedor v = BuscarVendedor(id);    
+        //si lo encuentra y la contraseña existe
+        if(v != null && v.getContraseña().equals(Contraseña)){
+            return v;
+        }
+        return null;
     }
 }

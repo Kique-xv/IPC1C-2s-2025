@@ -53,19 +53,27 @@ public class IngresarUsuarios extends JFrame {
     private void IntentoIngresar() {
         String id = txtID.getText().trim();
         String Contraseña = new String(txtContraseña.getPassword());
-
         Usuarios UsuarioAutenticar = AdminDUsuarios.autenticazion(id, Contraseña);
+
         if (UsuarioAutenticar != null) {
             String tipo = UsuarioAutenticar.getTipoUsuario();
+            //manejo para cada tipo de usuario
+System.out.println("DEBUG: Tipo de Usuario autenticado: " + tipo);
+
             if ("ADMIN".equals(tipo)) {
-                JOptionPane.showMessageDialog(this, "Bienvenodo admin", "Acceso otorgado", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Bienvenido admin", "Acceso otorgado", JOptionPane.INFORMATION_MESSAGE);
                 new MenuAdmin().setVisible(true); //abre el menu de admin
                 this.dispose();
-                
+
             } else if ("VENDEDOR".equals(tipo)) {
-                JOptionPane.showMessageDialog(this, "Bienvenido Vendedor", "Acceso otorgado", JOptionPane.INFORMATION_MESSAGE);
-                //new MenuVendedor.setVisible(true) cuadno ya este ese modulo
-                this.dispose();
+                Vendedor vendedorAct = AdminDVendedores.BuscarVendedor(id);
+                if (vendedorAct != null) {
+                    JOptionPane.showMessageDialog(this, "Bienvenido Vendedor", "Acceso otorgado", JOptionPane.INFORMATION_MESSAGE);
+                    new MenuVendedor(vendedorAct).setVisible(true);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error del sistema ", "Venderdor no registrado", JOptionPane.ERROR_MESSAGE);
+                }
             } else if ("CLIENTE".equals(tipo)) {
                 JOptionPane.showMessageDialog(this, "Bienvenido Cliente ", "Acceso otorgado", JOptionPane.INFORMATION_MESSAGE);
                 //new MenuCliente, misma cosa

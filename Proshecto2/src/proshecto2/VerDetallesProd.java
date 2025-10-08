@@ -41,27 +41,27 @@ public class VerDetallesProd extends JDialog {
         String atriDet = ObtenerDatos(p);
 
         //codigg
-        panelDat.add(new JLabel("El codigo del producto es: ", SwingConstants.RIGHT));
+        panelDat.add(new JLabel("El codigo del producto es: ", SwingConstants.CENTER));
         panelDat.add(new JLabel(p.getCodigo()));
 
         //el nombre
-        panelDat.add(new JLabel("el nombre del producto es:  ", SwingConstants.RIGHT));
+        panelDat.add(new JLabel("El nombre del producto es:  ", SwingConstants.CENTER));
         panelDat.add(new JLabel(p.getNombre()));
 
         //precio
-        panelDat.add(new JLabel("El precio del producto es: ", SwingConstants.RIGHT));
+        panelDat.add(new JLabel("El precio del producto es: ", SwingConstants.CENTER));
         panelDat.add(new JLabel("Q. " + String.format("%.2f", p.getPrecio())));
 
         //el stock
-        panelDat.add(new JLabel("La cantidad disponible del producto es: ", SwingConstants.RIGHT));
+        panelDat.add(new JLabel("La cantidad disponible del producto es: ", SwingConstants.CENTER));
         panelDat.add(new JLabel(String.valueOf(p.getStock())));
 
         //La categoria
-        panelDat.add(new JLabel("La categoria del producto es: ", SwingConstants.RIGHT));
+        panelDat.add(new JLabel("La categoria del producto es: ", SwingConstants.CENTER));
         panelDat.add(new JLabel(p.getCategoria()));
 
         //el atributo especifico la garantia, el vencimiento(saber como decirlo), y si no tiene 
-        JLabel LbAtributo = new JLabel("El atributo especifico del producto es: ", SwingConstants.RIGHT);
+        JLabel LbAtributo = new JLabel("El atributo especifico del producto es: ", SwingConstants.CENTER);
         LbAtributo.setFont(new Font("Arial", Font.BOLD, 13));
         panelDat.add(LbAtributo);
 
@@ -80,7 +80,7 @@ public class VerDetallesProd extends JDialog {
             return pT.getMesesGarantia() + " Meses de garantia ";
         } else if (p.getCategoria().equals(" ALIMENTO ")) {
             productoComida pCom = (productoComida) p;
-            return pCom.getFechaVencer();
+            return pCom.getFechaVencer() +" fecha de vencimiento";
         } else {
             return "N/A";
         }

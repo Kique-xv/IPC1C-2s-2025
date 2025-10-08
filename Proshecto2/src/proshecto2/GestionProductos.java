@@ -19,9 +19,11 @@ import javax.swing.table.DefaultTableModel;
  * @author kiquemarroquin
  */
 public class GestionProductos extends JFrame {
-   private   JTable tablaProd;
+
+    private JTable tablaProd;
     private DefaultTableModel tmodelo;
     private JButton btBuscar;
+
     public GestionProductos() {
 
         setTitle("Gestion de productos");
@@ -108,7 +110,7 @@ public class GestionProductos extends JFrame {
         };
         //la tabla en cuestion
         this.tablaProd = new JTable(this.tmodelo);
-       this.tablaProd.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        this.tablaProd.setFont(new Font("Segoe UI", Font.PLAIN, 15));
         this.tablaProd.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         this.tablaProd.setRowHeight(25);
 
@@ -123,40 +125,38 @@ public class GestionProductos extends JFrame {
         return panelCont;
     }
     //esto es para ver los detalles del producto
-private void verDatProd() {
-    int Fila = this.tablaProd.getSelectedRow();
-    
-    // Validación de que seleccione una fila
-    if (Fila == -1) {
-        JOptionPane.showMessageDialog(
-            this,
-            "Debes seleccionar un producto de la tabla para ver sus detalles.",
-            "Selecciona un producto",
-            JOptionPane.WARNING_MESSAGE
-        );
-        return;
-    }
-    
-    // obtenermos el codigo para Leer el valor de la columna 0 
-    String codigoBuscar = tablaProd.getValueAt(Fila, 0).toString();
-    
-    // Buscar el objeto
-    Productos p = AdminDProductos.BuscarProd(codigoBuscar);
+    private void verDatProd() {
+        int Fila = this.tablaProd.getSelectedRow();
 
-    if (p != null) {
-        // Lanzar la ventana de los detalles gracias a VerDetallesProd
-        VerDetallesProd detallesVentana = new VerDetallesProd(p);
-        detallesVentana.setVisible(true); // Mostrará el JDialog modal
-        
-    } else {
-        // Este es un caso de error raro producto en tabla, pero no en memoria, gracias utub
-        JOptionPane.showMessageDialog(
-            this,
-            "El producto seleccionado no pudo ser recuperado del administrador.",
-            "Error",
-            JOptionPane.ERROR_MESSAGE
-        );
+        // Validación de que seleccione una fila
+        if (Fila == -1) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Debes seleccionar un producto de la tabla para ver sus detalles.",
+                    "Selecciona un producto",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        // obtenermos el codigo para Leer el valor de la columna 0 
+        String codigoBuscar = tablaProd.getValueAt(Fila, 0).toString();
+
+        // Buscar el objeto
+        Productos p = AdminDProductos.BuscarProd(codigoBuscar);
+
+        if (p != null) {
+            // Lanzar la ventana de los detalles gracias a VerDetallesProd
+            VerDetallesProd detallesVentana = new VerDetallesProd(p);
+            detallesVentana.setVisible(true); // Mostrará el JDialog modal
+        } else {
+            // Este es un caso de error raro producto en tabla, pero no en memoria, gracias utub
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El producto seleccionado no pudo ser recuperado del administrador.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
-}    
 }
-    
