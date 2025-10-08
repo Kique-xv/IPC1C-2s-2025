@@ -32,6 +32,7 @@ public class VerDetallesProd extends JDialog {
         JLabel lbTitulo = new JLabel("Datos completos del proucto", SwingConstants.CENTER);
         lbTitulo.setFont(new Font("Arial", Font.BOLD, 18));
         panelc.add(lbTitulo, BorderLayout.NORTH);
+        add(new JLabel("------------------------------------------------------------------------------------"));
 
         //un panel con los datos con el gridlayout de 6 filas y 2 columnas
         JPanel panelDat = new JPanel(new GridLayout(6, 2, 5, 10));
@@ -43,27 +44,33 @@ public class VerDetallesProd extends JDialog {
         //codigg
         panelDat.add(new JLabel("El codigo del producto es: ", SwingConstants.CENTER));
         panelDat.add(new JLabel(p.getCodigo()));
+        add(new JLabel("------------------------------------------------------------------------------------"));
 
         //el nombre
         panelDat.add(new JLabel("El nombre del producto es:  ", SwingConstants.CENTER));
         panelDat.add(new JLabel(p.getNombre()));
+        add(new JLabel("------------------------------------------------------------------------------------"));
 
         //precio
         panelDat.add(new JLabel("El precio del producto es: ", SwingConstants.CENTER));
         panelDat.add(new JLabel("Q. " + String.format("%.2f", p.getPrecio())));
+        add(new JLabel("------------------------------------------------------------------------------------"));
 
         //el stock
         panelDat.add(new JLabel("La cantidad disponible del producto es: ", SwingConstants.CENTER));
         panelDat.add(new JLabel(String.valueOf(p.getStock())));
+        add(new JLabel("------------------------------------------------------------------------------------"));
 
         //La categoria
         panelDat.add(new JLabel("La categoria del producto es: ", SwingConstants.CENTER));
         panelDat.add(new JLabel(p.getCategoria()));
+        add(new JLabel("------------------------------------------------------------------------------------"));
 
         //el atributo especifico la garantia, el vencimiento(saber como decirlo), y si no tiene 
         JLabel LbAtributo = new JLabel("El atributo especifico del producto es: ", SwingConstants.CENTER);
         LbAtributo.setFont(new Font("Arial", Font.BOLD, 13));
         panelDat.add(LbAtributo);
+        add(new JLabel("------------------------------------------------------------------------------------"));
 
         JLabel LbAtriVal = new JLabel(atriDet);
         LbAtriVal.setFont(new Font("Arial", Font.BOLD, 14));
@@ -80,7 +87,7 @@ public class VerDetallesProd extends JDialog {
             return pT.getMesesGarantia() + " Meses de garantia ";
         } else if (p.getCategoria().equals(" ALIMENTO ")) {
             productoComida pCom = (productoComida) p;
-            return pCom.getFechaVencer() +" fecha de vencimiento";
+            return pCom.getFechaVencer() + " fecha de vencimiento";
         } else {
             return "N/A";
         }

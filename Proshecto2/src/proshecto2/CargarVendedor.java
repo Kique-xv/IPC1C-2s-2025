@@ -22,7 +22,8 @@ public class CargarVendedor extends JFrame {
 
     private JTextArea resulArea;
     private JButton btCargar;
-private GestionVendedor ventana1;
+    private GestionVendedor ventana1;
+
     public CargarVendedor(GestionVendedor ventana1) {
         this.ventana1 = ventana1;
         setTitle("Cargar vendedores");
@@ -51,7 +52,7 @@ private GestionVendedor ventana1;
 
     }
 
-    private void CargarDatos( ) {
+    private void CargarDatos() {
         JFileChooser fC = new JFileChooser();
         fC.setDialogTitle("Selecciona el archivo csv de vendedores");
 
@@ -111,11 +112,11 @@ private GestionVendedor ventana1;
                 + "total errores de formato: " + FallasForm + "\n"
                 + "total de errores lógicos duplicados u utros " + ErrorLogic,
                 "Resumen de Carga",
-                JOptionPane.INFORMATION_MESSAGE  ); 
-       
-         if (ventana1 != null) {
-           ventana1.actualizarTabla();
+                JOptionPane.INFORMATION_MESSAGE);
+
+        if (ventana1 != null) {
+            ventana1.actualizarTabla();
+        }
+        this.dispose();
     }
-         this.dispose();
 }
-       }

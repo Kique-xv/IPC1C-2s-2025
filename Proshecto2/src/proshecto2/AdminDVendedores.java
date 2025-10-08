@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 
 import proshecto2.Vendedor;
+
 /**
  *
  * @author kiquemarroquin
@@ -24,7 +25,7 @@ public class AdminDVendedores {
 
     static {
         CargarVendedores();
-      //  System.out.println("DEBUG: Vendedores cargados al inicio: " + CantVendedores); esto feue de ayuda xd
+        //  System.out.println("DEBUG: Vendedores cargados al inicio: " + CantVendedores); esto feue de ayuda xd
     }
 
     public static void CargarVendedores() {
@@ -34,30 +35,49 @@ public class AdminDVendedores {
             return;
         }
         CantVendedores = 0;
+        System.out.println("DEBUG: Iniciando carga de Vendedores.csv. CantVendedores = 0."); // Nuevo
+
         try (BufferedReader Lector = new BufferedReader(new FileReader(archivo))) {
             String linea;
-
+            int numl = 0;
             while ((linea = Lector.readLine()) != null && CantVendedores < listadVendedores.length) {
                 String[] datos = linea.split(",");
                 //patron vendedor: Codigo,  nombre, genero, contraseña, ventas
                 if (datos.length >= Vendedor.NUM_CAMPOS_VENDEDOR) {
+                    int ventas = 0;
                     try {
                         String id = datos[Vendedor.ID].trim();
                         String nombre = datos[Vendedor.NOMBRE].trim();
                         String Contraseña = datos[Vendedor.CONTRASEÑA].trim();
                         String genero = datos[Vendedor.GENERO].trim();
-                        int ventas = Integer.parseInt(datos[Vendedor.VENTAS_HECHAS].trim());
+                        ventas = Integer.parseInt(datos[Vendedor.VENTAS_HECHAS].trim());
+                        System.out.println("DEBUG: Vendedor cargado OK en línea " + numl + ": " + id); // Nuevo
 
                         Vendedor Nvendedor = new Vendedor(id, nombre, Contraseña, genero);
-                        //setter para las ventas
                         Nvendedor.setVentasHechas(ventas);
                         listadVendedores[CantVendedores++] = Nvendedor;
-                    } catch (Exception e) {
+
+                    } catch (NumberFormatException nfe) {
+                        System.err.println("❌ ERROR 16-A (Formato Numérico) - Línea: " + numl);
+                        System.err.println("  Línea CSV: " + linea);
+                        System.err.println("  Error: Las ventas no son un número válido. Mensaje: " + nfe.getMessage());
+                        // Quita el JOptionPane.showMessageDialog de aquí, es muy intrusivo
                         JOptionPane.showMessageDialog(null, "Error al crear al vendedor desde el CSV" + linea, "Error 16", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception e) {
+                        System.err.println("❌ ERROR 16-B (General) - Línea: " + numl);
+                        System.err.println("  Línea CSV: " + linea);
+                        System.err.println("  Error: Problema de lectura. Mensaje: " + e.getMessage());
                     }
-                }           
+                } else {
+                    System.err.println("❌ ERROR 16-C (Campos Faltantes) - Línea: " + numl);
+                    System.err.println("  Línea CSV: " + linea);
+                    System.err.println("  Esperado: " + Vendedor.NUM_CAMPOS_VENDEDOR + " campos. Encontrado: " + datos.length);
+                }
             }
+            System.out.println("DEBUG: Carga de Vendedores finalizada. Total cargados: " + CantVendedores);
+
         } catch (IOException e) {
+
             JOptionPane.showMessageDialog(null, "Error al cargar el archivo CSV de vendedores.", "Error 17", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -67,24 +87,28 @@ public class AdminDVendedores {
             for (int i = 0; i < CantVendedores; i++) {
                 Vendedor v = listadVendedores[i];
                 //formato del archivo, cod, nombre, genero, contraseña y ventas
-                String lineacsv = v.getId() + "," + v.getNombre() + "," + v.getGenero() + "," + v.getContraseña() + "," + v.getVentasHechas();
-                escribir.println(lineacsv);
+               String lineacsv = v.getId() + "," + v.getNombre() + "," + v.getContraseña() + "," 
+                              + v.getTipoUsuario() + "," 
+                              + v.getGenero() + "," + v.getVentasHechas();                          
+            escribir.println(lineacsv);
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al guardar vendedores en CSV.", "Error 18", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     //tdodo esto lo traje de administrador de usuarios porque al guardar los vendedores en el mismo archivo que el admin crea problemaas ayuda son  las 3 am 7.7
     public static boolean CodRepetido(String id) {
-       // System.out.println("DEBUG: Buscando duplicado para ID: " + id);
+        // System.out.println("DEBUG: Buscando duplicado para ID: " + id);
         for (int i = 0; i < CantVendedores; i++) { //buscar en la matriz de vendedore
-         //   System.out.println("DEBUG: Comparando con vendedor cargado: " + listadVendedores[i].getId());
+            //   System.out.println("DEBUG: Comparando con vendedor cargado: " + listadVendedores[i].getId());
             if (listadVendedores[i].getId().equalsIgnoreCase(id)) {
                 return true;
             }
         }
         return false;
     }
+
     //esto de aca para abajo es para los vendedores
     public static Vendedor BuscarVendedor(String id) {
         for (int i = 0; i < CantVendedores; i++) {
@@ -109,8 +133,8 @@ public class AdminDVendedores {
         Vendedor Nvendedor = new Vendedor(id, nombre, contrseña, genero);
         listadVendedores[CantVendedores++] = Nvendedor;
         GuardarVendedor();
-        
-        Usuarios nUsuario = new Usuarios(id, nombre, contrseña, "VENDEDOR");
+
+        //   Usuarios nUsuario = new Usuarios(id, nombre, contrseña, "VENDEDOR");
         AdminDUsuarios.AgregarUsuario(Nvendedor);
         return true;
     }
@@ -143,31 +167,31 @@ public class AdminDVendedores {
         }
         return false;
     }
+
     //para la tabla de vendedores LPM
-    public static Object[][] DatosTablaVendedor(){
+    public static Object[][] DatosTablaVendedor() {
         //miramos si hay vendedores cargados para evitar errores
-        if(listadVendedores == null || CantVendedores == 0){
+        if (listadVendedores == null || CantVendedores == 0) {
             return new Object[0][4];
+        }
+        Object[][] datos = new Object[CantVendedores][4];
+        for (int i = 0; i < CantVendedores; i++) {
+            //obtenemos el objeto vendedore de la lista
+            Vendedor v = listadVendedores[i];
+            datos[i][0] = v.getId();
+            datos[i][1] = v.getNombre();
+            datos[i][2] = v.getGenero();
+            //ESTO imPEDIA QUE LA MALDITA TABLA SE ACTUALICE
+            datos[i][3] = v.getVentasHechas();
+        }
+        return datos;
     }
-    Object[][] datos = new Object[CantVendedores][4];
-    
-    for(int i= 0; i<CantVendedores; i++){
-        //obtenemos el objeto vendedore de la lista
-        Vendedor v = listadVendedores[i];
-        
-        datos[i][0] = v.getId();
-        datos[i][1] = v.getNombre();
-        datos[i][2] = v.getGenero();
-        //ESTO imPEDIA QUE LA MALDITA TABLA SE ACTUALICE
-        datos[i][3] = v.getVentasHechas();
-    }
-    return datos;
-    }
+
     public static Vendedor ValidIngreso(String id, String Contraseña) {
         //buscamos al vendedor por codigo
-        Vendedor v = BuscarVendedor(id);    
+        Vendedor v = BuscarVendedor(id);
         //si lo encuentra y la contraseña existe
-        if(v != null && v.getContraseña().equals(Contraseña)){
+        if (v != null && v.getContraseña().equals(Contraseña)) {
             return v;
         }
         return null;

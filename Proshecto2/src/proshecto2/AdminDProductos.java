@@ -287,4 +287,21 @@ public class AdminDProductos {
         }
         return datos;
     }
+    //para agregar el stock
+    public static boolean agregarStock(String IdProd, int Cant){
+       //buscamos el producto por su codigo
+       Productos p = BuscarProd(IdProd);
+       if(p !=null){
+           //obtener el stock actual u sumar lo que vamos a meter
+           int NStock = p.getStock() + Cant;
+           
+           //actualizamos el objeto en la memoria
+           p.setStock(NStock);
+           
+           GuardarProductos();
+           return true;
+       }
+       return false;
+    }
 }
+//lo podria poner en el de agregar stock pero no quiero mas lios... ya me canse
