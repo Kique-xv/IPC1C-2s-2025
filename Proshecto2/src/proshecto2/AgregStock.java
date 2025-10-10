@@ -17,8 +17,10 @@ public class AgregStock extends JFrame {
     private JTextField txtSagregar;
     private JTextField txtCbuscar;
     private JButton btAgregar;
+    private ProductosAlmacen ventana;
 
-    public AgregStock() {
+    public AgregStock(ProductosAlmacen ventana) {
+        this.ventana = ventana;
         setTitle("Agregar Stock");
         setSize(400, 400);
         setLayout(new GridLayout(3, 2, 10, 10));
@@ -62,13 +64,16 @@ public class AgregStock extends JFrame {
                 //Limpiar los campos 
                 txtCbuscar.setText("");
                 txtSagregar.setText("");
+                if (ventana != null) {
+                    ventana.ActualizarTabla();
+                }
+
             } else {
                 JOptionPane.showMessageDialog(this, "El producto no fue encontrado, o no se pudo realizar esta operacion", " Error", JOptionPane.ERROR_MESSAGE);
             }
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "La cantidad debe de ser un numero valido", " Error", JOptionPane.ERROR_MESSAGE);
-
         }
     }
 }

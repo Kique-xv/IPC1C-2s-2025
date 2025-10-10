@@ -58,8 +58,7 @@ public class IngresarUsuarios extends JFrame {
         if (UsuarioAutenticar != null) {
             String tipo = UsuarioAutenticar.getTipoUsuario();
             //manejo para cada tipo de usuario
-System.out.println("DEBUG: Tipo de Usuario autenticado: " + tipo);
-
+            System.out.println("Tipo de Usuario autenticado: " + tipo);
             if ("ADMIN".equals(tipo)) {
                 JOptionPane.showMessageDialog(this, "Bienvenido admin", "Acceso otorgado", JOptionPane.INFORMATION_MESSAGE);
                 new MenuAdmin().setVisible(true); //abre el menu de admin

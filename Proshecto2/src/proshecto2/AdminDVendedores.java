@@ -35,7 +35,7 @@ public class AdminDVendedores {
             return;
         }
         CantVendedores = 0;
-        System.out.println("DEBUG: Iniciando carga de Vendedores.csv. CantVendedores = 0."); // Nuevo
+        //System.out.println("DEBUG: Iniciando carga de Vendedores.csv. CantVendedores = 0."); // Nuevo
 
         try (BufferedReader Lector = new BufferedReader(new FileReader(archivo))) {
             String linea;
@@ -51,31 +51,20 @@ public class AdminDVendedores {
                         String Contraseña = datos[Vendedor.CONTRASEÑA].trim();
                         String genero = datos[Vendedor.GENERO].trim();
                         ventas = Integer.parseInt(datos[Vendedor.VENTAS_HECHAS].trim());
-                        System.out.println("DEBUG: Vendedor cargado OK en línea " + numl + ": " + id); // Nuevo
+                       // System.out.println("DEBUG: Vendedor cargado OK en línea " + numl + ": " + id); // Nuevo
 
                         Vendedor Nvendedor = new Vendedor(id, nombre, Contraseña, genero);
                         Nvendedor.setVentasHechas(ventas);
                         listadVendedores[CantVendedores++] = Nvendedor;
 
                     } catch (NumberFormatException nfe) {
-                        System.err.println("❌ ERROR 16-A (Formato Numérico) - Línea: " + numl);
-                        System.err.println("  Línea CSV: " + linea);
-                        System.err.println("  Error: Las ventas no son un número válido. Mensaje: " + nfe.getMessage());
-                        // Quita el JOptionPane.showMessageDialog de aquí, es muy intrusivo
+                       
                         JOptionPane.showMessageDialog(null, "Error al crear al vendedor desde el CSV" + linea, "Error 16", JOptionPane.ERROR_MESSAGE);
                     } catch (Exception e) {
-                        System.err.println("❌ ERROR 16-B (General) - Línea: " + numl);
-                        System.err.println("  Línea CSV: " + linea);
-                        System.err.println("  Error: Problema de lectura. Mensaje: " + e.getMessage());
+                       
                     }
-                } else {
-                    System.err.println("❌ ERROR 16-C (Campos Faltantes) - Línea: " + numl);
-                    System.err.println("  Línea CSV: " + linea);
-                    System.err.println("  Esperado: " + Vendedor.NUM_CAMPOS_VENDEDOR + " campos. Encontrado: " + datos.length);
-                }
+                } 
             }
-            System.out.println("DEBUG: Carga de Vendedores finalizada. Total cargados: " + CantVendedores);
-
         } catch (IOException e) {
 
             JOptionPane.showMessageDialog(null, "Error al cargar el archivo CSV de vendedores.", "Error 17", JOptionPane.ERROR_MESSAGE);
@@ -86,9 +75,9 @@ public class AdminDVendedores {
         try (PrintWriter escribir = new PrintWriter(new FileWriter(Archivo_Vendedor))) {
             for (int i = 0; i < CantVendedores; i++) {
                 Vendedor v = listadVendedores[i];
-                //formato del archivo, cod, nombre, genero, contraseña y ventas
+                //formato del archivo, cod, nombre, genero, contraseña y ventas y si eñ mp haber agregadp el tipo de usuario no me dejaba inciar sesion      
                String lineacsv = v.getId() + "," + v.getNombre() + "," + v.getContraseña() + "," 
-                              + v.getTipoUsuario() + "," 
+                              + v.getTipoUsuario() + "," //ESTA MALDITA LINEA ME KGO LA NOCHE >:/
                               + v.getGenero() + "," + v.getVentasHechas();                          
             escribir.println(lineacsv);
             }

@@ -22,7 +22,6 @@ public class GestionProductos extends JFrame {
 
     private JTable tablaProd;
     private DefaultTableModel tmodelo;
-    private JButton btBuscar;
 
     public GestionProductos() {
 

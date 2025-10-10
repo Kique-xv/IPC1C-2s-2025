@@ -274,9 +274,9 @@ public class AdminDProductos {
     public static Object[][] DatosTablaProd(){
         //las 3 columnas codigo, nombre y la categoria
         if(listadProductos == null || CantProducto == 0){
-            return new Object[0][3];
+            return new Object[0][5];
         }
-        Object[][] datos = new Object[CantProducto][3];
+        Object[][] datos = new Object[CantProducto][5];
         
         for(int i=0; i<CantProducto; i++){
             Productos p = listadProductos[i];
@@ -284,6 +284,9 @@ public class AdminDProductos {
             datos[i][0] = p.getCodigo();
             datos[i][1] = p.getNombre();
             datos[i][2] = p.getCategoria();
+            datos[i][3] = p.getPrecio();
+            datos[i][4] = p.getStock();
+            
         }
         return datos;
     }
@@ -303,5 +306,17 @@ public class AdminDProductos {
        }
        return false;
     }
-}
+
 //lo podria poner en el de agregar stock pero no quiero mas lios... ya me canse
+  //un metodo para eso del csv de los producot alm
+    public static boolean ActualizarStock(String codigo, int Cant){      
+        Productos p = BuscarProd(codigo);       
+        if(p !=null){
+            //añadimos el stock acutal mas el que agreguemos 
+            p.setStock(p.getStock() + Cant);          
+            GuardarProductos();
+            return true;
+        }
+        return false;
+    }
+}
