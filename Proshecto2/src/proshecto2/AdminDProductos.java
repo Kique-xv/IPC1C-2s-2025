@@ -1,4 +1,3 @@
-
 package proshecto2;
 
 import java.io.BufferedReader;
@@ -8,9 +7,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 
 import proshecto2.Productos;
+
 /**
  *
  * @author kiquemarroquin
@@ -19,14 +21,14 @@ public class AdminDProductos {
 
     private static final String ArchiProd = "Productos.csv";
     private static final int MProductos = 100; //numero maximo de productos aunque... realmente, para este proyecto es demasiado, igual que esta descripcion totalmente incesesaria, sabes que estas leyendo esto y que yo me estoy poniendo inspirado para roper la 4ta pared, unicamente para que alguien lea esta babosad
-
+    private static final String ArchiStock = "Stock.csv";
     //la matriz para los productos tecnologicos como esta macbook air de 256gb con el chip m1 y la comida como este sabroso tortrix  de limon ©️
     private static Productos[] listadProductos = new Productos[MProductos];
     private static int CantProducto = 0;
-
-//cargamos los datos
-    static {
-        CargarProductos();
+//
+public static void inicializar() {
+        CargarProductos(); // Llamamos al método que ya tenías
+       System.out.println("Sistema de productos listo, se ha cargado un total de productos cargados: " + CantProducto);
     }
 
     public static void CargarProductos() {
@@ -65,8 +67,8 @@ public class AdminDProductos {
                             continue;
                         }
                         listadProductos[CantProducto++] = Nproducto;
-                    } catch (Exception e) {
-                     //   JOptionPane.showMessageDialog(null, "Error al crear el producto desde el csv", "Error", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception e) {                      
+                    JOptionPane.showMessageDialog(null, "Error al procesar una línea en Productos.csv.\nLínea con problemas: '" + Linea + "'\nError: " + e.getMessage(), "Error de Formato en Archivo", JOptionPane.WARNING_MESSAGE);
                     }
                 }
             }
@@ -97,11 +99,17 @@ public class AdminDProductos {
     }
 
     public static Productos BuscarProd(String codigo) {
+          //  System.out.println("\n--- Iniciando búsqueda del código: [" + codigo + "]"); // Mostramos el código que buscamos
         for (int i = 0; i < CantProducto; i++) {
-            if (listadProductos[i].getCodigo().equalsIgnoreCase(codigo)) {
+                    String codigoEnLista = listadProductos[i].getCodigo();
+
+            if (codigoEnLista.equalsIgnoreCase(codigo)) {
+                          //  System.out.println("    --> ¡ÉXITO! Se encontró una coincidencia en el índice " + i);
+
                 return listadProductos[i];
             }
         }
+          //  System.out.println("    --> FALLO: La búsqueda terminó. No se encontró el producto.");
         return null;
     }
 
@@ -137,7 +145,7 @@ public class AdminDProductos {
 
         if (Nproducto != null) {
             listadProductos[CantProducto++] = Nproducto;
-          GuardarProductos(); 
+            GuardarProductos();
             return true;
         }
         return false;
@@ -255,9 +263,9 @@ public class AdminDProductos {
                     lineaFail++;
                 }
             }
-  if(producCargado > 0 ){
-        GuardarProductos();
-    }
+            if (producCargado > 0) {
+                GuardarProductos();
+            }
         } catch (FileNotFoundException e) {
             return "Error al no enocontrar al arhivo ";
         } catch (IOException e) {
@@ -270,53 +278,104 @@ public class AdminDProductos {
             return "carga de archivos exitosa :D " + producCargado + " productos creados ";
         }
     }
+
     //para la tabla
-    public static Object[][] DatosTablaProd(){
+    public static Object[][] DatosTablaProd() {
         //las 3 columnas codigo, nombre y la categoria
-        if(listadProductos == null || CantProducto == 0){
+        if (listadProductos == null || CantProducto == 0) {
             return new Object[0][5];
         }
         Object[][] datos = new Object[CantProducto][5];
-        
-        for(int i=0; i<CantProducto; i++){
+
+        for (int i = 0; i < CantProducto; i++) {
             Productos p = listadProductos[i];
-            
+
             datos[i][0] = p.getCodigo();
             datos[i][1] = p.getNombre();
             datos[i][2] = p.getCategoria();
             datos[i][3] = p.getPrecio();
             datos[i][4] = p.getStock();
-            
+
         }
         return datos;
     }
-    //para agregar el stock
-    public static boolean agregarStock(String IdProd, int Cant){
-       //buscamos el producto por su codigo
-       Productos p = BuscarProd(IdProd);
-       if(p !=null){
-           //obtener el stock actual u sumar lo que vamos a meter
-           int NStock = p.getStock() + Cant;
-           
-           //actualizamos el objeto en la memoria
-           p.setStock(NStock);
-           
-           GuardarProductos();
-           return true;
-       }
-       return false;
-    }
 
-//lo podria poner en el de agregar stock pero no quiero mas lios... ya me canse
-  //un metodo para eso del csv de los producot alm
-    public static boolean ActualizarStock(String codigo, int Cant){      
-        Productos p = BuscarProd(codigo);       
-        if(p !=null){
-            //añadimos el stock acutal mas el que agreguemos 
-            p.setStock(p.getStock() + Cant);          
+    //para agregar el stock
+    public static boolean agregarStock(String IdProd, int Cant) {
+        //buscamos el producto por su codigo
+        Productos p = BuscarProd(IdProd);
+        if (p != null) {
+            //obtener el stock actual u sumar lo que vamos a meter
+            int NStock = p.getStock() + Cant;
+
+            //actualizamos el objeto en la memoria
+            p.setStock(NStock);
+
+            //hacemos nuestro llamado para que se guarde
+            RegistrarStock(IdProd, Cant);
             GuardarProductos();
             return true;
         }
         return false;
+    }
+
+//lo podria poner en el de agregar stock pero no quiero mas lios... ya me canse
+    //un metodo para eso del csv de los producot alm
+    public static boolean ActualizarStock(String codigo, int Cant) {
+        Productos p = BuscarProd(codigo);
+        if (p != null) {
+
+            int Nstock = p.getStock() + Cant;
+            //añadimos el stock acutal mas el que agreguemos 
+            p.setStock(Nstock);
+            return true;
+        }
+        return false;
+    }
+    public static void RegistrarStock(String codigo, int Cantidad) {
+        File ArchivoHis = new File("HistorialStock.csv");
+        boolean Narchivo = !ArchivoHis.exists();
+        try (PrintWriter escribit = new PrintWriter(new FileWriter(ArchivoHis, true))) {
+            //obtener la fecha
+            
+            if(Narchivo){
+                escribit.println("codigo, cantidad_Agregada,fecha_hora");
+            }
+            LocalDateTime ahora = LocalDateTime.now();
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
+            String horafecha = ahora.format(formato);
+
+            //creamos la line para guardar
+            String lineacsv = codigo + "," + Cantidad + "," + horafecha;
+
+            escribit.println(lineacsv);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "No se pudo registrar el movimiento en el historial de stock.", "Error de Historial", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public static boolean GenerarCsvStock(){
+        String ruta = System.getProperty("user.home")+ "/Desktop/plantilla_stock.csv";
+        File Archiv = new File(ruta);
+    try (PrintWriter escribir = new PrintWriter(new FileWriter(Archiv))) {
+        // Escribimos el encabezado de la plantilla
+        escribir.println("codigo,cantidad_a_agregar");
+         for (int i = 0; i < CantProducto; i++) {
+            Productos p = listadProductos[i];
+            // Para cada producto, escribimos su código, nombre, y un '0'
+            escribir.println(p.getCodigo()+  ",0");
+        }
+         JOptionPane.showMessageDialog(null, 
+            "¡Plantilla generada con éxito!\nEsta en el escritorio con el nombre: plantilla_stock.csv", 
+            "Plantilla Creada", 
+            JOptionPane.INFORMATION_MESSAGE);
+        return true;
+   } catch (IOException e) {
+        JOptionPane.showMessageDialog(null, 
+            "Error al generar la plantilla de stock: " + e.getMessage(), 
+            "Error", 
+            JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
     }
 }

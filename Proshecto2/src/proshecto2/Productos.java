@@ -9,9 +9,9 @@ public abstract class Productos {
     //las constantes de posicion 
     public static final int CODIGO =0;
     public static final int NOMBRE =1;
-    public static final int CATEGORIA =2;
-    public static final int PRECIO =3;
-    public static final int STOCK =4;
+    public static final int PRECIO =2;
+    public static final int STOCK =3;
+    public static final int CATEGORIA =4;
     public static final int CAMPOS_Prod =6;
     //usamos los protected para usarlas en las demas clases
     protected String codigo;

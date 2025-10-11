@@ -11,8 +11,10 @@ import javax.swing.SwingUtilities;
 public class Proshecto2 {
 
     public static void main(String[] args) {
+        AdminDProductos.inicializar();
+
         SwingUtilities.invokeLater(() -> { //esto va aca, como en la practica 
-            new IngresarUsuarios().setVisible(true);
+                    new IngresarUsuarios().setVisible(true);
         });
     }
 }
