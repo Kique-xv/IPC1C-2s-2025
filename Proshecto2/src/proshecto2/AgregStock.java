@@ -18,8 +18,10 @@ public class AgregStock extends JFrame {
     private JTextField txtCbuscar;
     private JButton btAgregar;
     private ProductosAlmacen ventana;
+    private Vendedor vendedorAct;
 
-    public AgregStock(ProductosAlmacen ventana) {
+    public AgregStock(ProductosAlmacen ventana, Vendedor vendedor) {
+        this.vendedorAct = vendedor;
         this.ventana = ventana;
         setTitle("Agregar Stock");
         setSize(400, 400);
@@ -57,7 +59,7 @@ public class AgregStock extends JFrame {
                 return;
             }
             //hacemos una invocacion del admin de productos
-            boolean AgregadoB = AdminDProductos.agregarStock(codigo, CantAgregar);
+            boolean AgregadoB = AdminDProductos.agregarStock(codigo, CantAgregar, vendedorAct.getId(), vendedorAct.getNombre());
 
             if (AgregadoB) {
                 JOptionPane.showMessageDialog(this, "La cantidad ha sido agregada", "Operacion exitosa", JOptionPane.INFORMATION_MESSAGE);

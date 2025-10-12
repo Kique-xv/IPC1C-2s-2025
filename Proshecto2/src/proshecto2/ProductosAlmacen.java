@@ -21,9 +21,10 @@ public class ProductosAlmacen extends JFrame {
     private JTable tablaProd;
     private DefaultTableModel tmodelo;
     private JButton btActualizar;
+    private Vendedor vendedorAct;
     
-    
-    public ProductosAlmacen(){
+    public ProductosAlmacen(Vendedor vendedor){
+        this.vendedorAct = vendedor;
         setTitle("Gestion de productos");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -41,15 +42,14 @@ public class ProductosAlmacen extends JFrame {
         JButton btAgg = new JButton("Agregar Stock ");
         JButton btCargar = new JButton("Carga del stock en almacen");
         JButton btHistorial = new JButton(" Historial de ingresos");
-      //  JButton btCargarProd = new JButton("Carga Masiva de productos");
-        btActualizar = new JButton("Actualizar tabla");
+   //     btActualizar = new JButton("Actualizar tabla"); LO DEJAMOS OCUKTO PORQUE LA JODIDA TABLA SE ACTUALIZA SOLITa
         
 
         panelb.add(btAgg);
         panelb.add(btCargar);
         panelb.add(btHistorial);
        // panelb.add(btCargarProd);
-        panelb.add(btActualizar);
+     //   panelb.add(btActualizar);
         add(panelb, BorderLayout.WEST); //ahora a la derecha
         
       //  la tabla de los productos
@@ -64,9 +64,11 @@ public class ProductosAlmacen extends JFrame {
   
 
         //las acciones de los botones
-       btAgg.addActionListener(e -> new AgregStock(this).setVisible(true));        
-       btCargar.addActionListener(e -> new CargarStock(this).setVisible(true));        
-       btActualizar.addActionListener(e -> ActualizarTabla());
+       btAgg.addActionListener(e -> new AgregStock(this, vendedorAct).setVisible(true));        
+       btCargar.addActionListener(e -> new CargarStock(this, vendedorAct).setVisible(true));     
+       btHistorial.addActionListener(e -> AdminDProductos.generarHisIngreso());
+       
+      // btActualizar.addActionListener(e -> ActualizarTabla());
      //   btCargarProd.addActionListener(e ->  CargarProducto().setVisible(true));
 
          setVisible(true);

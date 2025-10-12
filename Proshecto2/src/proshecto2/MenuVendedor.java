@@ -49,7 +49,7 @@ public class MenuVendedor extends JFrame {
 
 
 //accion de los botones
-     btProductos.addActionListener(e->  new ProductosAlmacen().setVisible(true));
+     btProductos.addActionListener(e->  new ProductosAlmacen(vendedorAct).setVisible(true));
         //b2
         //b3
         btCerrar.addActionListener(e -> CerrarSesion());

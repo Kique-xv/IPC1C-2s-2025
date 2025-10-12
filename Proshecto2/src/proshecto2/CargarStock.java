@@ -29,8 +29,10 @@ public class CargarStock extends JFrame {
     private JButton btCargar;
     private ProductosAlmacen ventana;
     private JButton btGenerarCsv;
+    private Vendedor vendedorAct;
 
-    public CargarStock(ProductosAlmacen ventana) {
+    public CargarStock(ProductosAlmacen ventana, Vendedor vendedor) {
+        this.vendedorAct = vendedor;
         this.ventana = ventana;
         setTitle("Cargar el stock en el csv");
         setSize(600, 500);
@@ -97,8 +99,8 @@ public class CargarStock extends JFrame {
                         String codigo = datos[0].trim();
                         int cant = Integer.parseInt(datos[1].trim());
 
-                        if (AdminDProductos.ActualizarStock(codigo, cant)) {
-                            AdminDProductos.RegistrarStock(codigo, cant);
+                        if (AdminDProductos.ActualizarStock(codigo, cant, vendedorAct.getId(), vendedorAct.getNombre() )) {
+                            AdminDProductos.RegistrarStock(codigo, cant, vendedorAct.getId(), vendedorAct.getNombre());
                             Actualizaciones++;
                             result.append("Linea " + numlinea + ": stock actualizado para el producto con el codigo: " + codigo + "\n");
                         } else {
