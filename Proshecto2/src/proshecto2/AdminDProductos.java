@@ -28,8 +28,8 @@ public class AdminDProductos {
 //
 
     public static void inicializar() {
-        CargarProductos(); // Llamamos al método que ya tenías
-        System.out.println("Sistema de productos listo, se ha cargado un total de productos cargados: " + CantProducto);
+        CargarProductos(); 
+        //System.out.println("Sistema de productos listo, se ha cargado un total de productos cargados: " + CantProducto);
     }
 
     public static void CargarProductos() {
@@ -100,20 +100,16 @@ public class AdminDProductos {
     }
 
     public static Productos BuscarProd(String codigo) {
-        //  System.out.println("\n--- Iniciando búsqueda del código: [" + codigo + "]"); // Mostramos el código que buscamos
+        //buscamos los productos en la matriz de productos
         for (int i = 0; i < CantProducto; i++) {
             String codigoEnLista = listadProductos[i].getCodigo();
 
             if (codigoEnLista.equalsIgnoreCase(codigo)) {
-                //  System.out.println("    --> ¡ÉXITO! Se encontró una coincidencia en el índice " + i);
-
                 return listadProductos[i];
             }
         }
-        //  System.out.println("    --> FALLO: La búsqueda terminó. No se encontró el producto.");
         return null;
     }
-
     public static boolean CreacionProducto(String codigo, String nombre, double precio, int stock, String categoria, String Atributo) {
         if (CantProducto >= MProductos) {
             JOptionPane.showMessageDialog(null, "Se llego al limite de productos", "Error", JOptionPane.ERROR_MESSAGE);
@@ -341,7 +337,7 @@ public class AdminDProductos {
             //obtener la fecha
 
             if (Narchivo) {
-                escribit.println("codigo, cantidad_Agregada,fecha_hora");
+                escribit.println("codigo, cantidad_Agregada,fecha_hora, nombre_usuario");
             }
             LocalDateTime ahora = LocalDateTime.now();
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");

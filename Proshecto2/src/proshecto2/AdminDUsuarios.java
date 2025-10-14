@@ -106,5 +106,15 @@ public class AdminDUsuarios {
         }
         return false;
     }
+    public static boolean ActualizarUsuario(String id, String Nnombre, String Ncontraseña){
+        for(int i=0; i < CantUsuarios; i++){
+            if(listadUsuarios[i].getId().equalsIgnoreCase(id)){
+                listadUsuarios[i].nombre = Nnombre;
+                listadUsuarios[i].Contraseña = Ncontraseña;
+                return true;
+            }
+        }
+        return false;
+    }
 }
 //los metodos de vendedor los quite de aca y los puse en su lugar en administracion de vendedores xd,
