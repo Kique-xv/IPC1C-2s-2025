@@ -58,8 +58,8 @@ public class GestionClientes  extends JFrame{
           //las acciones de los botones
         btCrear.addActionListener(e -> new CrearClientes(this).setVisible(true));
       btModificar.addActionListener(e -> new ModCliente(this).setVisible(true));
-        //btEliminar.addActionListener(e -> new EliminarVendedor(this).setVisible(true));
-      //  btCargar.addActionListener(e -> new CargarVendedor(this).setVisible(true));
+        btEliminar.addActionListener(e -> new EliminarCliente(this).setVisible(true));
+      btCargar.addActionListener(e -> new CargaClientes(this).setVisible(true));
 
         setVisible(true);
     }

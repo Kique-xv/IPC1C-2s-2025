@@ -106,11 +106,27 @@ public class AdminDUsuarios {
         }
         return false;
     }
-    public static boolean ActualizarUsuario(String id, String Nnombre, String Ncontraseña){
-        for(int i=0; i < CantUsuarios; i++){
-            if(listadUsuarios[i].getId().equalsIgnoreCase(id)){
+
+    public static boolean ActualizarUsuario(String id, String Nnombre, String Ncontraseña) {
+        for (int i = 0; i < CantUsuarios; i++) {
+            if (listadUsuarios[i].getId().equalsIgnoreCase(id)) {
                 listadUsuarios[i].nombre = Nnombre;
                 listadUsuarios[i].Contraseña = Ncontraseña;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean EliminarUsuario(String Id) {
+        for (int i = 0; i < CantUsuarios; i++) {
+            if (listadUsuarios[i].getId().equalsIgnoreCase(Id)) {
+                //Desplazamos todos los usuarios para llenar el espacio
+                for (int j = i; j < CantUsuarios - 1; j++) {
+                    listadUsuarios[j] = listadUsuarios[j + 1];
+                }
+                listadUsuarios[CantUsuarios - 1] = null; //limpiamos la ultima linea
+                CantUsuarios--;
                 return true;
             }
         }

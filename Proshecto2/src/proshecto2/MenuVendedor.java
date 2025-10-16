@@ -45,13 +45,13 @@ public class MenuVendedor extends JFrame {
         panel.add(btClientes);
         panel.add(btPedidos);
         add(btCerrar, BorderLayout.SOUTH);
-         add(panel, BorderLayout.CENTER);
+        add(panel, BorderLayout.CENTER);
 
 
 //accion de los botones
      btProductos.addActionListener(e->  new ProductosAlmacen(vendedorAct).setVisible(true));
       btClientes.addActionListener(e -> new GestionClientes().setVisible(true));
-        //b3
+       btPedidos.addActionListener(e -> new GestionPedidos(vendedorAct).setVisible(true));
         btCerrar.addActionListener(e -> CerrarSesion());
     }
     private void CerrarSesion() {
