@@ -31,7 +31,6 @@ private String FechaVencer;
             this.FechaVencer
         };
     }
-
     @Override
     public String toCsLine() {
         return super.codigo + "," + super.nombre + "," + super.precio + "," + super.stock + "," + super.categoria + "," + this.FechaVencer;

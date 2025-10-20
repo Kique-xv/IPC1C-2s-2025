@@ -28,8 +28,7 @@ public class AdminDProductos {
 //
 
     public static void inicializar() {
-        CargarProductos(); 
-        //System.out.println("Sistema de productos listo, se ha cargado un total de productos cargados: " + CantProducto);
+        CargarProductos();
     }
 
     public static void CargarProductos() {
@@ -44,7 +43,8 @@ public class AdminDProductos {
 
             while ((Linea = lector.readLine()) != null && CantProducto < listadProductos.length) {
                 String[] datos = Linea.split(",");
-                if (datos.length >= Productos.CAMPOS_Prod) {
+                
+                if (datos.length >= 6) {
                     try {
                         String codigo = datos[Productos.CODIGO].trim();
                         String nombre = datos[Productos.NOMBRE].trim();
@@ -52,19 +52,18 @@ public class AdminDProductos {
                         double precio = Double.parseDouble(datos[Productos.PRECIO].trim());
                         int stock = Integer.parseInt(datos[Productos.STOCK].trim());
                         Productos Nproducto = null;
-
-                        if (categoria.equals("TECNOLOGIA") && datos.length == productoTec.CAMPOSTEC) {
+                        if (categoria.equals("TECNOLOGIA")) {
                             //cargamos los datos Ya se la saben, no quiero explicar mas
-                            int garantia = Integer.parseInt(datos[productoTec.GARANTIA].trim());
+                            int garantia = Integer.parseInt(datos[5].trim());//el indice directo
                             Nproducto = new productoTec(codigo, nombre, precio, stock, garantia);
-                        } else if (categoria.equals("ALIMENTO") && datos.length == productoComida.CAMPOCOM) {
+                        } else if (categoria.equals("ALIMENTO")) {
                             //cargamos los datos, del producto de comida
-                            String caducidad = datos[productoComida.VENCIMIENTO].trim();
+                            String caducidad = datos[5].trim();
                             Nproducto = new productoComida(codigo, nombre, precio, stock, caducidad);
-                        } else if (categoria.equals("OTROS") && datos.length == productoOtros.CAMPORT) {
+                        } else if (categoria.equals("OTROS")) {
                             Nproducto = new productoOtros(codigo, nombre, precio, stock);
                         } else {
-                            JOptionPane.showMessageDialog(null, "Error el fomato de linea o la categoria no es la correcta", "Error", JOptionPane.ERROR_MESSAGE);
+                           JOptionPane.showMessageDialog(null, "Error el fomato de linea o la categoria no es la correcta", "Error", JOptionPane.ERROR_MESSAGE);
                             continue;
                         }
                         listadProductos[CantProducto++] = Nproducto;
@@ -86,7 +85,7 @@ public class AdminDProductos {
                 escribir.println(p.toCsLine());
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erroe al guardar los productos en el csv", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al guardar los productos en el csv", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -110,6 +109,7 @@ public class AdminDProductos {
         }
         return null;
     }
+
     public static boolean CreacionProducto(String codigo, String nombre, double precio, int stock, String categoria, String Atributo) {
         if (CantProducto >= MProductos) {
             JOptionPane.showMessageDialog(null, "Se llego al limite de productos", "Error", JOptionPane.ERROR_MESSAGE);
@@ -340,11 +340,11 @@ public class AdminDProductos {
                 escribit.println("codigo, cantidad_Agregada,fecha_hora, nombre_usuario");
             }
             LocalDateTime ahora = LocalDateTime.now();
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String horafecha = ahora.format(formato);
 
             //creamos la line para guardar
-            String lineacsv = codigo + "," + Cantidad + "," + horafecha + "," +nombreUsur;
+            String lineacsv = codigo + "," + Cantidad + "," + horafecha + "," + nombreUsur;
 
             escribit.println(lineacsv);
         } catch (IOException e) {
@@ -401,5 +401,28 @@ public class AdminDProductos {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al generar el reporte: ", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    //para la tabla del cliente xd
+    public static Object[][] DatosTablaCliente() {
+        //creamos un arreglo de 4 columnas, codigo, nombre categoria y el sotkc disponibla
+        Object[][] datos = new Object[CantProducto][4];
+
+        for (int i = 0; i < CantProducto; i++) {
+            Productos p = listadProductos[i];
+            //los datos de la tabla xd
+            datos[i][0] = p.getCodigo();
+            datos[i][1] = p.getNombre();
+            datos[i][2] = p.getCategoria();
+            datos[i][3] = p.getStock();
+        }
+        return datos;
+    }
+    //Para el wn del vendedor xd
+    public static void ReservaStock(String codigoProducto, int CantComprar){
+        Productos p = BuscarProd(codigoProducto);
+        if(p !=null){
+            p.setStock(p.getStock() - CantComprar);
+        }      
     }
 }

@@ -21,7 +21,7 @@ public class MenuVendedor extends JFrame {
     public MenuVendedor(Vendedor v) {
         this.vendedorAct = v;
 
-        setTitle("Menu de vendedor:" + v.getNombre());
+        setTitle("Bievenido al menu de vendedor:" + v.getNombre());
         setSize(500, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);

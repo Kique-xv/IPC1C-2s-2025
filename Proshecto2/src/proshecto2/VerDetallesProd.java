@@ -80,16 +80,15 @@ public class VerDetallesProd extends JDialog {
         add(panelc);
     }
     //un metodo/modulo para obtener el atributo especifico(la garantia o fehca de vencimineto)
-
     private String ObtenerDatos(Productos p) {
         if (p.getCategoria().equals("TECNOLOGIA")) {
             productoTec pT = (productoTec) p;
             return pT.getMesesGarantia() + " Meses de garantia ";
-        } else if (p.getCategoria().equals(" ALIMENTO ")) {
+        } else if (p.getCategoria().equals("ALIMENTO")) {
             productoComida pCom = (productoComida) p;
-            return pCom.getFechaVencer() + " fecha de vencimiento";
+            return "Vence el: " +pCom.getFechaVencer(); 
         } else {
-            return "N/A";
+            return "No aplica";
         }
     }
 }

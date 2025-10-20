@@ -73,7 +73,7 @@ public class CrearClientes extends JFrame {
             return;
         }
         if (AdminDClientes.CreacionClientes(codigo, nombre, contraseña, genero, cumple)) {
-            JOptionPane.showMessageDialog(this, "El cliente" + nombre + " ha sido creado", "Exito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "El cliente " + nombre + " ha sido creado", "Exito", JOptionPane.INFORMATION_MESSAGE);
             //llamado actualizar la tabla
             if (ventana != null) {
                 ventana.actualizarTabla();

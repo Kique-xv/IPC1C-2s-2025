@@ -66,7 +66,7 @@ public class GestionPedidos extends JFrame {
         String IDpedido = (String) tablaPedidos.getValueAt(filaSeleccionar, 0);
 
         //hacemos el llamado a la parte de Admindepedidos
-        if (AdminDPedidos.ConfirmPedido(IDpedido, vendedorAct)) {
+        if (AdminDPedidos.ConfirmarPedido(IDpedido, vendedorAct)) {
             //si la confimacion salio se refresca la talba
             actualizarTabla();
 
