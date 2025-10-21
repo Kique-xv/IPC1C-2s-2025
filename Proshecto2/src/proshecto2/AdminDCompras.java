@@ -117,4 +117,41 @@ public class AdminDCompras {
         }
         return datos;
     }
+    public static String BuscarActualizacionStock(String codigoProducto){
+        File ArchivHist = new File("HistorialStock.csv");
+        LocalDateTime ultFecha = null; //ultima fecha de actuializacion
+        DateTimeFormatter FormatoArchiv = DateTimeFormatter.ISO_LOCAL_DATE; //pa la fecha
+    
+        if(!ArchivHist.exists()){
+            return "No hay historial"; //no necesito explicar          
+        }
+        try( BufferedReader lector = new BufferedReader(new FileReader(ArchivHist))){
+         String linea;
+         lector.readLine();
+         
+         while ((linea = lector.readLine()) !=null){
+             String[] datos = linea.split(",");
+             //formato que esperamos Fecha en iso , codigo-producto, cantidad, usuario,id-usuario, 
+             if(datos.length >=2 && datos[1].trim().equalsIgnoreCase(codigoProducto)){
+                 try{
+                     LocalDateTime fActual = LocalDateTime.parse(datos[0].trim(), FormatoArchiv);
+                     if(ultFecha == null || fActual.isAfter(ultFecha)){
+                         ultFecha = fActual;
+                     }
+                 } catch(Exception e){
+                     System.err.println("Error al leer la fecha en historial: " + linea);
+                 }
+             }
+         }
+        } catch(IOException e){
+            System.err.println("Error al leer HistorialStock.csv  " +e.getMessage());
+            return "Error de lectura";
+        }
+        if(ultFecha != null){
+            //devolvemos la feyc en un formato mas leible para mensos como yo xd
+            return ultFecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+        } else{
+            return "sin registros"; // no se encontraron ingresso para el producto
+        }
+    }
 }
