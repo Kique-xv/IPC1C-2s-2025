@@ -63,22 +63,29 @@ public class MenuAdmin extends JFrame {
 
     private void MenuReportes() {
         //para los reportes
-        String[] opciones = {"Inventario Simple"};
+        String[] opciones = {"Inventario",
+            "Productos mas vendidos",
+            "Productos menos vendidos"};
         String seleccion = (String) JOptionPane.showInputDialog(this,
                 "Selecciona el reporte que desees generar",
                 "Generar Reportes",
                 JOptionPane.PLAIN_MESSAGE,
                 null, opciones, opciones[0]);
-        
+
         if (seleccion != null) {
             switch (seleccion) {
-                case "Inventario Simple":
+                case "Inventario":
                     GenerarReportes.GenerarReporteInventario();
                     break;
-
+                case "Productos mas vendidos":
+                    GenerarReportes.GenerarReporteMasVen();
+                    break;
+                case "Productos menos vendidos":
+                    GenerarReportes.GenerarReporteMenosVen();
+                    break;
                 //los demas
                 default:
-                    JOptionPane.showMessageDialog(this, "OPcion no existente");
+                    JOptionPane.showMessageDialog(this, "Opcion no existente");
             }
         }
     }

@@ -341,10 +341,10 @@ public class AdminDProductos {
             }
             LocalDateTime ahora = LocalDateTime.now();
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String horafecha = ahora.format(formato);
+            String horafecha = ahora.toString();
 
             //creamos la line para guardar
-            String lineacsv = codigo + "," + Cantidad + "," + horafecha + "," + nombreUsur;
+            String lineacsv = codigo + "," + Cantidad + "," + horafecha + "," +usuarioId+ "," + nombreUsur;
 
             escribit.println(lineacsv);
         } catch (IOException e) {
@@ -424,5 +424,13 @@ public class AdminDProductos {
         if(p !=null){
             p.setStock(p.getStock() - CantComprar);
         }      
+    }
+    //devolvemos una copar del arrglo de productos 
+    public static Productos[] getListadProductos(){
+        return listadProductos;
+    }
+    //y esto es para obtenerlos 
+    public static int getCantProducto(){
+        return CantProducto;
     }
 }

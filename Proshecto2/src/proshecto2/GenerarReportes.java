@@ -116,5 +116,184 @@ public class GenerarReportes {
             JOptionPane.showMessageDialog(null, "No se pudo generar el reporte PDF ", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    //los demas reportes xd
+
+    //el metodo para calcular las estadisticas
+    private static ProductoStats[] CalcularStatsVentas() {
+        //obtenemos todos los productos unicos existentes
+        //tuve que hacer mas y mas chamba y no he estudiado :(
+        Productos[] TodoProductos = AdminDProductos.getListadProductos();
+        int numProductosOriginal = AdminDProductos.getCantProducto();
+
+        if (numProductosOriginal == 0) {
+            return new ProductoStats[0]; //ñada de ñada  
+        }
+        //ceramos un arreglo arreglado arreglativo prar guardar las stats xd
+        ProductoStats[] tempEstadisticas = new ProductoStats[numProductosOriginal];
+        int statsReales = 0;
+        for (int i = 0; i < numProductosOriginal; i++) {
+            if (TodoProductos[i] != null) {
+                tempEstadisticas[statsReales++] = new ProductoStats(TodoProductos[i]);
+            } else {
+                System.err.println(" Producto nulo encontrado en la lista de productos.");
+            }
+        }
+        //ajustamos el tamaño si hubi nulos
+        ProductoStats[] estadisticas = new ProductoStats[statsReales];
+        System.arraycopy(tempEstadisticas, 0, estadisticas, 0, statsReales);
+        int numProductos = statsReales;
+
+        //comprobar si quedo vacio despues de filtrar
+        if (numProductos == 0) {
+            return new ProductoStats[0]; //salir si todos son nullos
+        }
+        //obtenemos TODOS los pedidos confirmados
+        CompraAceptada[] ComprasConfirm = AdminDCompras.getListadComprasAceptadas();
+        int CantCompras = AdminDCompras.getCantComprasAceptadas();
+        //recorremos cada pedido confirmado
+        for (int i = 0; i < CantCompras; i++) {
+            CompraAceptada pedido = ComprasConfirm[i];
+            if (pedido == null || pedido.getProds() == null || pedido.getCantProductos() <= 0) {
+                continue; //
+            }
+            ProdCarrito[] Prods = pedido.getProds();
+            for (int j = 0; j < pedido.getCantProductos(); j++) {
+                ProdCarrito Prod = Prods[j];
+                if (Prod == null || Prod.producto == null) {
+                    continue;
+                }
+
+                //buscamos el producto en el arreglo de estadisticas
+                for (int k = 0; k < numProductos; k++) {
+    
+                    if (estadisticas[k].producto.getCodigo().equalsIgnoreCase(Prod.producto.getCodigo())) {
+                        //actualizamos la cantidad e ingresos
+                        estadisticas[k].CantVendida += Prod.cantidad;
+                        estadisticas[k].IngresosGen += Prod.cantidad * Prod.producto.getPrecio();
+                        break; //pasamos al siguiente pedido
+                    }
+                }
+            }
+        }
+        return estadisticas;
+    }
+
+    //unmetodo para ordenar;
+    private static void OrdenarStats(ProductoStats[] stats, boolean decend) {
+        int n = stats.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - 1 - i; j++) {
+                if (stats[j] == null || stats[j + 1] == null || stats[j].producto == null || stats[j + 1].producto == null) {
+                    System.err.println("Se encontro un producto nulo");
+                    continue;
+                }
+                boolean cambio;
+                if (decend) {
+                    cambio = stats[j].CantVendida < stats[j + 1].CantVendida;
+                } else {
+                    cambio = stats[j].CantVendida > stats[j + 1].CantVendida;
+                }
+                if (cambio) {
+                    //intercambiamos
+                    ProductoStats temp = stats[j];
+                    stats[j] = stats[j + 1];
+                    stats[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    //para los menos vendidos
+    public static void GenerarReporteMenosVen() {
+        String NombreArchiv = NombreArchivo("MenosVendidos");
+        ProductoStats[] estadisticas = CalcularStatsVentas();
+
+        if (estadisticas == null || estadisticas.length == 0) {
+            JOptionPane.showMessageDialog(null, "No hay datos de ventas para generar el reporte", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        OrdenarStats(estadisticas, false); //ordenamos de mayor a menor
+
+        try {
+            PdfWriter escribir = new PdfWriter(NombreArchiv);
+            PdfDocument pdf = new PdfDocument(escribir);
+            Document document = new Document(pdf);
+
+            document.add(new Paragraph("TOP 5 PRODUCTOS MENOS VENDIDOS")
+                    .setFontSize(16).setBold().setTextAlignment(TextAlignment.CENTER));
+
+            document.add(new Paragraph("Generando el:" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")))
+                    .setTextAlignment(TextAlignment.CENTER).setMarginBottom(20));
+//la tabla
+            Table tabla = new Table(UnitValue.createPercentArray(new float[]{40, 20, 20, 20}))
+                    .useAllAvailableWidth();
+
+            tabla.addHeaderCell(new Cell().add(new Paragraph("Nombre de producto").setBold()));
+            tabla.addHeaderCell(new Cell().add(new Paragraph("Cantidad vendidad").setBold()));
+            tabla.addHeaderCell(new Cell().add(new Paragraph("Cantidad dispobile").setBold()));
+            tabla.addHeaderCell(new Cell().add(new Paragraph("Recomendacion").setBold()));
+
+            int limite = Math.min(5, estadisticas.length);
+            for (int i = 0; i < limite; i++) {
+                ProductoStats stat = estadisticas[i];
+                tabla.addCell(new Cell().add(new Paragraph(stat.producto.getNombre())));
+                tabla.addCell(new Cell().add(new Paragraph(String.valueOf(stat.CantVendida))));
+                tabla.addCell(new Cell().add(new Paragraph(String.valueOf(stat.producto.getStock())))); // el stock actual
+                tabla.addCell(new Cell().add(new Paragraph("Poner en descuento")));//la recomendacion
+
+            }
+            document.add(tabla);
+            document.close();
+            JOptionPane.showMessageDialog(null, "Reporte PDF '" + NombreArchiv + "' generado.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al generar el reporte .", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    //para los mas vendidos
+
+    public static void GenerarReporteMasVen() {
+        String NombreArchiv = NombreArchivo("MasVendidos");
+        ProductoStats[] estadisticas = CalcularStatsVentas();
+
+        if (estadisticas == null || estadisticas.length == 0) {
+            JOptionPane.showMessageDialog(null, "No hay datos de ventas para generar el reporte.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        OrdenarStats(estadisticas, true); //orden decendente
+
+        try {
+            //la misma mica que lo otro
+            PdfWriter escribir = new PdfWriter(NombreArchiv);
+            PdfDocument pdf = new PdfDocument(escribir);
+            Document document = new Document(pdf);
+
+            document.add(new Paragraph("TOP 5 PRODUCTOS MAS VENDIDOS")
+                    .setFontSize(16).setBold().setTextAlignment(TextAlignment.CENTER));
+
+            document.add(new Paragraph("Generando el:" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")))
+                    .setTextAlignment(TextAlignment.CENTER).setMarginBottom(20));
+//la tabla x2
+            Table tabla = new Table(UnitValue.createPercentArray(new float[]{40, 20, 20, 20}))
+                    .useAllAvailableWidth();
+
+            tabla.addHeaderCell(new Cell().add(new Paragraph("Nombre de producto").setBold()));
+            tabla.addHeaderCell(new Cell().add(new Paragraph("Cantidad vendidad").setBold()));
+            tabla.addHeaderCell(new Cell().add(new Paragraph("Catergoria").setBold()));
+            tabla.addHeaderCell(new Cell().add(new Paragraph("Ganancias generadas(Q)").setBold()));
+//tomamos hasta 5, o menos si no hay tanta coas
+            int limite = Math.min(5, estadisticas.length);
+            for (int i = 0; i < limite; i++) {
+                ProductoStats stat = estadisticas[i];
+                //contenido de la tabla
+                tabla.addCell(new Cell().add(new Paragraph(stat.producto.getNombre())));
+                tabla.addCell(new Cell().add(new Paragraph(String.valueOf(stat.CantVendida))));
+                tabla.addCell(new Cell().add(new Paragraph(stat.producto.getCategoria())));
+                tabla.addCell(new Cell().add(new Paragraph(String.format("%.2f", stat.IngresosGen))));
+            }
+            document.add(tabla);
+            document.close();
+            JOptionPane.showMessageDialog(null, "Reporte PDF '" + NombreArchiv + "' generado.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al generar el reporte PDF.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

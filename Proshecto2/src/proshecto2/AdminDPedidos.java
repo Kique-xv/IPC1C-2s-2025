@@ -87,7 +87,7 @@ public class AdminDPedidos {
                     }
                     AdminDProductos.GuardarProductos(); //guardamos cambios del stock
                 } else {
-                    System.err.println("Error: La lista de productos (getProds) es nula para el pedido " + idPedido);
+                    System.err.println("Error: La lista de productos es nula para el pedido " + idPedido);
                 }
             } catch (Exception e) {
                 System.err.println("Error al procesar productos del pedido " + idPedido + ": " + e.getMessage());
@@ -99,14 +99,17 @@ public class AdminDPedidos {
             vendedor.setVentasHechas(vendedor.getVentasHechas() + 1);
             AdminDVendedores.GuardarVendedor();
 
+            ProdCarrito[] productosConfirmados = new ProdCarrito[PedidoConfirm.getCantProductos()];
+            System.arraycopy(PedidoConfirm.getProds(), 0, productosConfirmados, 0, PedidoConfirm.getCantProductos());
             //creamos el registro paranel historial
             CompraAceptada Ncompra = new CompraAceptada(
                     PedidoConfirm.getIDpedido(),
                     LocalDateTime.now(),
                     PedidoConfirm.getIdCliente(),
-                    PedidoConfirm.getTotal()
+                    PedidoConfirm.getTotal(),
+                    productosConfirmados,
+                    PedidoConfirm.getCantProductos()
             );
-            System.out.println(">>> Intentando llamar a AdminDCompras.agregarCompra para Pedido ID: " + Ncompra.getIdPedido());
             AdminDCompras.agregarCompra(Ncompra);
 
             //eliminar el pedido de la lista de pendientes

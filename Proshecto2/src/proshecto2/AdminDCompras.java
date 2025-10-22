@@ -39,14 +39,16 @@ public class AdminDCompras {
 
             while ((linea = lector.readLine()) != null && CantCompras < MaxCompras) {
                 String[] datos = linea.split(",");
-                if (datos.length == 4) {
+                if (datos.length >= 4) {
                     try {
                         String idPedido = datos[0].trim();
                         LocalDateTime fecha = LocalDateTime.parse(datos[1].trim());
                         String idCliente = datos[2].trim();
                         double total = Double.parseDouble(datos[3].trim());
 
-                        listadCompras[CantCompras++] = new CompraAceptada(idPedido, fecha, idCliente, total);
+                        Pedidos pedido = new Pedidos(idPedido, fecha, idCliente, "Cliente Desconocido", total, null, 0);//solo pa probar usamos nada y nada xd
+
+                        listadCompras[CantCompras++] = new CompraAceptada(idPedido, fecha, idCliente, total,null, 0);
                     } catch (Exception e) {
                         System.err.println("Error al cargar línea de Compras.csv: " + linea + " -> " + e.getMessage());
                     }
@@ -93,7 +95,7 @@ public class AdminDCompras {
     }
 
     public static Object[][] DatosTablaHistorial(String idCliente) {
-     
+
         //contamos cuatas compras tiene el cliente
         int contadorCliente = 0;
         for (int i = 0; i < CantCompras; i++) {
@@ -117,41 +119,51 @@ public class AdminDCompras {
         }
         return datos;
     }
-    public static String BuscarActualizacionStock(String codigoProducto){
+
+    public static String BuscarActualizacionStock(String codigoProducto) {
         File ArchivHist = new File("HistorialStock.csv");
         LocalDateTime ultFecha = null; //ultima fecha de actuializacion
-        DateTimeFormatter FormatoArchiv = DateTimeFormatter.ISO_LOCAL_DATE; //pa la fecha
-    
-        if(!ArchivHist.exists()){
+        DateTimeFormatter FormatoArchiv = DateTimeFormatter.ISO_LOCAL_DATE_TIME; //pa la fecha
+
+        if (!ArchivHist.exists()) {
             return "No hay historial"; //no necesito explicar          
         }
-        try( BufferedReader lector = new BufferedReader(new FileReader(ArchivHist))){
-         String linea;
-         lector.readLine();
-         
-         while ((linea = lector.readLine()) !=null){
-             String[] datos = linea.split(",");
-             //formato que esperamos Fecha en iso , codigo-producto, cantidad, usuario,id-usuario, 
-             if(datos.length >=2 && datos[1].trim().equalsIgnoreCase(codigoProducto)){
-                 try{
-                     LocalDateTime fActual = LocalDateTime.parse(datos[0].trim(), FormatoArchiv);
-                     if(ultFecha == null || fActual.isAfter(ultFecha)){
-                         ultFecha = fActual;
-                     }
-                 } catch(Exception e){
-                     System.err.println("Error al leer la fecha en historial: " + linea);
-                 }
-             }
-         }
-        } catch(IOException e){
-            System.err.println("Error al leer HistorialStock.csv  " +e.getMessage());
+        try (BufferedReader lector = new BufferedReader(new FileReader(ArchivHist))) {
+            String linea;
+            lector.readLine();
+
+            while ((linea = lector.readLine()) != null) {
+                String[] datos = linea.split(",");
+                //formato que esperamos Fecha en iso , codigo-producto, cantidad, usuario,id-usuario, 
+                if (datos.length >= 2 && datos[1].trim().equalsIgnoreCase(codigoProducto)) {
+                    try {
+                        LocalDateTime fActual = LocalDateTime.parse(datos[0].trim(), FormatoArchiv);
+                        if (ultFecha == null || fActual.isAfter(ultFecha)) {
+                            ultFecha = fActual;
+                        }
+                    } catch (Exception e) {
+                        System.err.println("Error al leer la fecha en historial: " + linea);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error al leer HistorialStock.csv  " + e.getMessage());
             return "Error de lectura";
         }
-        if(ultFecha != null){
+        if (ultFecha != null) {
             //devolvemos la feyc en un formato mas leible para mensos como yo xd
             return ultFecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-        } else{
+        } else {
             return "sin registros"; // no se encontraron ingresso para el producto
         }
+    }
+
+    //sip para acceder a la lista completa para los reportes
+    public static CompraAceptada[] getListadComprasAceptadas() {
+        return listadCompras;
+    }
+
+    public static int getCantComprasAceptadas() {
+        return CantCompras;
     }
 }
