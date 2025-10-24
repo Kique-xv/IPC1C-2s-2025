@@ -2,3 +2,4 @@ codigo,nombre,contraseña,tipoUsuario,genero,ventasHechas,totalVentasHechas
 111,EL SANS EEEEEE,111,VENDEDOR,M,0,0.0
 222,VENDEDOR GENERICO,222,VENDEDOR,M,0,0.0
 333,SPAMTON,333,VENDEDOR,M,0,0.0
+444,Vendedor prueba,444,VENDEDOR,F,0,0.0

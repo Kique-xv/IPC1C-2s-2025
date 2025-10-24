@@ -159,7 +159,7 @@ public class AdminDVendedores {
         }
         Guardarestado();
     }
-
+    
     //tdodo esto lo traje de administrador de usuarios porque al guardar los vendedores en el mismo archivo que el admin crea problemaas ayuda son  las 3 am 7.7
     public static boolean CodRepetido(String id) {
         for (int i = 0; i < CantVendedores; i++) { //buscar en la matriz de vendedore

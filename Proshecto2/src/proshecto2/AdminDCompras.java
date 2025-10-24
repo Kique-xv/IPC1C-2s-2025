@@ -44,7 +44,7 @@ public class AdminDCompras {
             }
             System.out.println("Estado de compras confirmadas guardado en " + ESTADO_COMPRAS_SER);
         } catch (IOException e) {
-            System.err.println("Error al guardar estado de compras aceptadas " + e.getMessage());
+            System.err.println("Error al guardar estado de compras aceptadas " + e.getMessage()); 
             e.printStackTrace();
         }
     }
@@ -130,7 +130,6 @@ public class AdminDCompras {
                     JOptionPane.ERROR_MESSAGE);
         }
         guardarEstado();
-        GuardarCompras();
     }
 
     //metodo para agregar una comprar al arreglo

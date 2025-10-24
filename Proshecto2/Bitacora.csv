@@ -1,1 +1,13 @@
 FechaHoraISO,TipoUsuario,CodigoUsuario,Operacion,Estado,Descripcion
+"2025-10-24T14:38:02.472089","ADMIN","admin","INGRESO_EXITOSO","EXITOSA","Inicio de sesión correcto."
+"2025-10-24T14:40:09.644077","ADMIN","Admin","CREAR_VENDEDOR","EXITOSA","Creacion de vendedor exitosa"
+"2025-10-24T14:47:49.830601","ADMIN","admin","EXPORTAR_BITACORA","EXITOSA","Bitacora exportada a PDF"
+"2025-10-24T14:49:21.709799","VENDEDOR","111","INGRESO_EXITOSO","EXITOSA","Inicio de sesión correcto."
+"2025-10-24T14:53:43.889664","VENDEDOR","111","AGREGAR_STOCK","EXITOSA","Se agrego stock a los productos"
+"2025-10-24T14:57:37.122528","VENDEDOR","111","CREAR_CLIENTE","EXITOSA","se ha creado un cliente"
+"2025-10-24T14:59:07.039018","VENDEDOR","111","CREAR_CLIENTE","EXITOSA","se ha creado un cliente"
+"2025-10-24T15:03:37.230605","SISTEMA","krih","INGRESO_FALLIDO","EXITOSA","Inicio de sesión correcto."
+"2025-10-24T15:03:44.974650","CLIENTE","Krih","INGRESO_EXITOSO","EXITOSA","Inicio de sesión correcto."
+"2025-10-24T15:10:31.495992","CLIENTE","Krih","AGREGAR_PRODUCTO_CARRITO","EXITOSA","se agreagron productos al carrito de compra"
+"2025-10-24T15:10:37.929709","CLIENTE","Krih","AGREGAR_PRODUCTO_CARRITO","EXITOSA","se agreagron productos al carrito de compra"
+"2025-10-24T15:13:30.550335","ELIMINAR_CLIENTE","Krih","REALIZAR_PEDIDO","EXITOSA","Pedido realizado"
