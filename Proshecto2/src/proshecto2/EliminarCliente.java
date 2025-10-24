@@ -20,8 +20,9 @@ public class EliminarCliente extends JFrame {
     private JTextField txtCodElim;
     private JButton btEliminar;
     private GestionClientes ventana;//para la tabla xd
-
-    public EliminarCliente(GestionClientes ventana) {
+private Vendedor vendedorAct;
+    public EliminarCliente(GestionClientes ventana, Vendedor vendedor) {
+        this.vendedorAct = vendedor;
         this.ventana = ventana;
 
         //las cosas visuales de la ventana de eliminarclientes
@@ -71,7 +72,7 @@ public class EliminarCliente extends JFrame {
             );
 
             if (Confirm == JOptionPane.YES_OPTION) {
-                if (AdminDClientes.EliminarCliente(codigo)) {
+                if (AdminDClientes.EliminarCliente(codigo, vendedorAct.getId())) {
                     JOptionPane.showMessageDialog(this, "El cliente se ha eliminado", "Eliminacion exitosa", JOptionPane.INFORMATION_MESSAGE);
                     if (ventana != null) {
                         ventana.actualizarTabla();

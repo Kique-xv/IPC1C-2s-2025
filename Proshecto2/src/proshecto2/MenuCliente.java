@@ -63,6 +63,7 @@ public class MenuCliente extends JFrame {
     }
 
     private void CerrarSesion() {
+                AdminDUsuarios.BajarSesiones();
         this.dispose();
         new IngresarUsuarios().setVisible(true);
     }

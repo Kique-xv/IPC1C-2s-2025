@@ -73,6 +73,9 @@ public class CargarVendedor extends JFrame {
         try (BufferedReader Lector = new BufferedReader(new FileReader(archivo))) {
             String linea;
             int numLinea = 0;
+            
+            Lector.readLine();
+            numLinea++;
             while ((linea = Lector.readLine()) != null) {
                 numLinea++;
                 String[] datos = linea.split(",");
@@ -86,7 +89,7 @@ public class CargarVendedor extends JFrame {
                 String codigo = datos[0].trim();
                 String nombre = datos[1].trim();
                 String genero = datos[2].trim().toUpperCase();
-                String contraseña = datos[3].trim();
+                String contraseña = datos[4].trim();
                 //las ventas ya estan confirmadas ya las tenemos validadas
                 //validamos la logica el codigo unico y creacion
                 if (AdminDVendedores.CodRepetido(codigo)) {
@@ -104,8 +107,12 @@ public class CargarVendedor extends JFrame {
             }
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error al leer el archivo" + ex.getMessage(), "Error 14", JOptionPane.ERROR_MESSAGE);
+   Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "Admin", Bitacora.OP_Cargar_Vendedor, Bitacora.ESTADO_FALLIDA, "Carga de vendedores fallida");
+
             return;
         }
+            Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "Admin", Bitacora.OP_Cargar_Vendedor, Bitacora.ESTADO_EXITOSA, "Carga de vendedores exitosa");
+
         JOptionPane.showMessageDialog(this,
                 "Carga de vendedores Terminada:\n"
                 + "total lineas exitosas: " + CargadosB + "\n"

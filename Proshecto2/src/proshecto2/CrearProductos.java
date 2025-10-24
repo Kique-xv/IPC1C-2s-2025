@@ -133,6 +133,11 @@ public class CrearProductos extends JFrame {
             Atributo = txtGarantia.getText().trim();
         } else if (categoria.equals("ALIMENTO")) {
             Atributo = txtVencimiento.getText().trim();
+
+            if (!productoComida.FechaValida(Atributo)) {
+                JOptionPane.showMessageDialog(this, "Formato de fecha no es valido\n" + "Use el formato de fecha AAAA-MM-DD", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         } else if (categoria.equals("OTROS")) {
             Atributo = "N/A";
         }
@@ -178,7 +183,7 @@ public class CrearProductos extends JFrame {
 //llamamos al administrado de productos
         if (AdminDProductos.CreacionProducto(codigo, nombre, precio, stock, categoria, Atributo)) {
             JOptionPane.showMessageDialog(this, "El producto fue agreado al inventario", "Producto creado", JOptionPane.ERROR_MESSAGE);
-            if(ventana2 != null){
+            if (ventana2 != null) {
                 ventana2.ActualizarTabla();
             }
 //limpiamos los campos

@@ -20,8 +20,10 @@ public class CrearClientes extends JFrame {
     private JTextField txtCodigo, txtNombre, txtCumple, txtContraseña;
     private JComboBox<String> cbGenero;
     private JButton btCrear;
+    private Vendedor vendedorAct;
 
-    public CrearClientes(GestionClientes ventana) {
+    public CrearClientes(GestionClientes ventana, Vendedor vendedor) {
+        this.vendedorAct = vendedor;
         this.ventana = ventana;
         setTitle("Crear nuevo Cliente");
         setSize(500, 500);
@@ -72,7 +74,7 @@ public class CrearClientes extends JFrame {
             JOptionPane.showMessageDialog(this, "Porfavor llenasr todos los campos", "Aviso", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        if (AdminDClientes.CreacionClientes(codigo, nombre, contraseña, genero, cumple)) {
+        if (AdminDClientes.CreacionClientes(codigo, nombre, contraseña, genero, cumple, vendedorAct.getId())) {
             JOptionPane.showMessageDialog(this, "El cliente " + nombre + " ha sido creado", "Exito", JOptionPane.INFORMATION_MESSAGE);
             //llamado actualizar la tabla
             if (ventana != null) {

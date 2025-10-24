@@ -1,6 +1,10 @@
 //una clase de contructora para los productos alimenticios
 package proshecto2;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 /**
  *
  * @author kiquemarroquin
@@ -38,6 +42,18 @@ private String FechaVencer;
     public void setFechaVencer(String FechaVencer) {
     this.FechaVencer = FechaVencer;
 }
+    public static boolean FechaValida(String fechaStr){
+        if(fechaStr == null || fechaStr.trim().isEmpty()){
+            return false;
+        }
+        try{
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate fecha = LocalDate.parse(fechaStr.trim() , formato);
+            return true;
+        } catch(DateTimeParseException e){
+            return false;
+        }
+    }
     }
     
 

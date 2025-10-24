@@ -2,13 +2,15 @@ package proshecto2;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import javax.swing.JOptionPane;
-
-import proshecto2.Vendedor;
 
 /**
  *
@@ -17,17 +19,66 @@ import proshecto2.Vendedor;
 public class AdminDVendedores {
 
     private static final String Archivo_Vendedor = "Vendedores.csv";
-    private static final int MVendedores = 50;
 
+    private static final String Estado_Vendedor = "vendedores.ser"; //ser
+
+    private static final int MVendedores = 50;
+    private static final int NUM_CAMPOS_VENDEDOR = 7; // Ahora son 7 columnas por lo del reporte y las weas
     //esta es la matriz solo para los vendedores
-    private static Vendedor[] listadVendedores = new Vendedor[100];
+    private static Vendedor[] listadVendedores = new Vendedor[MVendedores];
     private static int CantVendedores = 0;
 
-    static {
-        CargarVendedores();
-        //  System.out.println("DEBUG: Vendedores cargados al inicio: " + CantVendedores); esto feue de ayuda xd
+
+// para guardar en el csv
+    public static void Guardarestado() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(Estado_Vendedor))) {
+            oos.writeInt(CantVendedores); // Guardar el contador primero
+            for (int i = 0; i < CantVendedores; i++) {
+                if (listadVendedores[i] != null) {
+                    oos.writeObject(listadVendedores[i]); // Guardar cada objeto
+                }
+            }
+            System.out.println("Estado de productos guardado en " + Estado_Vendedor);
+        } catch (IOException e) {
+            System.err.println("Error al guardar estado de productos: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
+    public static void cargarEstado() {
+        File archivoEstado = new File(Estado_Vendedor);
+        System.out.println("Deserializando estado de Productos"); 
+        if (!archivoEstado.exists()) {
+            System.out.println("El Archivo " + Estado_Vendedor + " no se encontro se cargara desde el csv"); 
+            CargarVendedores(); // cargar desde CSV como respaldo
+            return;
+        }
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivoEstado))) {
+            CantVendedores = ois.readInt(); // Leer el contador
+            listadVendedores = new Vendedor[MVendedores]; // Crear el arreglo
+            for (int i = 0; i < CantVendedores; i++) {
+                listadVendedores[i] = (Vendedor) ois.readObject(); // Leer cada objeto
+            }
+            System.out.println("Estado de productos cargado desde " + Estado_Vendedor + "Total: " + CantVendedores);
+        } catch (IOException | ClassNotFoundException | ClassCastException e) {
+            System.err.println("Error al cargar estado de producto: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al cargar datos guardados de productos, se cargara desde el csv", "Error", JOptionPane.WARNING_MESSAGE);
+            // Si falla la, intenta cargar desde CSV
+            CantVendedores = 0; 
+            listadVendedores = new Vendedor[MVendedores];
+            CargarVendedores();
+        }
+    }
+
+    public static void inicializar() {
+        System.out.println("INICIALIZANDO SISTEMA DE PRODUCTOS...");
+        cargarEstado();
+        System.out.println("Sistema de productos listo :D");
+    }
+
+  
     public static void CargarVendedores() {
         File archivo = new File(Archivo_Vendedor);
         if (!archivo.exists()) {
@@ -35,35 +86,48 @@ public class AdminDVendedores {
             return;
         }
         CantVendedores = 0;
-        //System.out.println("DEBUG: Iniciando carga de Vendedores.csv. CantVendedores = 0."); // Nuevo
-
         try (BufferedReader Lector = new BufferedReader(new FileReader(archivo))) {
             String linea;
             int numl = 0;
+            Lector.readLine();
             while ((linea = Lector.readLine()) != null && CantVendedores < listadVendedores.length) {
                 String[] datos = linea.split(",");
                 //patron vendedor: Codigo,  nombre, genero, contraseña, ventas
-                if (datos.length >= Vendedor.NUM_CAMPOS_VENDEDOR) {
+                if (datos.length >= NUM_CAMPOS_VENDEDOR) {
                     int ventas = 0;
                     try {
-                        String id = datos[Vendedor.ID].trim();
-                        String nombre = datos[Vendedor.NOMBRE].trim();
-                        String Contraseña = datos[Vendedor.CONTRASEÑA].trim();
-                        String genero = datos[Vendedor.GENERO].trim();
-                        ventas = Integer.parseInt(datos[Vendedor.VENTAS_HECHAS].trim());
-                       // System.out.println("DEBUG: Vendedor cargado OK en línea " + numl + ": " + id); // Nuevo
+                        String id = datos[0].trim();
+                        String nombre = datos[1].trim();
+                        String Contraseña = datos[2].trim();
+                        //el tipo de usuario lo guarada en datos[3]
+                        String genero = datos[4].trim();
+                        ventas = Integer.parseInt(datos[5].trim());
+                        double totalVentas = Double.parseDouble(datos[6].trim());
+
+                        if (datos.length > 5 && !datos[5].trim().isEmpty()) {
+                            try {
+                                totalVentas = Double.parseDouble(datos[5].trim());
+                            } catch (NumberFormatException nfParseDouble) {
+                                System.err.println("Advertencia: Total de ventas inválido para vendedor " + id + ". Usando 0.0.");
+                            }
+                        }
 
                         Vendedor Nvendedor = new Vendedor(id, nombre, Contraseña, genero);
                         Nvendedor.setVentasHechas(ventas);
+                        Nvendedor.setTotalVentasHechas(totalVentas);
                         listadVendedores[CantVendedores++] = Nvendedor;
 
+                        if (!AdminDUsuarios.CodRepetido(id)) { // asi evitamos los duplicados si  en AdminDUsuarios ya lo cargo
+                            AdminDUsuarios.AgregarUsuario(Nvendedor);
+                        }
+
                     } catch (NumberFormatException nfe) {
-                       
+
                         JOptionPane.showMessageDialog(null, "Error al crear al vendedor desde el CSV" + linea, "Error 16", JOptionPane.ERROR_MESSAGE);
                     } catch (Exception e) {
-                       
+
                     }
-                } 
+                }
             }
         } catch (IOException e) {
 
@@ -73,24 +137,32 @@ public class AdminDVendedores {
 
     public static void GuardarVendedor() {
         try (PrintWriter escribir = new PrintWriter(new FileWriter(Archivo_Vendedor))) {
+            escribir.println("codigo,nombre,contraseña,tipoUsuario,genero,ventasHechas,totalVentasHechas");
             for (int i = 0; i < CantVendedores; i++) {
                 Vendedor v = listadVendedores[i];
-                //formato del archivo, cod, nombre, genero, contraseña y ventas y si eñ mp haber agregadp el tipo de usuario no me dejaba inciar sesion      
-               String lineacsv = v.getId() + "," + v.getNombre() + "," + v.getContraseña() + "," 
-                              + v.getTipoUsuario() + "," //ESTA MALDITA LINEA ME KGO LA NOCHE >:/
-                              + v.getGenero() + "," + v.getVentasHechas();                          
-            escribir.println(lineacsv);
+                if (v != null) {
+                    //formato del archivo, cod, nombre, genero, contraseña y ventas y si eñ mp haber agregadp el tipo de usuario no me dejaba inciar sesion      
+                    String lineacsv
+                            = v.getId() + ","
+                            + v.getNombre() + ","
+                            + v.getContraseña() + ","
+                            + v.getTipoUsuario() + ","
+                            +//ESTA MALDITA LINEA ME KGO LA NOCHE >:/
+                            v.getGenero() + ","
+                            + v.getVentasHechas() + ","
+                            + v.getTotalVentasHechas(); //las ventas hechas osea todasa pues
+                    escribir.println(lineacsv);
+                }
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al guardar vendedores en CSV.", "Error 18", JOptionPane.ERROR_MESSAGE);
         }
+        Guardarestado();
     }
 
     //tdodo esto lo traje de administrador de usuarios porque al guardar los vendedores en el mismo archivo que el admin crea problemaas ayuda son  las 3 am 7.7
     public static boolean CodRepetido(String id) {
-        // System.out.println("DEBUG: Buscando duplicado para ID: " + id);
         for (int i = 0; i < CantVendedores; i++) { //buscar en la matriz de vendedore
-            //   System.out.println("DEBUG: Comparando con vendedor cargado: " + listadVendedores[i].getId());
             if (listadVendedores[i].getId().equalsIgnoreCase(id)) {
                 return true;
             }
@@ -113,18 +185,21 @@ public class AdminDVendedores {
     public static boolean CreacionVendedor(String id, String nombre, String genero, String contrseña) {
         if (CantVendedores >= MVendedores) {
             JOptionPane.showMessageDialog(null, "El limte de vendedores fue alcanzado", "Error 06", JOptionPane.ERROR_MESSAGE);
+            Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "Admin", Bitacora.OP_Crear_Vendedor, Bitacora.ESTADO_FALLIDA, "Maximo de vendedores alcanzado");
+
             return false;
         }
         if (CodRepetido(id)) {
             JOptionPane.showMessageDialog(null, "El codigo de vendedor ya esta en uso", "Error 07", JOptionPane.ERROR_MESSAGE);
+            Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "Admin", Bitacora.OP_Crear_Vendedor, Bitacora.ESTADO_FALLIDA, "Codigo repetido");
+
             return false;
         }
         Vendedor Nvendedor = new Vendedor(id, nombre, contrseña, genero);
         listadVendedores[CantVendedores++] = Nvendedor;
         GuardarVendedor();
-
-        //   Usuarios nUsuario = new Usuarios(id, nombre, contrseña, "VENDEDOR");
         AdminDUsuarios.AgregarUsuario(Nvendedor);
+        Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "Admin", Bitacora.OP_Crear_Vendedor, Bitacora.ESTADO_EXITOSA, "Creacion de vendedor exitosa");
         return true;
     }
 //un metodo para modifcar el nombre y contraseña
@@ -135,6 +210,8 @@ public class AdminDVendedores {
             v.setNombre(Nnombre);
             v.setContraseña(Ncontraseña);
             GuardarVendedor();
+            Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "Admin", Bitacora.OP_Mod_Vendedor, Bitacora.ESTADO_EXITOSA, "Modificacion de vendedor exitosa");
+
             return true;
         }
         return false;
@@ -151,6 +228,8 @@ public class AdminDVendedores {
                 listadVendedores[CantVendedores - 1] = null; //eliminamos la ultima referencia 
                 CantVendedores--;
                 GuardarVendedor();
+                Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "Admin", Bitacora.OP_Eli_Vendedor, Bitacora.ESTADO_EXITOSA, "Eliminacion de vendedor exitosa");
+
                 return true;
             }
         }
@@ -184,5 +263,17 @@ public class AdminDVendedores {
             return v;
         }
         return null;
+    }
+
+    //para el fokin reporte
+    public static Vendedor[] getListadVendedores() {
+        //creamos una copira para evitar modificaciones externas por si las moscas
+        Vendedor[] copia = new Vendedor[CantVendedores];
+        System.arraycopy(listadVendedores, 0, copia, 0, CantVendedores);
+        return copia;
+    }
+
+    public static int getCantVendedores() {
+        return CantVendedores;
     }
 }

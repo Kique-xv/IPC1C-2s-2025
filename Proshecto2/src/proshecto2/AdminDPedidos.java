@@ -1,6 +1,12 @@
  ///para ADMINISTRAR PEDidos 
 package proshecto2;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
@@ -13,13 +19,62 @@ public class AdminDPedidos {
 
     //archivo y el maximo de pedidos
     private static final String ArchivPedidos = "Pedidos.csv";
+    private static final String ESTADO_PEDIDOS_SER = "PedidosPendientes.ser";
     private static final int MaxPedidos = 200;
 
     private static Pedidos[] listadPedidos = new Pedidos[MaxPedidos];
     private static int CantPedidos = 0;
 
-    static {
-        //cargar datos csv xd
+    //el get prar la chingadera de los hilos
+    public static int getCantPedidosPendientes() {
+        return CantPedidos;//devolvemos el contador de pedidos sin confirmar
+    }
+
+
+    public static void inicializar() {
+        System.out.println("INICIALIZANDO SISTEMA DE PRODUCTOS...");
+        cargarEstado();
+        System.out.println("Sistema de productos listo :D");
+    }
+
+    public static void guardarEstado() {
+        System.out.println("Serializando estado de Pedidos Pendientes");
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ESTADO_PEDIDOS_SER))) {
+            oos.writeInt(CantPedidos);
+            for (int i = 0; i < CantPedidos; i++) {
+                if (listadPedidos[i] != null) {
+                    oos.writeObject(listadPedidos[i]);
+                }
+            }
+            System.out.println("Estado de pedidos pendientes guardado en " + ESTADO_PEDIDOS_SER);
+        } catch (IOException e) {
+            System.err.println("Error al guardar estado de pedidos pendientes: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void cargarEstado() {
+        File archivoEstado = new File(ESTADO_PEDIDOS_SER);
+        System.out.println("Deserializando estado de Pedidos Pendientes");
+        if (!archivoEstado.exists()) {
+            System.out.println("Archivo " + ESTADO_PEDIDOS_SER + " no encontrado, se inciara sin pedidos pendientes cargados.");
+            return;
+        }
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivoEstado))) {
+            CantPedidos = ois.readInt();
+            listadPedidos = new Pedidos[MaxPedidos]; 
+            for (int i = 0; i < CantPedidos; i++) {
+                listadPedidos[i] = (Pedidos) ois.readObject();
+            }
+            System.out.println("Estado de pedidos pendientes cargado desde " + ESTADO_PEDIDOS_SER + "Total: " + CantPedidos);
+        } catch (IOException | ClassNotFoundException | ClassCastException e) {
+            System.err.println("Error al cargar estado de pedidos pendientes: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al cargar datos guardados de pedidos pendientes", "Error", JOptionPane.WARNING_MESSAGE);
+            CantPedidos = 0; // Reiniciar
+            listadPedidos = new Pedidos[MaxPedidos]; 
+        }
     }
 
     public static Object[][] DatosTabla() {
@@ -58,8 +113,11 @@ public class AdminDPedidos {
         listadPedidos[CantPedidos++] = Npedido;
 
         Carrito.LimpiarCarro();
+        guardarEstado();
         //guardamos el cambio de stock en el archivo de productos         
         JOptionPane.showMessageDialog(null, "El pedido se ha realizado", "Pedido Creado", JOptionPane.INFORMATION_MESSAGE);
+        Bitacora.RegistrarEvento(Bitacora.OP_Eli_Cliente, cliente.getId(), Bitacora.OP_Realizar_Pedido, Bitacora.ESTADO_EXITOSA, "Pedido realizado");
+
         return true;
     }
 
@@ -90,6 +148,7 @@ public class AdminDPedidos {
                     System.err.println("Error: La lista de productos es nula para el pedido " + idPedido);
                 }
             } catch (Exception e) {
+                Bitacora.RegistrarEvento(Bitacora.Tipo_Vendedor, vendedor.getId(), Bitacora.OP_Confirmar_Pedido, Bitacora.ESTADO_FALLIDA, "No se pudo confirmar la compra");
                 System.err.println("Error al procesar productos del pedido " + idPedido + ": " + e.getMessage());
                 e.printStackTrace(); // Imprime más detalles del error
                 JOptionPane.showMessageDialog(null, "Error al procesar los productos del pedido. Verifica la consola.", "Error Interno", JOptionPane.ERROR_MESSAGE);
@@ -97,6 +156,7 @@ public class AdminDPedidos {
             }
             //le subimos las ventas al vendedior
             vendedor.setVentasHechas(vendedor.getVentasHechas() + 1);
+            vendedor.setTotalVentasHechas(vendedor.getVentasHechas() + PedidoConfirm.getTotal());
             AdminDVendedores.GuardarVendedor();
 
             ProdCarrito[] productosConfirmados = new ProdCarrito[PedidoConfirm.getCantProductos()];
@@ -111,6 +171,7 @@ public class AdminDPedidos {
                     PedidoConfirm.getCantProductos()
             );
             AdminDCompras.agregarCompra(Ncompra);
+            Bitacora.RegistrarEvento(Bitacora.Tipo_Vendedor, vendedor.getId(), Bitacora.OP_Confirmar_Pedido, Bitacora.ESTADO_EXITOSA, "Pedido confirmado");
 
             //eliminar el pedido de la lista de pendientes
             for (int i = indiPedido; i < CantPedidos - 1; i++) {
@@ -118,6 +179,7 @@ public class AdminDPedidos {
             }
             listadPedidos[CantPedidos - 1] = null;
             CantPedidos--;
+            guardarEstado();
             JOptionPane.showMessageDialog(null, "El pedodo " + idPedido + " ha sido confirmado \nLa cantidad disponible se ha actualizado ");
             return true;
         }

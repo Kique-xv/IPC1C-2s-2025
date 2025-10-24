@@ -2,10 +2,14 @@ package proshecto2;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,16 +23,59 @@ import proshecto2.Productos;
  */
 public class AdminDProductos {
 
-    private static final String ArchiProd = "Productos.csv";
+    private static final String ArchiProd = "Productos.csv"; //csv
+    private static final String Estado_Producto = "Productos.ser"; //ser
+
     private static final int MProductos = 100; //numero maximo de productos aunque... realmente, para este proyecto es demasiado, igual que esta descripcion totalmente incesesaria, sabes que estas leyendo esto y que yo me estoy poniendo inspirado para roper la 4ta pared, unicamente para que alguien lea esta babosad
     private static final String ArchiStock = "Stock.csv";
     //la matriz para los productos tecnologicos como esta macbook air de 256gb con el chip m1 y la comida como este sabroso tortrix  de limon ©️
     private static Productos[] listadProductos = new Productos[MProductos];
     private static int CantProducto = 0;
-//
+    
+// para guardar en el csv
+    public static void Guardarestado() {
+        System.out.println("Serializando estado de Productos "); 
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(Estado_Producto))) {
+            oos.writeInt(CantProducto); // Guardar el contador primero
+            for (int i = 0; i < CantProducto; i++) {
+                oos.writeObject(listadProductos[i]); // Guardar cada objeto
+            }
+            System.out.println("Estado de productos guardado en " + Estado_Producto); 
+        } catch (IOException e) {
+            System.err.println("Error al guardar estado de productos: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void cargarEstado() {
+        File archivoEstado = new File(Estado_Producto);
+        System.out.println("Deserializando estado de Productos"); 
+        if (!archivoEstado.exists()) {
+            System.out.println("El Archivo " + Estado_Producto + " no encontradose cargara desde el csv"); 
+            CargarProductos(); // cargar desde CSV como respaldo
+            return;
+        }
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivoEstado))) {
+            CantProducto = ois.readInt(); // Leer el contador
+            listadProductos = new Productos[MProductos]; // Crear el arreglo
+            for (int i = 0; i < CantProducto; i++) {
+                listadProductos[i] = (Productos) ois.readObject(); //cada objeto
+            }
+            System.out.println("Estado de productos cargado desde " + Estado_Producto + "Total: " + CantProducto); 
+        } catch (IOException | ClassNotFoundException | ClassCastException e) {
+            System.err.println("Error al cargar estado de producto: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al cargar datos guardados de productos, se cargara  desde el csv", "Error", JOptionPane.WARNING_MESSAGE);
+            // Si falla la, intenta cargar desde CSV
+            CargarProductos();
+        }
+    }
 
     public static void inicializar() {
-        CargarProductos();
+        System.out.println("INICIALIZANDO SISTEMA DE PRODUCTOS...");
+        cargarEstado();
+        System.out.println("Sistema de productos listo");
     }
 
     public static void CargarProductos() {
@@ -43,7 +90,7 @@ public class AdminDProductos {
 
             while ((Linea = lector.readLine()) != null && CantProducto < listadProductos.length) {
                 String[] datos = Linea.split(",");
-                
+
                 if (datos.length >= 6) {
                     try {
                         String codigo = datos[Productos.CODIGO].trim();
@@ -63,7 +110,7 @@ public class AdminDProductos {
                         } else if (categoria.equals("OTROS")) {
                             Nproducto = new productoOtros(codigo, nombre, precio, stock);
                         } else {
-                           JOptionPane.showMessageDialog(null, "Error el fomato de linea o la categoria no es la correcta", "Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Error el fomato de linea o la categoria no es la correcta", "Error", JOptionPane.ERROR_MESSAGE);
                             continue;
                         }
                         listadProductos[CantProducto++] = Nproducto;
@@ -87,6 +134,7 @@ public class AdminDProductos {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al guardar los productos en el csv", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        Guardarestado();
     }
 
     public static boolean CodRepetido(String codigo) {
@@ -113,10 +161,13 @@ public class AdminDProductos {
     public static boolean CreacionProducto(String codigo, String nombre, double precio, int stock, String categoria, String Atributo) {
         if (CantProducto >= MProductos) {
             JOptionPane.showMessageDialog(null, "Se llego al limite de productos", "Error", JOptionPane.ERROR_MESSAGE);
+            Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "admin", Bitacora.OP_Crear_Producto, Bitacora.ESTADO_FALLIDA, "Limite de productos alcanzado");
+
             return false;
         }
         if (CodRepetido(codigo)) {
             JOptionPane.showMessageDialog(null, "Ese codigo ya esta en uso", "Error", JOptionPane.ERROR_MESSAGE);
+            Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "admin", Bitacora.OP_Crear_Producto, Bitacora.ESTADO_FALLIDA, "Codigo de producto repetido");
             return false;
         }
         Productos Nproducto = null;
@@ -137,12 +188,14 @@ public class AdminDProductos {
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "El atributo especifico no es valido para la categoria", "Error", JOptionPane.ERROR_MESSAGE);
+            Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "admin", Bitacora.OP_Crear_Producto, Bitacora.ESTADO_FALLIDA, "Creacion de producto fallida");
             return false;
         }
 
         if (Nproducto != null) {
             listadProductos[CantProducto++] = Nproducto;
             GuardarProductos();
+            Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "admin", Bitacora.OP_Crear_Producto, Bitacora.ESTADO_EXITOSA, "Creacion de producto exitosa");
             return true;
         }
         return false;
@@ -187,6 +240,7 @@ public class AdminDProductos {
                 listadProductos[CantProducto - 1] = null; //eliminamos la ultima referencia
                 CantProducto--;
                 GuardarProductos();
+                Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "admin", Bitacora.OP_Eli_Producto, Bitacora.ESTADO_EXITOSA, "Eliminacion de producto exitosa");
                 return true;
             }
         }
@@ -245,6 +299,10 @@ public class AdminDProductos {
                     } else if (categoria.equals("OTROS")) {
                         //por si las moscas, aunque la categoria otros ignora el atributo especifico xd, pero en fin, para que esta mrd no se caiga a pedazos
                         atributo = "N/A"; //no atributo
+                    } else if (categoria.equals("ALIMENTO")) {
+                        if (!productoComida.FechaValida(atributo)) {
+                            throw new Exception("Formato de fecha no valido, formato esperado(YYYY-MM-DD)");
+                        }
                     }
                     //llamamos al metodo de crear producto, para el manejo de  errores como el codigo repetido, y el fomato de fecha y garantia
                     if (CreacionProducto(codigo, nombre, precio, stock, categoria, atributo)) {
@@ -267,11 +325,13 @@ public class AdminDProductos {
             return "Error al no enocontrar al arhivo ";
         } catch (IOException e) {
             return "Error al leer el archivo " + e.getMessage();
+
         }
         if (lineaFail > 0) {
             Error.insert(0, "resumen: " + producCargado + ": productos cargados " + lineaFail + " lineas fallaron \n");
             return Error.toString();
         } else {
+            Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "admin", Bitacora.OP_Cargar_Producto, Bitacora.ESTADO_EXITOSA, "Carga de productos exitosa");
             return "carga de archivos exitosa :D " + producCargado + " productos creados ";
         }
     }
@@ -311,6 +371,7 @@ public class AdminDProductos {
             //hacemos nuestro llamado para que se guarde
             RegistrarStock(IdProd, Cant, usuarioId, nombreUsur);
             GuardarProductos();
+            Bitacora.RegistrarEvento(Bitacora.Tipo_Vendedor, usuarioId, Bitacora.OP_Agregar_Stock, Bitacora.ESTADO_EXITOSA, "Se agrego stock a los productos");
             return true;
         }
         return false;
@@ -337,15 +398,14 @@ public class AdminDProductos {
             //obtener la fecha
 
             if (Narchivo) {
-                escribit.println("codigo, cantidad_Agregada,fecha_hora, nombre_usuario");
+                escribit.println("fecha_hora_iso,codigo_producto,cantidad_agregada,usuario_id,usuario_nombre");
             }
             LocalDateTime ahora = LocalDateTime.now();
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String horafecha = ahora.toString();
 
             //creamos la line para guardar
-            String lineacsv = codigo + "," + Cantidad + "," + horafecha + "," +usuarioId+ "," + nombreUsur;
-
+            String lineacsv = horafecha + "," + codigo + "," + Cantidad + "," + usuarioId + "," + nombreUsur;
             escribit.println(lineacsv);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "No se pudo registrar el movimiento en el historial de stock.", "Error de Historial", JOptionPane.ERROR_MESSAGE);
@@ -418,19 +478,22 @@ public class AdminDProductos {
         }
         return datos;
     }
+
     //Para el wn del vendedor xd
-    public static void ReservaStock(String codigoProducto, int CantComprar){
+    public static void ReservaStock(String codigoProducto, int CantComprar) {
         Productos p = BuscarProd(codigoProducto);
-        if(p !=null){
+        if (p != null) {
             p.setStock(p.getStock() - CantComprar);
-        }      
+        }
     }
+
     //devolvemos una copar del arrglo de productos 
-    public static Productos[] getListadProductos(){
+    public static Productos[] getListadProductos() {
         return listadProductos;
     }
+
     //y esto es para obtenerlos 
-    public static int getCantProducto(){
+    public static int getCantProducto() {
         return CantProducto;
     }
 }

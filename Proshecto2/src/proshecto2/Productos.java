@@ -1,11 +1,13 @@
 //al fin salimos de los vendedores
 package proshecto2;
 
+import java.io.Serializable;
+
 /**
  *
  * @author kiquemarroquin
  */
-public abstract class Productos {
+public abstract class Productos implements Serializable {
     //las constantes de posicion 
     public static final int CODIGO =0;
     public static final int NOMBRE =1;

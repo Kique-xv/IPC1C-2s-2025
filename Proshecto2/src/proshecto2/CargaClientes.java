@@ -21,8 +21,10 @@ public class CargaClientes extends JFrame {
     private JTextArea Resultado;
     private JButton btCargar;
     private GestionClientes ventana;
+    private Vendedor vendedorAct;
 
-    public CargaClientes(GestionClientes ventana) {
+    public CargaClientes(GestionClientes ventana, Vendedor vendedor) {
+        this.vendedorAct = vendedor;
         this.ventana = ventana;
 
         setTitle("Carga Masiva de Clientes");
@@ -54,7 +56,7 @@ public class CargaClientes extends JFrame {
             Resultado.setText("Cargando los Clientes desde: " + archivoSeleccion.getName() + "\n\n");//eso son dos saltos de linea xd gracias yutu
 
             //llamamos a cargar clientes del admin de clientes
-            String reporte = AdminDClientes.CargarClientes(archivoSeleccion);
+            String reporte = AdminDClientes.CargarClientes(archivoSeleccion, vendedorAct.getId());
 
             Resultado.append(reporte);
 

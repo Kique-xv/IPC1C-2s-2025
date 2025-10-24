@@ -14,12 +14,33 @@ import javax.swing.JOptionPane;
  * @author kiquemarroquin
  */
 public class AdminDUsuarios {
+    //para las sesiones
+
+    private static int sesionesActivas = 0; //contador de seiones
 
     private static final String ArchiUsur = "Usuarios.csv";
 
     //una muy bonita matriz para los objetos usuario
     private static Usuarios[] listadUsuarios = new Usuarios[100]; //numero maximo de usuarios
     private static int CantUsuarios = 0; //ya se la saben el contrador de usuarios 
+
+//metodos para sincronizar las sesiones de los usuarios
+    public static synchronized void AumentarSesiones() {
+        sesionesActivas++;
+        System.out.println("Sesión iniciada. Activas: " + sesionesActivas); // Mensaje temporal
+    }
+
+    public static synchronized void BajarSesiones() {
+        if (sesionesActivas > 0) {
+            sesionesActivas--;
+        }
+        System.out.println("Sesión iniciada. Activas: " + sesionesActivas); // Mensaje temporal
+    }
+
+    //el getter oara despues
+    public static synchronized int getSesionesActivas() {
+        return sesionesActivas;
+    }
 
     static {
         cargarUsuarios(); //un metodo que estara abajito

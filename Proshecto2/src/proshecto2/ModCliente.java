@@ -25,11 +25,13 @@ public class ModCliente extends JFrame {
     private JTextField txtCodBuscar, txtNombre, txtCumple, txtContraseña;
     private JComboBox<String> cbGenero;
     private JButton btBuscar, btguardar;
+    private Vendedor vendedorAct;
 
     //el codigo este no se modificar
     private String CodAct = ""; //para guardar el codigo del cliente 
 
-    public ModCliente(GestionClientes ventana) {
+    public ModCliente(GestionClientes ventana, Vendedor vendedor) {
+        this.vendedorAct = vendedor;
         this.ventana = ventana;
         //las cosas de la ventana
         setTitle("Modificar Cliente");
@@ -168,7 +170,7 @@ public class ModCliente extends JFrame {
             JOptionPane.showMessageDialog(this, "Por favor llenar todos los apartados", "Error de Validación", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if (AdminDClientes.ModCliente(CodAct, nombre, contraseña, genero, nombre)) {
+        if (AdminDClientes.ModCliente(CodAct, nombre, contraseña, genero, nombre, vendedorAct.getId())) {
             JOptionPane.showMessageDialog(this, "El cliente ha sido modificado :D", "Exito", JOptionPane.INFORMATION_MESSAGE);
             if (ventana != null) {
                 ventana.actualizarTabla();

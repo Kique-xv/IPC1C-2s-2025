@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import proshecto2.Bitacora;
 
 /**
  *
@@ -23,7 +24,7 @@ public class MenuAdmin extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel(new GridLayout(4, 1, 10, 10));
+        JPanel panel = new JPanel(new GridLayout(5, 1, 10, 10));
 
         JLabel titulo = new JLabel("Modulo administrador", SwingConstants.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 19));
@@ -32,11 +33,17 @@ public class MenuAdmin extends JFrame {
         JButton btVendedores = new JButton(" Gestion de Vendedores");
         JButton btProductos = new JButton(" Gestion de Productos");
         JButton btReportes = new JButton("Generar Reportes");
+        JButton btBicacora = new JButton("Exportar Bitacora a pdf");
+        JButton btBorrar = new JButton("Borrar bitacora");
+        JButton btYo = new JButton("Datos del estudiante");
         JButton btCerrar = new JButton("Cerrar sesion");
 
         panel.add(btVendedores);
         panel.add(btProductos);
         panel.add(btReportes);
+        panel.add(btBicacora);
+        panel.add(btBorrar);
+        panel.add(btYo);
 
         add(btCerrar, BorderLayout.SOUTH);
         //acciones de los botones aca
@@ -53,10 +60,18 @@ public class MenuAdmin extends JFrame {
 
         btCerrar.addActionListener(e -> CerrarSesion());
 
+        btBicacora.addActionListener(e->  Bitacora.BitacoraPdf());
+        
+        btYo.addActionListener(e ->{
+            new SoyViejo().setVisible(true);
+        });
+        btBorrar.addActionListener(e -> Bitacora.BorrarBitacora());
+        
     }
 
     private void CerrarSesion() {
         //cerrar esta ventana y regresar a la ventana de ingreso
+        AdminDUsuarios.BajarSesiones();
         this.dispose();
         new IngresarUsuarios().setVisible(true);
     }
@@ -65,7 +80,11 @@ public class MenuAdmin extends JFrame {
         //para los reportes
         String[] opciones = {"Inventario",
             "Productos mas vendidos",
-            "Productos menos vendidos"};
+            "Productos menos vendidos",
+            "Ventas por vendedor",
+            "Clientes activos",
+            "Reporte financiero",
+            "Productos por caducar"};
         String seleccion = (String) JOptionPane.showInputDialog(this,
                 "Selecciona el reporte que desees generar",
                 "Generar Reportes",
@@ -76,12 +95,31 @@ public class MenuAdmin extends JFrame {
             switch (seleccion) {
                 case "Inventario":
                     GenerarReportes.GenerarReporteInventario();
+                    Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "Admin", Bitacora.OP_Generar_Reporte_Inventario, Bitacora.ESTADO_EXITOSA, "Generacion de  reporte exitosa");
                     break;
                 case "Productos mas vendidos":
                     GenerarReportes.GenerarReporteMasVen();
+                    Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "Admin", Bitacora.OP_Generar_Reporte_Prod_Mas, Bitacora.ESTADO_EXITOSA, "Generacion de reporte exitosa");
                     break;
                 case "Productos menos vendidos":
                     GenerarReportes.GenerarReporteMenosVen();
+                    Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "Admin", Bitacora.OP_Generar_Reporte_Prod_Menos, Bitacora.ESTADO_EXITOSA, "Generacion de  reporte exitosa");
+                    break;
+                case "Ventas por vendedor":
+                    GenerarReportes.ReporteVentasVendedor();
+                    Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "Admin", Bitacora.OP_Generar_Reporte_Ventas_Vendedor, Bitacora.ESTADO_EXITOSA, "Generacion de  reporte exitosa");
+                    break;
+                case "Clientes activos":
+                    GenerarReportes.ReporteClientesActivos();
+                    Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "Admin", Bitacora.OP_Generar_Reporte_Clientes_Activos, Bitacora.ESTADO_EXITOSA, "Generacion de  reporte exitosa");
+                    break;
+                case "Reporte financiero":
+                    GenerarReportes.ReporteFinanciero();
+                    Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "Admin", Bitacora.OP_Generar_Reporte_Financiero, Bitacora.ESTADO_EXITOSA, "Generacion de  reporte exitosa");
+                    break;
+                case "Productos por caducar":
+                    GenerarReportes.ReporteProductoCaducar();
+                    Bitacora.RegistrarEvento(Bitacora.Tipo_Admin, "Admin", Bitacora.OP_Generar_Reporte_Prod_Caducar, Bitacora.ESTADO_EXITOSA, "Generacion de  reporte exitosa");
                     break;
                 //los demas
                 default:

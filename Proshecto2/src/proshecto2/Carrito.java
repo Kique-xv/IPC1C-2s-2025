@@ -1,9 +1,10 @@
 //para el carrito de compras xd
 package proshecto2;
 
+import java.io.Serializable;
 import javax.swing.JOptionPane;
 
-class ProdCarrito{//el nombre es por producto carrito
+class ProdCarrito implements Serializable{//el nombre es por producto carrito
     public   Productos producto;
     public int cantidad;
     

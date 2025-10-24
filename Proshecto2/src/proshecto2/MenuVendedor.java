@@ -47,15 +47,16 @@ public class MenuVendedor extends JFrame {
         add(btCerrar, BorderLayout.SOUTH);
         add(panel, BorderLayout.CENTER);
 
-
 //accion de los botones
-     btProductos.addActionListener(e->  new ProductosAlmacen(vendedorAct).setVisible(true));
-      btClientes.addActionListener(e -> new GestionClientes().setVisible(true));
-       btPedidos.addActionListener(e -> new GestionPedidos(vendedorAct).setVisible(true));
+        btProductos.addActionListener(e -> new ProductosAlmacen(vendedorAct).setVisible(true));
+        btClientes.addActionListener(e -> new GestionClientes(vendedorAct).setVisible(true));
+        btPedidos.addActionListener(e -> new GestionPedidos(vendedorAct).setVisible(true));
         btCerrar.addActionListener(e -> CerrarSesion());
     }
+
     private void CerrarSesion() {
         //Cerrar esta ventana y regresar a la pantalla de ingreso
+                AdminDUsuarios.BajarSesiones();
         this.dispose();
         new IngresarUsuarios().setVisible(true);
     }

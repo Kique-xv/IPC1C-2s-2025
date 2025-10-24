@@ -3,9 +3,13 @@ package proshecto2;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,9 +25,54 @@ public class AdminDCompras {
     private static final int MaxCompras = 500; //el maximo de compras confimadas gracias a lanzar moneda online
     private static CompraAceptada[] listadCompras = new CompraAceptada[MaxCompras];
     private static int CantCompras = 0;
+    private static final String ESTADO_COMPRAS_SER = "ComprasAceptadas.ser";
 
-    static {
-        CargarCompra();
+    public static void inicializar() {
+        System.out.println("INICIALIZANDO SISTEMA DE PRODUCTOS...");
+        cargarEstado();
+        System.out.println("Sistema de productos listo :D");
+    }
+
+    public static void guardarEstado() {
+        System.out.println("Serializando estado de Compras Confirmadas");
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ESTADO_COMPRAS_SER))) {
+            oos.writeInt(CantCompras);
+            for (int i = 0; i < CantCompras; i++) {
+                if (listadCompras[i] != null) {
+                    oos.writeObject(listadCompras[i]);
+                }
+            }
+            System.out.println("Estado de compras confirmadas guardado en " + ESTADO_COMPRAS_SER);
+        } catch (IOException e) {
+            System.err.println("Error al guardar estado de compras aceptadas " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void cargarEstado() {
+        File archivoEstado = new File(ESTADO_COMPRAS_SER);
+        System.out.println("Deserializando estado de Compras Aceptadas");
+        if (!archivoEstado.exists()) {
+            System.out.println("Archivo " + ESTADO_COMPRAS_SER + " no encontrado se cargara  desde el csv");
+            CargarCompra();
+            return;
+        }
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivoEstado))) {
+            CantCompras = ois.readInt();
+            listadCompras = new CompraAceptada[MaxCompras];
+            for (int i = 0; i < CantCompras; i++) {
+                listadCompras[i] = (CompraAceptada) ois.readObject();
+            }
+            System.out.println("Estado de compras confirmadas cargado desde " + ESTADO_COMPRAS_SER + " Total: " + CantCompras);
+        } catch (IOException | ClassNotFoundException | ClassCastException e) {
+            System.err.println("Error al cargar estado de compras confirmadas " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al cargar datos guardados de compras se cargara  desde el csv", "Error", JOptionPane.WARNING_MESSAGE);
+            CantCompras = 0; // Reiniciar
+            listadCompras = new CompraAceptada[MaxCompras]; // Limpiar
+            CargarCompra();
+        }
     }
 
     //
@@ -48,7 +97,7 @@ public class AdminDCompras {
 
                         Pedidos pedido = new Pedidos(idPedido, fecha, idCliente, "Cliente Desconocido", total, null, 0);//solo pa probar usamos nada y nada xd
 
-                        listadCompras[CantCompras++] = new CompraAceptada(idPedido, fecha, idCliente, total,null, 0);
+                        listadCompras[CantCompras++] = new CompraAceptada(idPedido, fecha, idCliente, total, null, 0);
                     } catch (Exception e) {
                         System.err.println("Error al cargar línea de Compras.csv: " + linea + " -> " + e.getMessage());
                     }
@@ -73,13 +122,15 @@ public class AdminDCompras {
                 escribir.println(lineaCsv);
             }
         } catch (IOException e) {
-            System.err.println("    > ERROR FATAL al guardar ComprasConfirmadas.csv:");
-            e.printStackTrace(); // <-- Esto imprimirá el error completo en la consola
+            System.err.println("  ERROR FATAL al guardar ComprasConfirmadas.csv:");
+            e.printStackTrace();
             JOptionPane.showMessageDialog(null,
                     "No se pudo guardar el historial de compras.\nError: " + e.getMessage() + "\nVerifica los permisos de la carpeta.",
                     "Error de Archivo",
                     JOptionPane.ERROR_MESSAGE);
         }
+        guardarEstado();
+        GuardarCompras();
     }
 
     //metodo para agregar una comprar al arreglo
@@ -92,6 +143,8 @@ public class AdminDCompras {
         } else {
             JOptionPane.showMessageDialog(null, "Ha alcanzado el maximo de compras", "Aviso", JOptionPane.WARNING_MESSAGE);
         }
+        guardarEstado();
+
     }
 
     public static Object[][] DatosTablaHistorial(String idCliente) {
@@ -162,6 +215,7 @@ public class AdminDCompras {
     public static CompraAceptada[] getListadComprasAceptadas() {
         return listadCompras;
     }
+//no sera util pa el coso de hilos
 
     public static int getCantComprasAceptadas() {
         return CantCompras;

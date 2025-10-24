@@ -57,8 +57,10 @@ public class IngresarUsuarios extends JFrame {
 
         if (UsuarioAutenticar != null) {
             String tipo = UsuarioAutenticar.getTipoUsuario();
+            Bitacora.RegistrarEvento(tipo, id, Bitacora.OP_Ingreso_Exitoso, Bitacora.ESTADO_EXITOSA, "Inicio de sesión correcto.");
             //manejo para cada tipo de usuario
             System.out.println("Tipo de usuario ingresado: " + tipo);
+            AdminDUsuarios.AumentarSesiones();
             if ("ADMIN".equals(tipo)) {
                 JOptionPane.showMessageDialog(this, "Bienvenido admin", "Acceso otorgado", JOptionPane.INFORMATION_MESSAGE);
                 new MenuAdmin().setVisible(true); //abre el menu de admin
@@ -88,6 +90,7 @@ public class IngresarUsuarios extends JFrame {
             //ACA IRA LO DE  ABRIR EL MENU DE ADMIN, VENDEDOR, CLIENTE, CON LO DE SIEMPRE, EL SETVISIBLE(TRUE)
         } else {
             JOptionPane.showMessageDialog(this, "El Id o la contaseña son incorrectos, Intenta otra vez", "Error de autenticacion", JOptionPane.ERROR_MESSAGE);
+            Bitacora.RegistrarEvento(Bitacora.Tipo_Sistema, id, Bitacora.OP_Ingreso_Fallido, Bitacora.ESTADO_EXITOSA, "Inicio de sesión correcto.");
             txtContraseña.setText(""); //limpiamos el campo de contraseña
         }
     }

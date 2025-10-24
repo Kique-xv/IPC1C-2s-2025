@@ -5,9 +5,13 @@ package proshecto2;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 
@@ -18,14 +22,57 @@ import javax.swing.JOptionPane;
 public class AdminDClientes {
 
     private static final String ArchiClient = "Clientes.csv";
+    private static final String ESTADO_CLIENTES_SER = "clientes.ser";
     private static final int MaxClientes = 100; //el maximo de clientes
 
     private static Cliente[] listadClientes = new Cliente[MaxClientes];
     private static int CantClientes = 0;
+    public static void inicializar() {
+        System.out.println("INICIALIZANDO SISTEMA DE PRODUCTOS...");
+        cargarEstado();
+        System.out.println("Sistema de productos listo :D");
+    }
 
-    //esto es para cargar los clientes al inciar el programa
-    static {
-        CargarClientes(); //metodo que ta alli abajo
+    public static void guardarEstado() {
+        System.out.println("Serializando estado de Clientes ");
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ESTADO_CLIENTES_SER))) {
+            oos.writeInt(CantClientes); // Guardar contador
+            for (int i = 0; i < CantClientes; i++) {
+                if (listadClientes[i] != null) {
+                    oos.writeObject(listadClientes[i]); // Guardar objeto
+                }
+            }
+            System.out.println("Estado de clientes guardado en " + ESTADO_CLIENTES_SER);
+        } catch (IOException e) {
+            System.err.println("Error al guardar estado de clientes: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void cargarEstado() {
+        File archivoEstado = new File(ESTADO_CLIENTES_SER);
+        System.out.println("Deserializando estado de Clientes");
+        if (!archivoEstado.exists()) {
+            System.out.println("Archivo " + ESTADO_CLIENTES_SER + " no encontrado se cargara desde el csv");
+            CargarClientes(); 
+            return;
+        }
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivoEstado))) {
+            CantClientes = ois.readInt(); // Leer contador
+            listadClientes = new Cliente[MaxClientes]; // Reiniciar arreglo
+            for (int i = 0; i < CantClientes; i++) {
+                listadClientes[i] = (Cliente) ois.readObject(); // Leer objeto y castear
+            }
+            System.out.println(" Estado de clientes cargado desde " + ESTADO_CLIENTES_SER + "Total: " + CantClientes);
+        } catch (IOException | ClassNotFoundException | ClassCastException e) {
+            System.err.println("Error al cargar estado de clientes: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al cargar datos guardados de clientes (.ser). Se intentará cargar desde CSV.", "Error Serialización", JOptionPane.WARNING_MESSAGE);
+            CantClientes = 0; // Reiniciar
+            listadClientes = new Cliente[MaxClientes]; // Limpiar
+            CargarClientes(); 
+        }
     }
 
     public static void CargarClientes() {
@@ -36,6 +83,7 @@ public class AdminDClientes {
         CantClientes = 0;
         try (BufferedReader lector = new BufferedReader(new FileReader(archivo))) {
             String linea;
+            int numlinea = 1;
             lector.readLine();//nos saltamos el encabezado
 
             while ((linea = lector.readLine()) != null && CantClientes < MaxClientes) {
@@ -58,17 +106,27 @@ public class AdminDClientes {
     }
 
     public static void GuardarClientes() {
+        System.out.println("Guardando Clientes.csv"); // Mensaje debug
         try (PrintWriter escribir = new PrintWriter(new FileWriter(ArchiClient))) {
-            escribir.println("id, nombre, contraseña, genero, cumpleaños");//el encabezado
+            escribir.println("Codigo,nombre,cotraseña,genero,cumpleaños");//el encabezado
             //ciclo for para recorrer la lista de clientes creados para encontrar los que se hayan creado ya
             for (int i = 0; i < CantClientes; i++) {
                 Cliente c = listadClientes[i];
-                String lineaCsv = c.getId() + "," + c.getNombre() + "," + c.getcontraseña() + "," + c.getGenero() + "," + c.getCumpleaños();
-                escribir.println(lineaCsv);
+                if (c != null) {
+                    String lineaCsv
+                            = c.getId() + ","
+                            + c.getNombre() + ","
+                            + c.getcontraseña() + ","
+                            + c.getGenero() + ","
+                            + c.getCumpleaños();
+                    escribir.println(lineaCsv);
+                }
             }
+            System.out.println("Clientes.csv guardado"); // Mensaje debug
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al guardar los clientes en el archivo.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        cargarEstado();
     }
 
     //veremos  si el codigo del cliente ya essta en uso
@@ -82,13 +140,17 @@ public class AdminDClientes {
     }
 
     //lo mismo de productos y vendedires hasta el nombre lo copie, es 
-    public static boolean CreacionClientes(String id, String nombre, String contraseña, String genero, String cumpleaños) {
+    public static boolean CreacionClientes(String id, String nombre, String contraseña, String genero, String cumpleaños, String idVendedor) {
         if (CantClientes >= MaxClientes) {
             JOptionPane.showMessageDialog(null, "Se alcanzó el límite de clientes para crear", "Error", JOptionPane.ERROR_MESSAGE);
+            Bitacora.RegistrarEvento(Bitacora.Tipo_Vendedor, idVendedor, Bitacora.OP_Crear_Cliente, Bitacora.ESTADO_FALLIDA, "se llego al limite de clientes creados");
+
             return false;
         }
         if (CodRepetido(id)) {
             JOptionPane.showMessageDialog(null, "El código de cliente ya está en uso", "Error", JOptionPane.ERROR_MESSAGE);
+            Bitacora.RegistrarEvento(Bitacora.Tipo_Vendedor, idVendedor, Bitacora.OP_Crear_Cliente, Bitacora.ESTADO_FALLIDA, "no se creo el cliente por codigo repitido");
+
             return false;
         }
         //creamos el nuevo cliente 
@@ -100,6 +162,7 @@ public class AdminDClientes {
 
         //y lo guardamos en la lisata de clientes xd
         GuardarClientes();
+        Bitacora.RegistrarEvento(Bitacora.Tipo_Vendedor, idVendedor, Bitacora.OP_Crear_Cliente, Bitacora.ESTADO_EXITOSA, "se ha creado un cliente");
         return true;
     }
 
@@ -133,7 +196,7 @@ public class AdminDClientes {
     }
 
     //pa modificar clientes
-    public static boolean ModCliente(String id, String Nnombre, String Ncontraseña, String Ngenero, String Ncumple) {
+    public static boolean ModCliente(String id, String Nnombre, String Ncontraseña, String Ngenero, String Ncumple, String idVendedor) {
         //buscamos al cliente que queremos modificar
         Cliente Modcliente = BuscarCliente(id);
 
@@ -148,13 +211,18 @@ public class AdminDClientes {
 
             //lo guardamos en el archivo csv de clientes
             GuardarClientes();
+            Bitacora.RegistrarEvento(Bitacora.Tipo_Vendedor, idVendedor, Bitacora.OP_Mod_Cliente, Bitacora.ESTADO_EXITOSA, "Se modifoco los datos correctamente de un cliente");
+
             return true;//devolvemos un verdadero si salio bien xd
 
         }
+        Bitacora.RegistrarEvento(Bitacora.Tipo_Vendedor, idVendedor, Bitacora.OP_Mod_Cliente, Bitacora.ESTADO_FALLIDA, "No se encontro al cliente");
+
         return false;
+
     }
 
-    public static boolean EliminarCliente(String Id) {
+    public static boolean EliminarCliente(String Id, String idVendedor) {
         int encontrar = -1;
         //buscamos el indice del cliente a eliminar
         for (int i = 0; i < CantClientes; i++) {
@@ -177,21 +245,24 @@ public class AdminDClientes {
             //lo guardamos en ambos archivos para mantener la consistencia
             GuardarClientes();
             AdminDUsuarios.GuardarUsuarios(); //ca que se guarde en la parte de inicio de sesion
+            Bitacora.RegistrarEvento(Bitacora.Tipo_Vendedor, idVendedor, Bitacora.OP_Eli_Cliente, Bitacora.ESTADO_EXITOSA, "Se eliminó correctamente a un cliente");
+
             return true;
         }
         return false; //si no encuentra al cliente xd
     }
 
     //el metodo para cargar los clientes
-    public static String CargarClientes(File archivo) {
+    public static String CargarClientes(File archivo, String idVendedor) {
         StringBuilder resumen = new StringBuilder();
         int cargaExito = 0;
         int fallaForm = 0;
         int fallaLogic = 0; //para los duplicado y otras chingaderas
-        int numLinea = 1;
+        boolean cambios = false;
 
         try (BufferedReader lector = new BufferedReader(new FileReader(archivo))) {
             lector.readLine();
+            int numLinea = 1;
 
             String linea;
             while ((linea = lector.readLine()) != null) {
@@ -211,19 +282,21 @@ public class AdminDClientes {
 
                 String codigo = datos[0].trim();
                 String nombre = datos[1].trim();
-                String genero = datos[2].trim().toUpperCase();
-                String cumple = datos[3].trim();
-                String contraseña = datos[4].trim();
+                String contraseña = datos[2].trim().toUpperCase();
+                String genero = datos[3].trim();
+                String cumple = datos[4].trim();
 
                 //la otra validacion si el codigo ya exite 
                 if (AdminDClientes.CodRepetido(codigo)) {
-                    resumen.append("Linea").append(numLinea).append(": erro porque el codigo : ").append(codigo).append(" esta repetido \n");
+                    resumen.append("Linea").append(numLinea).append(": error  porque el codigo : ").append(codigo).append(" esta repetido \n");
+                    Bitacora.RegistrarEvento(Bitacora.Tipo_Vendedor, idVendedor, Bitacora.OP_Cargar_Cliente, Bitacora.ESTADO_FALLIDA, "No se cargaron correctamente los clientes");
+
                     fallaLogic++;
                     continue;
                 }
                 //si todo va poila intentamos crear el clinete
-                if (AdminDClientes.CreacionClientes(codigo, nombre, contraseña, genero, cumple)) {
-                    resumen.append("Línea ").append(numLinea).append(": cliiente ").append(nombre).append(" se agrego exitosamente\n");
+                if (AdminDClientes.CreacionClientesSinGuardar(codigo, nombre, contraseña, genero, cumple, idVendedor)) {
+                    cambios = true;
                     cargaExito++;
                 } else {
                     resumen.append("Línea ").append(numLinea).append(": erro  al crear al cliente.\n");
@@ -233,12 +306,46 @@ public class AdminDClientes {
         } catch (IOException e) {
             return "Error al leer el archivo" + e.getMessage();
         }
+        if (cambios) {
+            GuardarClientes();
+            guardarEstado();
+        }
         String RepFinal = " Resumen de la carga de clientes\n "
                 + "Clientes cargados correctamente: " + cargaExito + "\n"
                 + "Errores de formato:  " + fallaForm + "\n"
                 + "Duplicados y otros: " + fallaLogic + "\n"
                 + "Detalles \n"
                 + resumen.toString();
+        Bitacora.RegistrarEvento(Bitacora.Tipo_Vendedor, idVendedor, Bitacora.OP_Cargar_Cliente, Bitacora.ESTADO_EXITOSA, "Se cargaron correctamente los clientes");
         return RepFinal;
+    }
+
+    //para el reporte de los webos
+    public static Cliente[] getListdClientes() {
+        //devolvemos la copiar por si las moscas
+        Cliente[] copia = new Cliente[CantClientes];
+        System.arraycopy(listadClientes, 0, copia, 0, CantClientes);
+        return copia;
+    }
+
+    public static int getCantlientes() {
+        return CantClientes;
+    }
+
+    public static boolean CreacionClientesSinGuardar(String id, String nombre, String contraseña, String genero, String cumpleaños, String idVendedor) {
+        if (CantClientes >= MaxClientes) {
+            return false;
+        }
+        Cliente Ncliente = new Cliente(id, nombre, contraseña, genero, cumpleaños);
+        listadClientes[CantClientes++] = Ncliente;
+
+        if (!AdminDUsuarios.CodRepetido(id)) {
+            AdminDUsuarios.AgregarUsuario(Ncliente);
+        } else {
+            AdminDUsuarios.ActualizarUsuario(id, nombre, contraseña);
+            return true;
+        }
+        return false;
+
     }
 }

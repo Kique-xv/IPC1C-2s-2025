@@ -100,6 +100,7 @@ public class CarritoCompra extends JFrame {
             return;
         }
         Carrito.EliminarProd(fila);
+        Bitacora.RegistrarEvento(Bitacora.Tipo_Cliente, clienteAct.getId(), Bitacora.OP_Eliminar_Producto_Carrito, Bitacora.ESTADO_EXITOSA, "Se elimino un producto del carrto de compras");
         ActualizarVista();
     }
 
@@ -116,9 +117,11 @@ public class CarritoCompra extends JFrame {
                 int Ncantidad = Integer.parseInt(NcantidadStr);
                 if (Ncantidad > 0) {
                     if (Carrito.actualizarCant(fila, Ncantidad)) {
+                        Bitacora.RegistrarEvento(Bitacora.Tipo_Cliente, clienteAct.getId(), Bitacora.OP_Actualizar_Pedido, Bitacora.ESTADO_EXITOSA, "Se Modifico los productos del carrito de compras");
                         ActualizarVista();
                     }
                 } else {
+                    Bitacora.RegistrarEvento(Bitacora.Tipo_Cliente, clienteAct.getId(), Bitacora.OP_Actualizar_Pedido, Bitacora.ESTADO_FALLIDA, "No se Modifico los productos del carrito de compras, stock insuficiente");
                     JOptionPane.showMessageDialog(this, "La cantidad debe de ser mayor a cero, para quitar el producto, usa el boton de eliminar ", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (NumberFormatException e) {

@@ -17,11 +17,14 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author kiquemarroquin
  */
-public class GestionClientes  extends JFrame{
-    private DefaultTableModel tmodelo;
+public class GestionClientes extends JFrame {
 
-    public GestionClientes(){
-         setTitle("Gestion de Clientes");
+    private DefaultTableModel tmodelo;
+    private Vendedor vendedorAct;
+
+    public GestionClientes(Vendedor vendedor) {
+        this.vendedorAct = vendedor;
+        setTitle("Gestion de Clientes");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -54,28 +57,30 @@ public class GestionClientes  extends JFrame{
 
         JPanel tabla = Cargartabla();
         add(tabla, BorderLayout.CENTER);
-        
-          //las acciones de los botones
-        btCrear.addActionListener(e -> new CrearClientes(this).setVisible(true));
-      btModificar.addActionListener(e -> new ModCliente(this).setVisible(true));
-        btEliminar.addActionListener(e -> new EliminarCliente(this).setVisible(true));
-      btCargar.addActionListener(e -> new CargaClientes(this).setVisible(true));
+
+        //las acciones de los botones
+        btCrear.addActionListener(e -> new CrearClientes(this, vendedorAct).setVisible(true));
+        btModificar.addActionListener(e -> new ModCliente(this, vendedorAct).setVisible(true));
+        btEliminar.addActionListener(e -> new EliminarCliente(this, vendedorAct).setVisible(true));
+        btCargar.addActionListener(e -> new CargaClientes(this, vendedorAct).setVisible(true));
 
         setVisible(true);
     }
-    public void actualizarTabla(){
+
+    public void actualizarTabla() {
         //los encabezados
         String[] nomColumna = {"Codigo", "Nombre", "Genero", "Cumpleaños"};
-   //obtener los datos
-   Object[][] Ndatos = AdminDClientes.DatosTablaCliente();
-   if(tmodelo !=null){
-       tmodelo.setDataVector(Ndatos, nomColumna);
-       tmodelo.fireTableDataChanged();
-   }
-   this.revalidate();
-   this.repaint();
+        //obtener los datos
+        Object[][] Ndatos = AdminDClientes.DatosTablaCliente();
+        if (tmodelo != null) {
+            tmodelo.setDataVector(Ndatos, nomColumna);
+            tmodelo.fireTableDataChanged();
+        }
+        this.revalidate();
+        this.repaint();
     }
-      //gracias stack overflow
+    //gracias stack overflow
+
     private JPanel Cargartabla() {
         //zampamos los encabezados de la tabla
         String[] nomColumna = {"Codigo", "Nombre", "Genero", " Cumpleaños"};
@@ -118,4 +123,3 @@ public class GestionClientes  extends JFrame{
         return panelCont;
     }
 }
-
