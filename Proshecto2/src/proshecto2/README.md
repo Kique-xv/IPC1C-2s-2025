@@ -2,7 +2,7 @@ README.md
 # HIPShop
 
 ## Autor YOP
-* **Nombre:** <Guillermo Enrique Marroquin Moran>
+* **Nombre:** Guillermo Enrique Marroquin Moran
 * **Carnet:** <202103527>
 * **Curso:** Introducción a la Programación y Computación 1
 * **Sección:** <C>
